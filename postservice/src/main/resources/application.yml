@@ -2,18 +2,49 @@ spring:
   application:
     name: apigateway
 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: password
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
   data:
-    mongodb:
-      database: test
-      port: 27017
+    redis:
+      port: 6379
       host: localhost
-      username: your_username
-      password: your_password
+      channels:
+        user_ban_channel:
+          name: user_ban
+        notification_like_channel:
+          name: notification_like_channel
 
-
+  mvc:
+    servlet:
+      path: /api/v1
 
 server:
-  port: 9090
+  port: 8081
+
+  authservice:
+    host: localhost
+    port: 9090
+
+  logging:
+    level:
+      root: info
+
 
 security:
   basic:
