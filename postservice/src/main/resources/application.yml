@@ -1,12 +1,9 @@
 spring:
-  application:
-    name: apigateway
-
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
-    username: user
-    password: password
+    username: postgres
+    password: Postgres
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -22,13 +19,15 @@ spring:
 
   data:
     redis:
-      port: 6379
       host: localhost
+      port: 6379
       channels:
         user_ban_channel:
           name: user_ban
         notification_like_channel:
           name: notification_like_channel
+        post_channel:
+          name: post_channel
 
   mvc:
     servlet:
@@ -37,13 +36,13 @@ spring:
 server:
   port: 8081
 
-  authservice:
-    host: localhost
-    port: 9090
+authservice:
+  host: localhost
+  port: 9090
 
-  logging:
-    level:
-      root: info
+logging:
+  level:
+    root: info
 
 
 security:

@@ -1,8 +1,8 @@
 FROM openjdk:21-jdk-slim-buster
 WORKDIR /app
 
-COPY ./build/libs/postservice.jar build/
+COPY /build/libs/MicroservicesProject.jar build/
 
 WORKDIR /app/build
-EXPOSE 8080
-ENTRYPOINT java -jar postservice.jar
+EXPOSE 8081
+ENTRYPOINT java -jar MicroservicesProject.jar
