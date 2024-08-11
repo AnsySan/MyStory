@@ -1,6 +1,5 @@
 package com.clone.instagram.authSetvice.Payload;
 
-import com.clone.instagram.authSetvice.messaging.UserEventType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,5 +13,4 @@ public class UserEventPayload {
     private String displayName;
     private String profilePictureUrl;
     private String oldProfilePicUrl;
-    private UserEventType eventType;
 }

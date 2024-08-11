@@ -22,7 +22,7 @@ public void validateAuthor(PostDto postDto) {
     if (postDto.getAuthorId() == null) {
         throw new DataValidationException("The post does not have an author specified");
     }
-    if (postDto.getAuthorId() == null) {     throw new DataValidationException("A post cannot have two authors");
+    if (postDto.getAuthorId() == null) { throw new DataValidationException("A post cannot have two authors");
     }
     if (postDto.getAuthorId() != null && userServiceClient.getUser(postDto.getAuthorId()) == null) {
         throw new DataValidationException("The author must be an existing user in the system");
@@ -48,7 +48,7 @@ public void checkPostAuthorship(Post post) {
     }
 }
 
-public void validateUserExist(long userId) {
+public void validateUserExist(Integer userId) {
     try {
         userServiceClient.getUser(userId);
     } catch (FeignException e) {

@@ -17,9 +17,9 @@ public class UserHeaderFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
-        String userId = req.getHeader("isntagram-user-id");
+        String userId = req.getHeader("instagram-user-id");
         if (userId != null) {
-            userContext.setUserId(Long.parseLong(userId));
+            userContext.setUserId(Integer.parseInt(userId));
         }
         try {
             chain.doFilter(request, response);

@@ -23,10 +23,6 @@ public class LikeEvent {
     private Integer authorPostId;
     @Positive
     private Integer postId;
-    @Positive
-    private Integer authorCommentId;
-    @Positive
-    private Integer commentId;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 }

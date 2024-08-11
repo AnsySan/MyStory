@@ -4,7 +4,6 @@ import com.clone.instagram.authSetvice.Exception.EmailAlreadyExistsException;
 import com.clone.instagram.authSetvice.Exception.UsernameAlreadyExistsException;
 import com.clone.instagram.authSetvice.entity.Role;
 import com.clone.instagram.authSetvice.entity.User;
-import com.clone.instagram.authSetvice.messaging.UserEventSender;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,15 +20,12 @@ public class UserService {
 
     private  UserRepository userRepository;
     private  PasswordEncoder passwordEncoder;
-    private UserEventSender userEventSender;
 
 
     public UserService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
-                       UserEventSender userEventSender) {
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.userEventSender = userEventSender;
     }
 
     public List<User> findAll() {
@@ -82,7 +78,6 @@ public class UserService {
                     user.getUserProfile().setProfilePictureUrl(uri);
                     User savedUser = userRepository.save(user);
 
-                    userEventSender.sendUserUpdated(savedUser, oldProfilePic);
 
                     return savedUser;
                 })

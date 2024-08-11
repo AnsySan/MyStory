@@ -24,7 +24,7 @@ public class LikeController {
 
     @DeleteMapping("/post/{postId}")
     @Operation(summary = "Remove like from post")
-    public void deleteLikeFromPost(@Valid @PathVariable Long postId) {
+    public void deleteLikeFromPost(@Valid @PathVariable int postId) {
         likeService.deleteLikeFromPost(postId);
     }
 }
