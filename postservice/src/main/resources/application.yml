@@ -39,11 +39,19 @@ server:
 authservice:
   host: localhost
   port: 9090
+user-service:
+  host: localhost
+  port: 8090
 
 logging:
   level:
     root: info
 
+scheduled:
+  author-banner: "@daily"
+
+limits:
+  unverified_post_limit: 5
 
 security:
   basic:
