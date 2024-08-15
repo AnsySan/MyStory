@@ -1,0 +1,55 @@
+spring:
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      channels:
+        notification_like_channel:
+          name: notification_like_channel
+        comment_event_channel:
+          name: comment_event_channel
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your_email@gmail.com #https://www.baeldung.com/spring-email
+    password: whatever #?????????? ??? ?????? Google ???????? ?? ?????????? https://support.google.com/accounts/answer/185833
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  messages:
+    basename: messages
+
+server:
+  port: 8083
+
+logging:
+  level:
+    root: info
+
+vonage: #https://dashboard.nexmo.com/getting-started/sms
+  api:
+    key: whatever
+    secret: whatever
+
+user-service:
+  host: localhost
+  port: 8080
+
+telegram-bot:
+  name: CorporationXEventAlertBot
+  token:
+
+likeEvent:
+  postCode: like_post.new
+  commentCode: like_comment.new
+
+commentEvent:
+  comment: comment.new
