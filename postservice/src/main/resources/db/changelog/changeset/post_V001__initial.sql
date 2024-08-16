@@ -5,7 +5,8 @@ CREATE TABLE post (
                       published_at timestamptz,
                       deleted boolean DEFAULT false NOT NULL,
                       created_at timestamptz DEFAULT current_timestamp,
-                      updated_at timestamptz DEFAULT current_timestamp
+                      updated_at timestamptz DEFAULT current_timestamp,
+                      verified boolean NOT NULL
 );
 
 CREATE TABLE comment (
@@ -41,4 +42,4 @@ CREATE TABLE resource (
                           post_id bigint,
 
                           CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
-)
+);
