@@ -1,10 +1,11 @@
-package com.clone.instagram.postservice.validator;
+package com.clone.twitter.postservice.validation;
 
-import com.clone.instagram.postservice.entity.Comment;
-import com.clone.instagram.postservice.entity.Like;
-import com.clone.instagram.postservice.entity.Post;
-import com.clone.instagram.postservice.exception.DataValidationException;
-import com.clone.instagram.postservice.repository.LikeRepository;
+import com.clone.twitter.postservice.entity.Comment;
+import com.clone.twitter.postservice.entity.Like;
+import com.clone.twitter.postservice.entity.Post;
+import com.clone.twitter.postservice.exception.DataValidationException;
+import com.clone.twitter.postservice.repository.LikeRepository;
+import com.clone.twitter.postservice.validator.LikeValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LikeValidatorTest {
+public class LikeValidationTest {
     @Mock
     private LikeRepository likeRepository;
     @InjectMocks

@@ -1,12 +1,12 @@
-package com.clone.instagram.postservice.service;
+package com.clone.twitter.postservice.service;
 
-import com.clone.instagram.postservice.dto.CommentDto;
-import com.clone.instagram.postservice.entity.Comment;
-import com.clone.instagram.postservice.entity.Post;
-import com.clone.instagram.postservice.mapper.CommentMapper;
-import com.clone.instagram.postservice.publisher.publishers.CommentEventPublisher;
-import com.clone.instagram.postservice.repository.CommentRepository;
-import com.clone.instagram.postservice.validator.CommentValidation;
+import com.clone.twitter.postservice.dto.CommentDto;
+import com.clone.twitter.postservice.entity.Comment;
+import com.clone.twitter.postservice.entity.Post;
+import com.clone.twitter.postservice.mapper.CommentMapper;
+import com.clone.twitter.postservice.publisher.publishers.CommentEventPublisher;
+import com.clone.twitter.postservice.repository.CommentRepository;
+import com.clone.twitter.postservice.validator.CommentValidation;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

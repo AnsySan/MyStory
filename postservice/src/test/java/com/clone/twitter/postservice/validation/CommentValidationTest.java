@@ -1,10 +1,11 @@
-package com.clone.instagram.postservice.validator;
+package com.clone.twitter.postservice.validation;
 
-import com.clone.instagram.postservice.client.UserServiceClient;
-import com.clone.instagram.postservice.dto.CommentDto;
-import com.clone.instagram.postservice.entity.Comment;
-import com.clone.instagram.postservice.exception.DataValidationException;
-import com.clone.instagram.postservice.repository.CommentRepository;
+import com.clone.twitter.postservice.client.UserServiceClient;
+import com.clone.twitter.postservice.dto.CommentDto;
+import com.clone.twitter.postservice.entity.Comment;
+import com.clone.twitter.postservice.exception.DataValidationException;
+import com.clone.twitter.postservice.repository.CommentRepository;
+import com.clone.twitter.postservice.validator.CommentValidation;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
