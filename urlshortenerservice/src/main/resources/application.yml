@@ -35,7 +35,7 @@ spring:
         thread-name-prefix: my-task-executor-
 
 server:
-  port: 8090
+  port: 8091
 
 logging:
   level:
@@ -51,8 +51,8 @@ app:
   hash:
     batch-size: 100
     cache:
-      size: 10
-      fill-percent: 20
+      size: 100
+      fill-percent: 200
 
   hash-generator:
     base: 62
