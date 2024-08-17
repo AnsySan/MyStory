@@ -1,6 +1,6 @@
-package com.clone.instagram.userservice.client;
+package com.clone.twitter.userservice.client;
 
-import com.clone.instagram.userservice.context.UserContext;
+import com.clone.twitter.userservice.context.UserContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,4 +1,4 @@
-package com.clone.instagram.userservice.config;
+package com.clone.twitter.userservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

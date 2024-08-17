@@ -1,6 +1,6 @@
-package com.clone.instagram.userservice.util;
+package com.clone.twitter.userservice.util;
 
-import com.clone.instagram.userservice.UserserviceApplication;
+import com.clone.twitter.userservice.UserserviceApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.redis.testcontainers.RedisContainer;
 import org.junit.jupiter.api.DisplayName;

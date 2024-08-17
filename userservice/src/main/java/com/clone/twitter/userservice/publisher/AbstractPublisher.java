@@ -1,4 +1,4 @@
-package com.clone.instagram.userservice.publisher;
+package com.clone.twitter.userservice.publisher;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

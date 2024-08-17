@@ -1,4 +1,4 @@
-package com.clone.instagram.userservice.service;
+package com.clone.twitter.userservice.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;

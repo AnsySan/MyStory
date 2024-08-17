@@ -1,15 +1,15 @@
-package com.clone.instagram.userservice.service;
+package com.clone.twitter.userservice.service;
 
-import com.clone.instagram.userservice.context.UserContext;
-import com.clone.instagram.userservice.dto.SearchAppearanceEvent;
-import com.clone.instagram.userservice.dto.SubscriptionUserDto;
-import com.clone.instagram.userservice.dto.SubscriptionUserFilterDto;
-import com.clone.instagram.userservice.entity.User;
-import com.clone.instagram.userservice.exception.DataValidationException;
-import com.clone.instagram.userservice.filter.*;
-import com.clone.instagram.userservice.mapper.SubscriptionUserMapper;
-import com.clone.instagram.userservice.publisher.SearchAppearanceEventPublisher;
-import com.clone.instagram.userservice.repository.SubscriptionRepository;
+import com.clone.twitter.userservice.context.UserContext;
+import com.clone.twitter.userservice.dto.SearchAppearanceEvent;
+import com.clone.twitter.userservice.dto.SubscriptionUserDto;
+import com.clone.twitter.userservice.dto.SubscriptionUserFilterDto;
+import com.clone.twitter.userservice.entity.User;
+import com.clone.twitter.userservice.exception.DataValidationException;
+import com.clone.twitter.userservice.filter.*;
+import com.clone.twitter.userservice.mapper.SubscriptionUserMapper;
+import com.clone.twitter.userservice.publisher.SearchAppearanceEventPublisher;
+import com.clone.twitter.userservice.repository.SubscriptionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +78,6 @@ public class SubscriptionServiceTest {
         subscriptionService.followUser(userId1, userId2);
         verify(subscriptionRepository, times(1)).followUser(userId1, userId2);
     }
-
 
     @Test
     public void testUnfollowUserThrowsExceptionWhenUnfollowYourself() {

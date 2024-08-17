@@ -1,6 +1,6 @@
-package com.clone.instagram.userservice.publisher;
+package com.clone.twitter.userservice.publisher;
 
-import com.clone.instagram.userservice.dto.SearchAppearanceEvent;
+import com.clone.twitter.userservice.dto.SearchAppearanceEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

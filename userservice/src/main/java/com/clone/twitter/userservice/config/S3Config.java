@@ -1,4 +1,4 @@
-package com.clone.instagram.userservice.config;
+package com.clone.twitter.userservice.config;
 
 
 import com.amazonaws.auth.AWSCredentials;

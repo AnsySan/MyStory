@@ -1,6 +1,6 @@
-package com.clone.instagram.userservice.client;
+package com.clone.twitter.userservice.client;
 
-import com.clone.instagram.userservice.context.UserContext;
+import com.clone.twitter.userservice.context.UserContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,6 @@ public class FeignUserInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
-        template.header("telegram-user-id", String.valueOf(userContext.getUserId()));
+        template.header("twitter-user-id", String.valueOf(userContext.getUserId()));
     }
 }

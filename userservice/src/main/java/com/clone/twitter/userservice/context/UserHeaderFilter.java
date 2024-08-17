@@ -1,4 +1,4 @@
-package com.clone.instagram.postservice.context;
+package com.clone.twitter.userservice.context;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class UserHeaderFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
-        String userId = req.getHeader("instagram-user-id");
+        String userId = req.getHeader("twitter-user-id");
         if (userId != null) {
             userContext.setUserId(Integer.parseInt(userId));
         }

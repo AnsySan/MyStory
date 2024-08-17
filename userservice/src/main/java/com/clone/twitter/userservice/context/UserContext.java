@@ -1,4 +1,4 @@
-package com.clone.instagram.userservice.context;
+package com.clone.twitter.userservice.context;
 
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.clone.instagram.userservice;
+package com.clone.twitter.userservice;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
