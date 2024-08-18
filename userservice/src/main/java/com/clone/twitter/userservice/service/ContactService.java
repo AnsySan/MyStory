@@ -6,8 +6,10 @@ import com.clone.twitter.userservice.mapper.ContactMapper;
 import com.clone.twitter.userservice.repository.ContactRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ContactService {

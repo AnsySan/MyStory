@@ -41,28 +41,28 @@ public class SubscriptionService {
         subscriptionRepository.followUser(followerId, followeeId);
 
     }
-
+    @Transactional
     public void unfollowUser(long followerId, long followeeId) {
         if (followerId == followeeId) {
             throw new DataValidationException("You can not unfollow yourself!");
         }
         subscriptionRepository.unfollowUser(followerId, followeeId);
     }
-
+    @Transactional
     public List<SubscriptionUserDto> getFollowers(long followeeId, SubscriptionUserFilterDto filter) {
         Stream<User> users = subscriptionRepository.findByFolloweeId(followeeId);
         return filterUsers(users, filter);
     }
-
+    @Transactional
     public int getFollowersCount(long followeeId) {
         return subscriptionRepository.findFollowersAmountByFolloweeId(followeeId);
     }
-
+    @Transactional
     public List<SubscriptionUserDto> getFollowing(long followeeId, SubscriptionUserFilterDto filter) {
         Stream<User> users = subscriptionRepository.findByFolloweeId(followeeId);
         return filterUsers(users, filter);
     }
-
+    @Transactional
     public int getFollowingCount(long followerId) {
         return subscriptionRepository.findFolloweesAmountByFollowerId(followerId);
     }
