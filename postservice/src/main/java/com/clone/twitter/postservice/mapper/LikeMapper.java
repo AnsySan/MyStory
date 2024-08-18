@@ -9,8 +9,10 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface LikeMapper {
+    @Mapping(source = "comment.id", target = "commentId")
     @Mapping(target = "postId", source = "post.id")
     LikeDto toDto(Like like);
-
+    @Mapping(source = "commentId", target = "comment.id")
+    @Mapping(source = "postId", target = "post.id")
     Like toModel(LikeDto likeDto);
 }

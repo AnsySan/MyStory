@@ -16,6 +16,7 @@ import feign.FeignException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,7 @@ public class LikeService {
     private final UserContext userContext;
     private final LikeEventPublisher likeEventPublisher;
 
+    @Transactional
     public LikeDto likePost(LikeDto likeDto) {
         Post checkPost = postService.existsPost(likeDto.getPostId());
         userServiceClient.getUser(likeDto.getUserId());
@@ -52,6 +54,7 @@ public class LikeService {
         return likeMapper.toDto(likeRepository.save(like));
     }
 
+    @Transactional
     public void deleteLikeFromPost(int postId) {
         UserDto userDto = getUserFromUserService();
         likeRepository.deleteByPostIdAndUserId(postId, userDto.getId());
@@ -65,6 +68,7 @@ public class LikeService {
         }
     }
 
+    @Transactional
     public LikeDto likeComment(LikeDto likeDto) {
         Comment checkComment = commentService.findCommentById(likeDto.getCommentId());
         userServiceClient.getUser(likeDto.getUserId());
@@ -85,11 +89,13 @@ public class LikeService {
         return likeMapper.toDto(likeRepository.save(like));
     }
 
+    @Transactional
     public void deleteLikeFromComment(int commentId) {
         UserDto userDto = getUserFromUserService();
         likeRepository.deleteByCommentIdAndUserId(commentId, userDto.getId());
     }
 
+    @Transactional
     public LikeEvent buildLikeEvent(LikeDto likeDto) {
         return LikeEvent.builder()
                 .authorLikeId(likeDto.getUserId())

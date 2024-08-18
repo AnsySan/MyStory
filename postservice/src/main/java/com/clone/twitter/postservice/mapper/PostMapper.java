@@ -19,7 +19,6 @@ public interface PostMapper {
     @Mapping(target = "deleted", expression = "java(false)")
     Post toEntity(PostDto postDto);
 
-//    @Mapping(source = "likes", target = "likeIds", qualifiedByName = "toLikeIds")
     PostDto toDto(Post post);
 
     List<PostDto> toDto(List<Post> posts);

@@ -40,6 +40,17 @@ user-service:
   host: localhost
   port: 8090
 
+services:
+  s3:
+    bucket-name: user-service-bucket
+    endpoint: http://127.0.0.1:9000
+    accessKey: user
+    secretKey: password
+    isMocked: false
+    targetWidth: 1080
+    targetHeight: 566
+    maxFilesAmount: 10
+
 logging:
   level:
     root: info

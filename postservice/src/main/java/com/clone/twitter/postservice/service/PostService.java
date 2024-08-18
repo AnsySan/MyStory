@@ -1,5 +1,6 @@
 package com.clone.twitter.postservice.service;
 
+import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
 import com.clone.twitter.postservice.dto.PostDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.exception.DataValidationException;
