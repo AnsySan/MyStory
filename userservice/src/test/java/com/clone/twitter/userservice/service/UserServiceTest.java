@@ -8,14 +8,10 @@ import com.clone.twitter.userservice.entity.UserProfilePicture;
 import com.clone.twitter.userservice.exception.DataValidationException;
 import com.clone.twitter.userservice.exception.MessageError;
 import com.clone.twitter.userservice.exception.UserNotFoundException;
-import com.clone.twitter.userservice.mapper.UserMapper;
 import com.clone.twitter.userservice.mapper.UserMapperImpl;
 import com.clone.twitter.userservice.publisher.ProfileViewEventPublisher;
 import com.clone.twitter.userservice.repository.UserRepository;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -76,8 +72,8 @@ public class UserServiceTest {
     public void testGetUser_UserDoesNotExist() {
         when(userRepository.findById(firstUser.getId())).thenReturn(Optional.empty());
 
-        UserNotFoundException e = Assert.assertThrows(UserNotFoundException.class, () -> userService.getUser(firstUser.getId()));
-        Assertions.assertEquals(e.getMessage(), MessageError.USER_NOT_FOUND_EXCEPTION.getMessage());
+        UserNotFoundException e = assertThrows(UserNotFoundException.class, () -> userService.getUser(firstUser.getId()));
+        assertEquals(e.getMessage(), MessageError.USER_NOT_FOUND_EXCEPTION.getMessage());
     }
 
     @Test
@@ -145,7 +141,7 @@ public class UserServiceTest {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
 
-        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(new User()));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
         DataValidationException exception = assertThrows(DataValidationException.class,
                 () -> userService.create(userDto));
         assertEquals("User with id 1 exists", exception.getMessage());
