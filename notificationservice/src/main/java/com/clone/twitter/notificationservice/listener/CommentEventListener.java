@@ -1,7 +1,7 @@
 package com.clone.twitter.notificationservice.listener;
 
 import com.clone.twitter.notificationservice.client.UserServiceClient;
-import com.clone.twitter.notificationservice.dto.CommentEvent;
+import com.clone.twitter.notificationservice.event.CommentEvent;
 import com.clone.twitter.notificationservice.message.MessageBuilder;
 import com.clone.twitter.notificationservice.service.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Component
-public class CommentEventListener extends AbstractListener<CommentEvent> {
+public class CommentEventListener extends AbstractEventListener<CommentEvent> {
     protected CommentEventListener(ObjectMapper objectMapper,
                                    UserServiceClient userServiceClient,
                                    MessageBuilder<CommentEvent> messageBuilder,

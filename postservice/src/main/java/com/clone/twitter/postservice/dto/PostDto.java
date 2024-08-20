@@ -13,6 +13,7 @@ import java.util.List;
 public class PostDto {
 
     private Integer id;
+    private String content;
     private Integer authorId;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;

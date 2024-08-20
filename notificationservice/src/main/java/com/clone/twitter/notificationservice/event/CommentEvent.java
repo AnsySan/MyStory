@@ -1,4 +1,4 @@
-package com.clone.twitter.notificationservice.dto;
+package com.clone.twitter.notificationservice.event;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

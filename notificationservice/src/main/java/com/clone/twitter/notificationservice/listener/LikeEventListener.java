@@ -2,7 +2,7 @@ package com.clone.twitter.notificationservice.listener;
 
 
 import com.clone.twitter.notificationservice.client.UserServiceClient;
-import com.clone.twitter.notificationservice.dto.LikeEvent;
+import com.clone.twitter.notificationservice.event.LikeEvent;
 import com.clone.twitter.notificationservice.message.MessageBuilder;
 import com.clone.twitter.notificationservice.service.NotificationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Component
-public class LikeEventListener extends AbstractListener<LikeEvent> {
+public class LikeEventListener extends AbstractEventListener<LikeEvent> {
 
     protected LikeEventListener(ObjectMapper objectMapper,
                                 UserServiceClient userServiceClient,

@@ -18,11 +18,11 @@ import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 @Slf4j
-public abstract class AbstractListener<T> implements MessageListener {
+public abstract class AbstractEventListener<T> implements MessageListener {
 
-    private final ObjectMapper objectMapper;
+    protected final ObjectMapper objectMapper;
     protected final UserServiceClient userServiceClient;
-    protected final MessageBuilder<T> messageBuilder;
+    private final MessageBuilder<T> messageBuilder;
     private final List<NotificationService> notificationServicesList;
 
     protected void handleEvent(Message message, Class<T> type, Consumer<T> consumer) {
