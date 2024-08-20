@@ -9,7 +9,9 @@ import java.util.Optional;
 @Repository
 public interface TelegramProfilesRepository extends JpaRepository<TelegramProfile, Long> {
 
-    boolean existsByUserName(String userName);
+    Optional<TelegramProfile> findByUserId(long userId);
 
-    Optional<TelegramProfile> findByUserId(Long userId);
+    Optional<TelegramProfile> findByChatId(long chatId);
+
+    boolean existsByChatId(long chatId);
 }
