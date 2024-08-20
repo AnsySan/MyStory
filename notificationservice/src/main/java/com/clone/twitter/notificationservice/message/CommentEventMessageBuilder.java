@@ -1,7 +1,7 @@
 package com.clone.twitter.notificationservice.message;
 
 import com.clone.twitter.notificationservice.client.UserServiceClient;
-import com.clone.twitter.notificationservice.dto.CommentEvent;
+import com.clone.twitter.notificationservice.event.CommentEvent;
 import com.clone.twitter.notificationservice.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
