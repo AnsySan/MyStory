@@ -28,10 +28,8 @@ spring:
           name: notification_like_channel
         comment_channel:
           name: comment
-
-  mvc:
-    servlet:
-      path: /api/v1
+        like_post_channel:
+          name: like_channel
 
 server:
   port: 8081
@@ -39,6 +37,15 @@ server:
 user-service:
   host: localhost
   port: 8090
+
+post:
+  moderator:
+    threads-count: 20
+
+async:
+  corePoolSize: 5
+  maxPoolSize: 10
+  queueCapacity: 100
 
 services:
   s3:
@@ -60,3 +67,6 @@ scheduled:
 
 limits:
   unverified_post_limit: 5
+
+api:
+  path: /api/v1
