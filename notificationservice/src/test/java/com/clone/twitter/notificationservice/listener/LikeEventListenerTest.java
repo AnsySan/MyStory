@@ -1,7 +1,7 @@
 package com.clone.twitter.notificationservice.listener;
 
 import com.clone.twitter.notificationservice.client.UserServiceClient;
-import com.clone.twitter.notificationservice.dto.LikeEvent;
+import com.clone.twitter.notificationservice.event.LikeEvent;
 import com.clone.twitter.notificationservice.dto.UserDto;
 import com.clone.twitter.notificationservice.enums.PreferredContact;
 import com.clone.twitter.notificationservice.message.MessageBuilder;
