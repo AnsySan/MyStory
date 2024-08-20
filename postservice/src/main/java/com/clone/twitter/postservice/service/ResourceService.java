@@ -30,7 +30,6 @@ import java.util.concurrent.Executors;
 public class ResourceService {
 
     private final ResourceRepository resourceRepository;
-    private final ResourceService resourceService;
     private final ResourceMapper resourceMapper;
     private final ResourceValidator resourceValidator;
     private final PostService postService;

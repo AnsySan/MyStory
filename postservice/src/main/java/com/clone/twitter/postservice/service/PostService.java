@@ -1,6 +1,7 @@
 package com.clone.twitter.postservice.service;
 
 import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
+import com.amazonaws.services.pinpointsmsvoicev2.model.VerificationStatus;
 import com.clone.twitter.postservice.dto.PostDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.exception.DataValidationException;
@@ -8,6 +9,7 @@ import com.clone.twitter.postservice.mapper.PostMapper;
 import com.clone.twitter.postservice.repository.PostRepository;
 import com.clone.twitter.postservice.validator.PostValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

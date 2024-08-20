@@ -18,8 +18,9 @@ public class StartCommand extends Command {
 
     public StartCommand(MessageSource messageSource,
                         UserServiceClient userServiceClient,
-                        TelegramProfileService telegramProfileService) {
-        super(messageSource, userServiceClient, telegramProfileService);
+                        TelegramProfileService telegramProfileService,
+                        CommandBuilder commandBuilder) {
+        super(messageSource, userServiceClient, telegramProfileService, commandBuilder);
     }
 
     @Override
@@ -27,9 +28,9 @@ public class StartCommand extends Command {
         log.info("Executing START command for chatId: {} with userName: {}", chatId, userName);
         String message;
 
-        if (telegramProfileService.existsByUserName(userName)) {
+        if (telegramProfileService.existsByChatId(chatId)) {
             message = messageSource.getMessage("telegram.start.already_registered", null, Locale.getDefault());
-            return buildMessage(chatId, message);
+            return commandBuilder.buildMessage(chatId, message);
         }
 
         try {
@@ -45,7 +46,7 @@ public class StartCommand extends Command {
             message = messageSource.getMessage("telegram.start.not_registered_corporationX", null, Locale.getDefault());
         }
 
-        return buildMessage(chatId, message);
+        return commandBuilder.buildMessage(chatId, message);
     }
 
     public TelegramProfile createTelegramProfiles(long chatId, String userName, ContactDto contact) {

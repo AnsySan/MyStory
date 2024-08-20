@@ -3,6 +3,7 @@ package com.clone.twitter.notificationservice.service.telegram;
 import com.clone.twitter.notificationservice.config.telegram.TelegramBotConfig;
 import com.clone.twitter.notificationservice.entity.TelegramProfile;
 import com.clone.twitter.notificationservice.service.telegram.command.Command;
+import com.clone.twitter.notificationservice.service.telegram.command.CommandBuilder;
 import com.clone.twitter.notificationservice.service.telegram.command.CommandExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,13 @@ public class TelegramBot extends TelegramLongPollingBot {
     private final TelegramProfileService telegramProfileService;
     private final TelegramBotConfig telegramBotConfig;
     private final CommandExecutor commandExecutor;
-    private final Command commandBuildMessage;
+    private final CommandBuilder commandBuildMessage;
 
     @Autowired
     public TelegramBot(TelegramProfileService telegramProfileService,
                        TelegramBotConfig telegramBotConfig,
                        CommandExecutor commandExecutor,
-                       Command command) {
+                       CommandBuilder command) {
         super(telegramBotConfig.getBotToken());
         this.telegramProfileService = telegramProfileService;
         this.telegramBotConfig = telegramBotConfig;

@@ -17,14 +17,8 @@ public abstract class Command {
     protected final Locale defaultLocale = Locale.getDefault();
     protected final UserServiceClient userServiceClient;
     protected final TelegramProfileService telegramProfileService;
+    protected final CommandBuilder commandBuilder;
 
     public abstract SendMessage sendMessage(long chatId, String userName);
 
-    public SendMessage buildMessage(long chatId, String message) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(message);
-        log.info("Created message {} for chatId {}", message, chatId);
-        return sendMessage;
-    }
 }

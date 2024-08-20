@@ -6,6 +6,7 @@ import com.clone.twitter.postservice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ public class UserBannerService {
     @Value("${limits.unverified_post_limit}")
     private int UNVERIFIED_POST_LIMIT;
 
+    @Async("executorService")
     @Transactional
     public void banPosts() {
         List<Post> unverifiedPosts = postRepository.findAllByVerified(false);

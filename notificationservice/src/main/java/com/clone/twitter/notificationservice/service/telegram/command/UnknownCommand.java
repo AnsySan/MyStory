@@ -16,14 +16,15 @@ public class UnknownCommand extends Command {
 
     public UnknownCommand(MessageSource messageSource,
                           UserServiceClient userServiceClient,
-                          TelegramProfileService telegramProfileService) {
-        super(messageSource, userServiceClient, telegramProfileService);
+                          TelegramProfileService telegramProfileService,
+                          CommandBuilder commandBuilder) {
+        super(messageSource, userServiceClient, telegramProfileService, commandBuilder);
     }
 
     @Override
     public SendMessage sendMessage(long chatId, String userName) {
         log.info("Executing UNKNOWN command for chatId: {} with userName: {}", chatId, userName);
         String message = messageSource.getMessage("telegram.unknown", null, Locale.getDefault());
-        return buildMessage(chatId, message);
+        return commandBuilder.buildMessage(chatId, message);
     }
 }
