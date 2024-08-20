@@ -1,4 +1,22 @@
 spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Postgres
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master-notificationservice.yaml
+
   data:
     redis:
       port: 6379
@@ -8,6 +26,15 @@ spring:
           name: notification_like_channel
         comment_event_channel:
           name: comment_event_channel
+
+    kafka:
+      port: 8090
+      host: localhost
+      group-id: notification_service
+
+    channel:
+      profile-view:
+        name: profile_view_channel
 
   mail:
     host: smtp.gmail.com
@@ -20,9 +47,9 @@ spring:
           auth: true
           starttls:
             enable: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+            connectiontimeout: 5000
+            timeout: 5000
+            writetimeout: 5000
 
   messages:
     basename: messages
@@ -38,6 +65,7 @@ vonage: #https://dashboard.nexmo.com/getting-started/sms
   api:
     key: whatever
     secret: whatever
+  from: Basilisk
 
 user-service:
   host: localhost
@@ -45,11 +73,8 @@ user-service:
 
 telegram-bot:
   name: CorporationXEventAlertBot
-  token:
-
-likeEvent:
-  postCode: like_post.new
-  commentCode: like_comment.new
+  token: ssd
 
 commentEvent:
   comment: comment.new
+
