@@ -52,13 +52,13 @@ public class RedisConfig{
         return new ChannelTopic(userProfileSearchTopic);
     }
 
-    @Bean
-    public RedisMessageListenerContainer getContainer(MessageListenerAdapter userBannerListenerAdapter){
-        RedisMessageListenerContainer redisMessageListenerContainer=new RedisMessageListenerContainer();
-        redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory());
-        redisMessageListenerContainer.addMessageListener(userBannerListenerAdapter, userBannerTopic());
-        return redisMessageListenerContainer;
-    }
+//    @Bean
+//    public RedisMessageListenerContainer getContainer(MessageListenerAdapter userBannerListenerAdapter){
+//        RedisMessageListenerContainer redisMessageListenerContainer=new RedisMessageListenerContainer();
+//        redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory());
+//        redisMessageListenerContainer.addMessageListener(userBannerListenerAdapter, userBannerTopic());
+//        return redisMessageListenerContainer;
+//    }
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){

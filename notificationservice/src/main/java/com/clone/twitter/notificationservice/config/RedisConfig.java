@@ -54,11 +54,11 @@ public class RedisConfig {
         return new ChannelTopic(notificationLikeTopic);
     }
 
-    @Bean
-    public RedisMessageListenerContainer redisContainer(MessageListenerAdapter likeEventAdapter) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(redisConnectionFactory());
-        container.addMessageListener(likeEventAdapter, likeEventTopic());
-        return container;
-    }
+//    @Bean
+//    public RedisMessageListenerContainer redisContainer(MessageListenerAdapter likeEventAdapter) {
+//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+//        container.setConnectionFactory(redisConnectionFactory());
+//        container.addMessageListener(likeEventAdapter, likeEventTopic());
+//        return container;
+//    }
 }
