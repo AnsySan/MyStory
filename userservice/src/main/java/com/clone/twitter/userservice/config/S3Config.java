@@ -11,19 +11,21 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @Data
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:s3.properties")
 public class S3Config {
 
-    @Value("${services.s3.accessKey}")
+    @Value("${accessKey}")
     private String accessKey;
-    @Value("${services.s3.secretKey}")
+    @Value("${secretKey}")
     private String secretKey;
-    @Value("${services.s3.endpoint}")
+    @Value("${endpoint}")
     private String endpoint;
-    @Value("${services.s3.bucket-name}")
+    @Value("${bucketName}")
     private String bucketName;
 
 
@@ -41,13 +43,6 @@ public class S3Config {
                 .withEndpointConfiguration( new AwsClientBuilder.EndpointConfiguration( endpoint, null ) )
                 .withCredentials( new AWSStaticCredentialsProvider( credentials ) )
                 .build();
-
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-
-        return new RestTemplate();
 
     }
 

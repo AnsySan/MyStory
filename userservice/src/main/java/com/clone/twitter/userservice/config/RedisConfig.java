@@ -10,7 +10,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -22,10 +21,10 @@ public class RedisConfig{
     private String host;
     @Value("${spring.data.redis.port}")
     private int port;
-    @Value("${spring.data.redis.channels.user_ban_channel.name}")
+    @Value("${spring.data.channels.user_ban_channel.name}")
     private String userBannerTopic;
 
-    @Value("${spring.data.redis.channels.profile_search_channel.name}")
+    @Value("${spring.data.channels.profile_search_channel.name}")
     private String userProfileSearchTopic;
 
 
