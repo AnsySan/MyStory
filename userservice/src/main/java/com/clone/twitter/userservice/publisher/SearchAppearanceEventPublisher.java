@@ -11,7 +11,7 @@ public class SearchAppearanceEventPublisher extends AbstractPublisher<SearchAppe
 
     public SearchAppearanceEventPublisher(RedisTemplate<String, Object> redisTemplate,
                                           ObjectMapper objectMapper,
-                                          @Value("${spring.data.redis.channels.profile_search_channel.name}")
+                                          @Value("${spring.data.channels.profile_search_channel.name}")
                                           String channelName) {
         super(redisTemplate, objectMapper, channelName);
     }

@@ -1,13 +1,20 @@
 package com.clone.twitter.userservice.dto;
 
+import com.clone.twitter.userservice.entity.UserProfilePicture;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import com.clone.twitter.userservice.entity.PreferredContact;
+import lombok.NoArgsConstructor;
 
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     private long id;
@@ -31,4 +38,6 @@ public class UserDto {
     private long countryId;
 
     private PreferredContact preferredContact;
+
+    private UserProfilePicture userProfilePicture;
 }
