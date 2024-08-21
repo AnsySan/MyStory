@@ -8,6 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface ContactRepository extends CrudRepository<Contact, Long> {
-
-    Optional<Contact> findByContact(String title);
 }
