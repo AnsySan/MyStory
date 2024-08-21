@@ -21,18 +21,31 @@ spring:
     redis:
       port: 6379
       host: localhost
-      channels:
-        user_ban_channel:
-          name: user_ban
-        profile_view_channel:
-          name: profile_view_channel
-        profile_search_channel:
-          name: profile_search_channel
+
+    kafka:
+      port: 6767
+      host: localhost
+
+    channels:
+      user_ban_channel:
+        name: user_ban
+      profile_search_channel:
+        name: profile_search_channel
+      profile_view_channel:
+        name: profile_view_channel
+
+
   profiles:
     active: test
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 server:
   port: 8090
+  servlet:
+    context-path: /api/v1
 
 logging:
   level:
@@ -43,17 +56,15 @@ aws:
   secretKey: secret_key
   region: bucket_region
 
-services:
-  s3:
-    bucket-name: user-service-bucket
-    endpoint: http://127.0.0.1:9000
-    accessKey: user
-    secretKey: password
-    isMocked: false
+
+spring.servlet.multipart.max-file-size: 10KB
 
 dicebear:
   pic-base-url-small: https://api.dicebear.com/7.x/bottts/svg?size=64&seed=
   pic-base-url: https://api.dicebear.com/7.x/bottts/svg?size=256&seed=
+
+randomAvatar:
+  url: https://api.dicebear.com/8.x/pixel-art/jpg?seed=
 
 executorConfig:
   thread-pool-size: 10
