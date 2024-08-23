@@ -1,0 +1,2 @@
+ALTER TABLE telegram_profiles
+ADD is_active BOOLEAN DEFAULT FALSE NOT NULL;
