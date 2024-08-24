@@ -15,7 +15,6 @@ import java.util.List;
 public interface PostMapper {
 
     @Mapping(target = "likes", expression = "java(new ArrayList<>())")
-    @Mapping(target = "published", expression = "java(false)")
     @Mapping(target = "deleted", expression = "java(false)")
     Post toEntity(PostDto postDto);
 

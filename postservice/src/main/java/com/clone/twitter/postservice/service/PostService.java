@@ -25,6 +25,12 @@ public class PostService {
     private final PostMapper postMapper;
     private final PostRepository postRepository;
 
+
+    public Post findById(Integer id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Post with id %s not found", id)));
+    }
+
     @Transactional
     public PostDto createPost(PostDto postDto) {
         postValidator.validateAuthor(postDto);

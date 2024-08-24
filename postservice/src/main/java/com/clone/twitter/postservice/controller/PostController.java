@@ -1,6 +1,7 @@
 package com.clone.twitter.postservice.controller;
 
 import com.clone.twitter.postservice.dto.PostDto;
+import com.clone.twitter.postservice.mapper.PostMapper;
 import com.clone.twitter.postservice.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +21,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+
 
     @Operation(
             summary = "Creating a draft post",

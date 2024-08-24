@@ -1,5 +1,6 @@
 package com.clone.twitter.postservice.controller;
 
+import com.clone.twitter.postservice.context.UserContext;
 import com.clone.twitter.postservice.dto.LikeDto;
 import com.clone.twitter.postservice.service.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Validated
 @RestController
+@RequestMapping("/likes")
 @RequiredArgsConstructor
-@RequestMapping
 public class LikeController {
 
     private final LikeService likeService;
