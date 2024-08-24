@@ -6,8 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Executor;
 
 @Configuration
@@ -32,15 +30,5 @@ public class AsyncConfig {
         executor.setThreadNamePrefix("AsyncThread-");
         executor.initialize();
         return executor;
-    }
-
-    @Bean
-    public ExecutorService adRemoverExecutorService(@Value("${post.ad-remover.threads-count}") int threadsCount) {
-        return Executors.newFixedThreadPool(threadsCount);
-    }
-
-    @Bean
-    public ExecutorService commentModeratorExecutorService(@Value("${moderation.threads-count}") int threadsCount) {
-        return Executors.newFixedThreadPool(threadsCount);
     }
 }
