@@ -8,9 +8,9 @@ import java.util.List;
 @Component
 public class Converter {
 
-    @Value("${app.hash-generator.base}}")
+    @Value("${app.hash-generator.base}")
     private long base;
-    @Value("${app.hash-generator.characters}}")
+    @Value("${app.hash-generator.characters}")
     private String characters;
 
     public String encodeSingleNumber (long number) {
