@@ -20,5 +20,5 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
             value = "DELETE FROM url u WHERE u.created_at < :period RETURNING *")
     List<Url> deleteOldUrl(LocalDateTime period);
 
-    Optional <Url> findByUrl(String url);
+    Optional <Url> findByBaseUrl(String url);
 }

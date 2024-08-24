@@ -46,7 +46,7 @@ public class UrlService {
 
     private String findHashInDatabase(String baseUrl) {
         log.info("URL not found in cache");
-        return urlRepository.findByUrl(baseUrl)
+        return urlRepository.findByBaseUrl(baseUrl)
                 .map(Url::getHash)
                 .orElseGet(() -> generateNewHashAndSave(baseUrl));
     }
