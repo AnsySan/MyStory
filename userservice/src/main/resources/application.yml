@@ -25,6 +25,7 @@ spring:
     kafka:
       port: 6767
       host: localhost
+      group-id: user_service
 
     channels:
       user_ban_channel:

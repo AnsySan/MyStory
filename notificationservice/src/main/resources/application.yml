@@ -28,7 +28,7 @@ spring:
           name: comment_event_channel
 
     kafka:
-      port: 8090
+      port: 6767
       host: localhost
       group-id: notification_service
 
@@ -55,7 +55,7 @@ spring:
     basename: messages
 
 server:
-  port: 8083
+  port: 8092
 
 logging:
   level:
@@ -69,7 +69,7 @@ vonage: #https://dashboard.nexmo.com/getting-started/sms
 
 user-service:
   host: localhost
-  port: 8080
+  port: 8090
 
 telegram-bot:
   name: CorporationXEventAlertBot

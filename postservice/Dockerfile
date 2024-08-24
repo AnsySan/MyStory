@@ -4,5 +4,5 @@ WORKDIR /app
 COPY /build/libs/MicroservicesProject.jar build/
 
 WORKDIR /app/build
-EXPOSE 8081
+EXPOSE 8091
 ENTRYPOINT java -jar MicroservicesProject.jar
