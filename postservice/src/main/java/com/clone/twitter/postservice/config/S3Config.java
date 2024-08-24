@@ -6,6 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @RequiredArgsConstructor
-
+@Data
 public class S3Config {
 
     @Value("${services.s3.accessKey}")
@@ -30,7 +31,6 @@ public class S3Config {
     private int wigth;
     @Value("${services.s3.targetHeight}")
     private int heigth;
-    @Getter
     @Value("${services.s3.maxFilesAmount}")
     private int maxFiles;
 
