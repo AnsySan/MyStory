@@ -28,7 +28,7 @@ spring:
           name: comment_event_channel
 
     kafka:
-      port: 6767
+      port: 9092
       host: localhost
       group-id: notification_service
 
