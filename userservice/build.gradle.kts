@@ -1,28 +1,27 @@
 plugins {
-    id "java"
+    java
     id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
 }
 
 group = "com.clone.twitter"
 version = "1.0"
-java.sourceCompatibility = JavaVersion.VERSION_21
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
     /**
-     * Swagger
-     *
-     * springdoc-openapi-starter-webmvc-ui
-     * implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
-     */
-    implementation ("io.springfox:springfox-swagger2:2.9.2")
-    /**
      * Spring boot starters
      */
-
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
@@ -30,7 +29,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.2")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.retry:spring-retry:2.0.2")
     implementation("org.springframework.kafka:spring-kafka:3.1.3")
+
 
     /**
      * Database
@@ -59,6 +60,8 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
 
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.0")
+
     /**
      * Test containers
      */
@@ -73,16 +76,14 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
 }
 
-
-tasks.named('test') {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-//val test by tasks.getting(Test::class) { testLogging.showStandardStreams = true }
-//
-//tasks.bootJar {
-//    archiveFileName.set("service.jar")
-//}
+val test by tasks.getting(Test::class) { testLogging.showStandardStreams = true }
+
+tasks.bootJar {
+    archiveFileName.set("service.jar")
+}
