@@ -28,6 +28,14 @@ spring:
           name: follower_channel
         like_channel:
           name: like_channel
+        achievement_channel:
+          name: follower_channel
+
+async:
+  corePoolSize: 8
+  maxPoolSize: 10
+  queueCapacity: 1000
+  threadNamePrefix: "task-executor-thread-"
 
 server:
   port: 8093
@@ -39,7 +47,5 @@ logging:
 achievements:
   title:
     love_everyone: love_everyone
-    sensei: SENSEI
-    businessman: BUSINESSMEN
     expert: EXPERT
     blogger: BLOGGER

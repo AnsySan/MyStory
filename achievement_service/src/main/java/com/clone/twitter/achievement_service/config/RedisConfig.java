@@ -22,6 +22,8 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
+    @Value("${spring.data.redis.channels.achievement_channel.name}")
+    private String a;
     @Value("${spring.data.redis.channels.comment_channel.name}")
     private String commentTopic;
     @Value("${spring.data.redis.channels.follower_channel.name}")
@@ -74,15 +76,15 @@ public class RedisConfig {
         return new ChannelTopic(likeTopic);
     }
 
-//    @Bean
-//    public RedisMessageListenerContainer redisContainer(MessageListenerAdapter commentListener,
-//                                                        MessageListenerAdapter followerListener,
-//                                                        MessageListenerAdapter likeListener) {
-//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-//        container.setConnectionFactory(redisConnectionFactory());
-//        container.addMessageListener(commentListener, commentEventTopic());
-//        container.addMessageListener(followerListener, followerEventTopic());
-//        container.addMessageListener(likeListener, likeEventTopic());
-//        return container;
-//    }
+    @Bean
+    public RedisMessageListenerContainer redisContainer(MessageListenerAdapter commentListener,
+                                                        MessageListenerAdapter followerListener,
+                                                        MessageListenerAdapter likeListener) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(redisConnectionFactory());
+        container.addMessageListener(commentListener, commentEventTopic());
+        container.addMessageListener(followerListener, followerEventTopic());
+        container.addMessageListener(likeListener, likeEventTopic());
+        return container;
+    }
 }

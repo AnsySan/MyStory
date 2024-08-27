@@ -1,4 +1,4 @@
-package com.clone.twitter.achievement_service.contex;
+package com.clone.twitter.achievement_service.context;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

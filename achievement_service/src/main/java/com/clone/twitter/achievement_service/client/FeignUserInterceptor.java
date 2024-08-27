@@ -1,6 +1,6 @@
 package com.clone.twitter.achievement_service.client;
 
-import com.clone.twitter.achievement_service.contex.UserContext;
+import com.clone.twitter.achievement_service.context.UserContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
