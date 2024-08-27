@@ -32,15 +32,14 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
-@PropertySource(value = "classpath:s3.properties")
 public class ProfilePictureService {
     @Value("${randomAvatar.url}")
     private String url;
-    @Value("${smallSize}")
+    @Value("${aws.smallSize}")
     private int smallSize;
-    @Value("${largeSize}")
+    @Value("${aws.largeSize}")
     private int largeSize;
-    @Value("${bucketName}")
+    @Value("${aws.bucketName}")
     private String bucketName;
     private final S3Service s3Service;
     private final RestTemplate restTemplate;

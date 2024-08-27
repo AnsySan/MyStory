@@ -23,7 +23,8 @@ public class RedisConfig{
     private int port;
     @Value("${spring.data.channels.user_ban_channel.name}")
     private String userBannerTopic;
-
+    @Value("${spring.data.channels.profile_view_channel.name}")
+    private String profileViewTopic;
     @Value("${spring.data.channels.profile_search_channel.name}")
     private String userProfileSearchTopic;
 
@@ -49,6 +50,11 @@ public class RedisConfig{
     @Bean
     public ChannelTopic profileSearchTopic() {
         return new ChannelTopic(userProfileSearchTopic);
+    }
+
+    @Bean
+    public ChannelTopic profileViewTopic() {
+        return new ChannelTopic(profileViewTopic);
     }
 
 //    @Bean
