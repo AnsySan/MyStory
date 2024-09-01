@@ -1,9 +1,9 @@
 package com.clone.twitter.userservice.controller;
 
-import com.clone.twitter.userservice.dto.SubscriptionUserDto;
+import com.clone.twitter.userservice.dto.subscription.SubscriptionUserDto;
 import com.clone.twitter.userservice.exception.DataValidationException;
-import com.clone.twitter.userservice.dto.SubscriptionUserFilterDto;
-import com.clone.twitter.userservice.service.SubscriptionService;
+import com.clone.twitter.userservice.dto.subscription.SubscriptionUserFilterDto;
+import com.clone.twitter.userservice.service.subscription.SubscriptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,10 +1,9 @@
 package com.clone.twitter.userservice.controller;
 
-import com.clone.twitter.userservice.dto.UserProfilePictureDto;
-import com.clone.twitter.userservice.service.ProfilePictureService;
+import com.clone.twitter.userservice.dto.avatar.UserProfilePictureDto;
+import com.clone.twitter.userservice.service.avatar.ProfilePictureService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;

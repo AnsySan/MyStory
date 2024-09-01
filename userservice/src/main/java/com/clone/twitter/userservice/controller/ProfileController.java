@@ -1,6 +1,6 @@
 package com.clone.twitter.userservice.controller;
 
-import com.clone.twitter.userservice.service.ProfileService;
+import com.clone.twitter.userservice.service.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;

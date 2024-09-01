@@ -1,7 +1,7 @@
 package com.clone.twitter.userservice.filter;
 
-import com.clone.twitter.userservice.dto.SubscriptionUserFilterDto;
-import com.clone.twitter.userservice.entity.User;
+import com.clone.twitter.userservice.dto.subscription.SubscriptionUserFilterDto;
+import com.clone.twitter.userservice.model.user.User;
 
 import java.util.stream.Stream;
 

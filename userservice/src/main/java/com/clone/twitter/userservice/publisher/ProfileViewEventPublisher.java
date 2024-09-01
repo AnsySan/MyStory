@@ -1,6 +1,6 @@
 package com.clone.twitter.userservice.publisher;
 
-import com.clone.twitter.userservice.dto.ProfileViewEventDto;
+import com.clone.twitter.userservice.dto.profile.ProfileViewEventDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;

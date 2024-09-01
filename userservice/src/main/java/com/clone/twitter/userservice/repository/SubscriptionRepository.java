@@ -1,6 +1,6 @@
 package com.clone.twitter.userservice.repository;
 
-import com.clone.twitter.userservice.entity.User;
+import com.clone.twitter.userservice.model.user.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

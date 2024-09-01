@@ -1,7 +1,7 @@
 package com.clone.twitter.userservice.controller;
 
-import com.clone.twitter.userservice.dto.ContactPreferenceDto;
-import com.clone.twitter.userservice.service.ContactPreferenceService;
+import com.clone.twitter.userservice.dto.contact.ContactPreferenceDto;
+import com.clone.twitter.userservice.service.contact.ContactPreferenceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;

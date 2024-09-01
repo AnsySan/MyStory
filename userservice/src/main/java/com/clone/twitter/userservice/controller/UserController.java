@@ -1,7 +1,7 @@
 package com.clone.twitter.userservice.controller;
 
-import com.clone.twitter.userservice.dto.UserDto;
-import com.clone.twitter.userservice.service.UserService;
+import com.clone.twitter.userservice.dto.user.UserDto;
+import com.clone.twitter.userservice.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

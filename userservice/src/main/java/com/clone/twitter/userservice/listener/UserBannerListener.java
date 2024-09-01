@@ -1,6 +1,6 @@
 package com.clone.twitter.userservice.listener;
 
-import com.clone.twitter.userservice.service.UserBannerService;
+import com.clone.twitter.userservice.service.user.UserBannerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
