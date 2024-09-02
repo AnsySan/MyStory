@@ -1,6 +1,8 @@
 package com.clone.twitter.userservice.service;
 
-import com.clone.twitter.userservice.entity.User;
+import com.clone.twitter.userservice.model.user.User;
+import com.clone.twitter.userservice.service.user.UserBannerService;
+import com.clone.twitter.userservice.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,16 +1,18 @@
 package com.clone.twitter.userservice.service;
 
 import com.clone.twitter.userservice.context.UserContext;
-import com.clone.twitter.userservice.dto.ProfileViewEventDto;
-import com.clone.twitter.userservice.dto.UserDto;
-import com.clone.twitter.userservice.entity.User;
-import com.clone.twitter.userservice.entity.UserProfilePicture;
+import com.clone.twitter.userservice.dto.profile.ProfileViewEventDto;
+import com.clone.twitter.userservice.dto.user.UserDto;
+import com.clone.twitter.userservice.mapper.user.UserMapperImpl;
+import com.clone.twitter.userservice.model.user.User;
+import com.clone.twitter.userservice.model.user.UserProfilePicture;
 import com.clone.twitter.userservice.exception.DataValidationException;
 import com.clone.twitter.userservice.exception.MessageError;
 import com.clone.twitter.userservice.exception.UserNotFoundException;
-import com.clone.twitter.userservice.mapper.UserMapperImpl;
 import com.clone.twitter.userservice.publisher.ProfileViewEventPublisher;
 import com.clone.twitter.userservice.repository.UserRepository;
+import com.clone.twitter.userservice.service.cloud.S3Service;
+import com.clone.twitter.userservice.service.user.UserService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

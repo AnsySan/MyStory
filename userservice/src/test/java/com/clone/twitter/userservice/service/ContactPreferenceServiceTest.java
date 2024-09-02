@@ -1,12 +1,13 @@
 package com.clone.twitter.userservice.service;
 
-import com.clone.twitter.userservice.dto.ContactPreferenceDto;
-import com.clone.twitter.userservice.entity.ContactPreference;
-import com.clone.twitter.userservice.entity.PreferredContact;
-import com.clone.twitter.userservice.entity.User;
+import com.clone.twitter.userservice.dto.contact.ContactPreferenceDto;
+import com.clone.twitter.userservice.model.contact.ContactPreference;
+import com.clone.twitter.userservice.model.contact.PreferredContact;
+import com.clone.twitter.userservice.model.user.User;
 import com.clone.twitter.userservice.exception.NotFoundException;
-import com.clone.twitter.userservice.mapper.ContactPreferenceMapper;
-import com.clone.twitter.userservice.repository.ContactPreferenceRepository;
+import com.clone.twitter.userservice.mapper.contact.ContactPreferenceMapper;
+import com.clone.twitter.userservice.repository.contact.ContactPreferenceRepository;
+import com.clone.twitter.userservice.service.contact.ContactPreferenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

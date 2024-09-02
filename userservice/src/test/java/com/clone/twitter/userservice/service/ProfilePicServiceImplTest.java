@@ -1,13 +1,16 @@
 package com.clone.twitter.userservice.service;
 
 import com.amazonaws.services.s3.model.S3Object;
-import com.clone.twitter.userservice.dto.UserDto;
-import com.clone.twitter.userservice.dto.UserProfilePictureDto;
-import com.clone.twitter.userservice.entity.User;
-import com.clone.twitter.userservice.entity.UserProfilePicture;
+import com.clone.twitter.userservice.dto.user.UserDto;
+import com.clone.twitter.userservice.dto.avatar.UserProfilePictureDto;
+import com.clone.twitter.userservice.model.user.User;
+import com.clone.twitter.userservice.model.user.UserProfilePicture;
 import com.clone.twitter.userservice.exception.DataValidationException;
-import com.clone.twitter.userservice.mapper.PictureMapper;
+import com.clone.twitter.userservice.mapper.avatar.PictureMapper;
 import com.clone.twitter.userservice.repository.UserRepository;
+import com.clone.twitter.userservice.service.avatar.ProfilePictureService;
+import com.clone.twitter.userservice.service.cloud.S3Service;
+import com.clone.twitter.userservice.service.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
