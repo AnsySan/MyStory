@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.config;
+package com.clone.twitter.postservice.config.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

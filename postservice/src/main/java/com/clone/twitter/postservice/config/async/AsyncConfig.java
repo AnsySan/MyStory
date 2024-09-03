@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.config;
+package com.clone.twitter.postservice.config.async;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
