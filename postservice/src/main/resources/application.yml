@@ -27,10 +27,53 @@ spring:
         notification_like_channel:
           name: notification_like_channel
         comment_channel:
-          name: comment
+          name: comment_channel
         like_post_channel:
           name: like_channel
+      cache:
+        default-ttl: 3600
+        users:
+          name: users
+        authors:
+          name: authors
+        posts:
+          name: posts
+        comments:
+          name: comments
+        feed:
+          name: feed
+        settings:
+          max-feed-size: 5
+          max-post-comments-size: 5
 
+
+    kafka:
+      port: 9092
+      host: localhost
+      group-id: account_service
+
+      post-likes:
+        name: post-likes
+      comment-likes:
+        name: comment-likes
+      posts:
+        name: posts
+      comments:
+        name: comments
+      post-views:
+        name: post-views
+      topics:
+        topic-settings:
+          comments:
+            name: comment
+          comment-likes:
+            name: comment-like
+          post-likes:
+            name: post-like
+          posts:
+            name: post
+          post-views:
+            name: post-view
 server:
   port: 8091
 
@@ -66,7 +109,7 @@ scheduled:
   author-banner: "@daily"
 
 limits:
-  unverified_post_limit: 5
+
 
 api:
   path: /api/v1
