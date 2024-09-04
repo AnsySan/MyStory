@@ -13,10 +13,10 @@ import java.util.List;
 public interface UserServiceClient {
 
     @GetMapping("/api/v1/users/{userId}")
-    UserDto getUser(@PathVariable Integer userId);
+    UserDto getUser(@PathVariable Long userId);
 
     @PostMapping("/users")
-    List<UserDto> getUsersByIds(@RequestBody List<Integer> ids);
+    List<UserDto> getUsersByIds(@RequestBody List<Long> ids);
 
     @GetMapping("followers/{followeeId}")
     List<UserDto> getFollowers(@PathVariable long followeeId);
