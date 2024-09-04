@@ -14,23 +14,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "like")
-public class Like {
+@Table(name = "comment_likes")
+public class CommentLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name="user_id", nullable = false)
-    private Integer userId;
+    private long userId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "comment_id")
     private Comment comment;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
