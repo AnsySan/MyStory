@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.service;
+package com.clone.twitter.postservice.service.resource;
 
 import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
 import com.amazonaws.services.neptunedata.model.S3Exception;
@@ -7,8 +7,10 @@ import com.clone.twitter.postservice.dto.ResourceDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.Resource;
 import com.clone.twitter.postservice.mapper.ResourceMapper;
-import com.clone.twitter.postservice.repository.ResourceRepository;
-import com.clone.twitter.postservice.validator.ResourceValidator;
+import com.clone.twitter.postservice.repository.resource.ResourceRepository;
+import com.clone.twitter.postservice.service.s3.S3ServiceImpl;
+import com.clone.twitter.postservice.service.post.PostServiceImpl;
+import com.clone.twitter.postservice.validator.resource.ResourceValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,22 +29,24 @@ import java.util.concurrent.Executors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ResourceService {
+public class ResourceServiceImpl implements ResourceService {
 
     private final ResourceRepository resourceRepository;
     private final ResourceMapper resourceMapper;
     private final ResourceValidator resourceValidator;
-    private final PostService postService;
-    private final S3Service s3Service;
+    private final PostServiceImpl postService;
+    private final S3ServiceImpl s3ServiceImpl;
 
+    @Override
     @Transactional
-    public Resource findById(int id) {
+    public Resource findById(Long id) {
         return resourceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Resource with id %s not found", id)));
     }
 
+    @Override
     @Transactional
-    public List<ResourceDto> create(int postId, int userId, List<MultipartFile> files) {
+    public List<ResourceDto> create(Long postId, Long userId, List<MultipartFile> files) {
 
         Post post = postService.existsPost(postId);
         resourceValidator.validatePostAuthorAndResourceAuthor(post.getAuthorId(), userId);
@@ -55,7 +59,7 @@ public class ResourceService {
 
             files.forEach(file -> {
                 CompletableFuture<Resource> resource = CompletableFuture.supplyAsync(() -> {
-                    String key = s3Service.uploadFile(file);
+                    String key = s3ServiceImpl.uploadFile(file);
                     return Resource.builder()
                             .name(file.getOriginalFilename())
                             .key(key)
@@ -83,13 +87,15 @@ public class ResourceService {
         }
     }
 
+    @Override
     public InputStream downloadResource(String key) {
         resourceValidator.validateExistenceByKey(key);
-        return s3Service.downloadFile(key);
+        return s3ServiceImpl.downloadFile(key);
     }
 
+    @Override
     @Transactional
-    public void deleteFile(String key, int userId) {
+    public void deleteFile(String key, Long userId) {
         Resource resourceToRemove = resourceRepository.findByKey(key);
         Post post = resourceToRemove.getPost();
 
@@ -97,7 +103,7 @@ public class ResourceService {
         resourceValidator.validateExistenceByKey(key);
 
         resourceRepository.deleteByKey(key);
-        s3Service.deleteFile(key);
+        s3ServiceImpl.deleteFile(key);
 
         log.error("Successfully delete file from resources");
     }

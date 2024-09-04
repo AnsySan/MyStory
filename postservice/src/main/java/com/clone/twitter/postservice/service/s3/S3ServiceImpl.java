@@ -1,10 +1,10 @@
-package com.clone.twitter.postservice.service;
+package com.clone.twitter.postservice.service.s3;
 
 import com.amazonaws.services.neptunedata.model.S3Exception;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.clone.twitter.postservice.config.S3Config;
+import com.clone.twitter.postservice.config.cloud.S3Config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,13 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class S3Service {
+public class S3ServiceImpl implements S3Service {
 
     private final AmazonS3 amazonS3;
     private final S3Config s3Config;
     private final RestTemplate restTemplate;
 
+    @Override
     public void saveSvgToS3(String dicebearUrl, String bucketName, String fileName) {
 
         try {
@@ -42,6 +43,7 @@ public class S3Service {
         }
     }
 
+    @Override
     public String uploadFile(MultipartFile file) {
 
         String key = generateUniqueKey();
@@ -59,10 +61,12 @@ public class S3Service {
         return key;
     }
 
+    @Override
     public InputStream downloadFile(String key) {
         return amazonS3.getObject(s3Config.bucketName(), key).getObjectContent();
     }
 
+    @Override
     public void deleteFile(String key) {
         amazonS3.deleteObject(s3Config.bucketName(), key);
         log.info("Successfully delete file");
