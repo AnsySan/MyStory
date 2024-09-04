@@ -81,14 +81,38 @@ user-service:
   host: localhost
   port: 8090
 
+
 post:
   moderator:
     threads-count: 20
 
 async:
+  kafka:
+    corePoolSize: 5
+    maxPoolSize: 10
+    queueCapacity: 100
+  redis:
+    settings:
+      posts:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
+      feed:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
+      comments:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
+      authors:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
   corePoolSize: 5
   maxPoolSize: 10
   queueCapacity: 100
+
 
 services:
   s3:
