@@ -2,19 +2,19 @@ package com.clone.twitter.postservice.controller;
 
 import com.clone.twitter.postservice.context.UserContext;
 import com.clone.twitter.postservice.dto.CommentDto;
-import com.clone.twitter.postservice.service.CommentService;
+import com.clone.twitter.postservice.service.comment.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import java.util.List;
 
 @RestController
@@ -33,24 +33,11 @@ public class CommentController {
     })
     @PostMapping("/post/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto create(@Valid @RequestBody CommentDto comment) {
-        return commentService.create(comment, userContext.getUserId());
-    }
-
-    @Operation(summary = "Update a comment")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Comment updated",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class))})
-    })
-    @PutMapping("/{commentId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CommentDto update(@Valid @RequestBody CommentDto comment) throws AuthenticationException {
-        Integer userId = userContext.getUserId();
-        if (userId != comment.getAuthorId()) {
-            throw new AuthenticationException("Only authors of the comment can update it");
-        }
-        return commentService.update(comment, userId);
+    @Parameter(in = ParameterIn.HEADER, name = "twitter-user-id", required = true)
+    public CommentDto createComment(@PathVariable("postId") long postId,
+                                    @RequestBody @Valid CommentDto commentDto) {
+        long userId = userContext.getUserId();
+        return commentService.createComment(commentDto, userId, postId);
     }
 
     @Operation(summary = "Get all comments for a post")
@@ -61,8 +48,22 @@ public class CommentController {
     })
     @GetMapping("/post/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getPostComments(@PathVariable @NotNull int postId) {
+    public List<CommentDto> getPostComments(@PathVariable("postId") long postId) {
         return commentService.getPostComments(postId);
+    }
+
+    @Operation(summary = "Update a comment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Comment updated",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CommentDto.class))})
+    })
+    @PutMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto updateComment(@PathVariable("commentId") long commentId,
+                                    @RequestBody @Valid CommentDto commentDto) {
+        long userId = userContext.getUserId();
+        return commentService.updateComment(commentDto, userId, commentId);
     }
 
     @Operation(summary = "Delete a comment")
@@ -73,8 +74,9 @@ public class CommentController {
     })
     @DeleteMapping("/{commentId}/post/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@Valid @RequestBody CommentDto comment) {
-        commentService.delete(comment, userContext.getUserId());
+    public CommentDto deleteComment(@PathVariable("commentId") long commentId,
+                                    @PathVariable("postId") long postId) {
+        long userId = userContext.getUserId();
+        return commentService.deleteComment(commentId, postId, userId);
     }
-
 }

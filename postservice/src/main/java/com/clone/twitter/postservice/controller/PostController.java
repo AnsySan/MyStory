@@ -1,8 +1,7 @@
 package com.clone.twitter.postservice.controller;
 
 import com.clone.twitter.postservice.dto.PostDto;
-import com.clone.twitter.postservice.mapper.PostMapper;
-import com.clone.twitter.postservice.service.PostService;
+import com.clone.twitter.postservice.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -43,7 +42,7 @@ public class PostController {
             @ApiResponse(responseCode = "500", description = "Error when publishing a post")
     })
     @PutMapping("/publish/{postId}")
-    public PostDto publishPost(@PathVariable @Positive(message = "Id must be greater than zero") Integer postId) {
+    public PostDto publishPost(@PathVariable @Positive(message = "Id must be greater than zero") long postId) {
         return postService.publishPost(postId);
     }
 
@@ -57,7 +56,7 @@ public class PostController {
             @ApiResponse(responseCode = "500", description = "Error updating the post")
     })
     @PutMapping("/{postId}")
-    public PostDto updatePost(@PathVariable Integer postId, @RequestBody @Valid PostDto postDto) {
+    public PostDto updatePost(@PathVariable long postId, @RequestBody @Valid PostDto postDto) {
         return postService.updatePost(postId, postDto);
     }
 
@@ -68,7 +67,7 @@ public class PostController {
             @ApiResponse(responseCode = "500", description = "Error when deleting a post")
     })
     @DeleteMapping("/{postId}")
-    public PostDto deletePost(@PathVariable @Positive(message = "Id must be greater than zero") Integer postId) {
+    public PostDto deletePost(@PathVariable @Positive(message = "Id must be greater than zero") long postId) {
         return postService.deletePost(postId);
     }
 
@@ -79,22 +78,17 @@ public class PostController {
             @ApiResponse(responseCode = "500", description = "Error when receiving a post")
     })
     @GetMapping("/{postId}")
-    public PostDto getPostById(@PathVariable @Positive(message = "Id must be greater than zero") Integer postId) {
+    public PostDto getPostById(@PathVariable @Positive(message = "Id must be greater than zero") long postId) {
         return postService.getPostById(postId);
     }
 
-    @Operation(
-            summary = "Getting published posts by user ID",
-            description = "Getting all published of not deleted posts authored by user ID"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Published post received"),
-            @ApiResponse(responseCode = "400", description = "Invalid user ID"),
-            @ApiResponse(responseCode = "500", description = "Error when receiving published post by user ID")
-    })
-    @GetMapping("/author/{id}")
-    public List<PostDto> getPostsByAuthorId(@PathVariable @Positive(message = "Id must be greater than zero") Integer id) {
-        return postService.getPostsByAuthorId(id);
+    @GetMapping("drafts-by-user/{userId}")
+    public List<PostDto> findAllPostDraftsByAuthorId(@PathVariable Long userId) {
+        return postService.findPostDraftsByUserAuthorId(userId);
     }
 
+    @GetMapping("publication-by-user/{userId}")
+    public List<PostDto> findAllPostPublicationByAuthorId(@PathVariable Long userId) {
+        return postService.findPostPublicationsByUserAuthorId(userId);
+    }
 }
