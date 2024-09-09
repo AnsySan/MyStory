@@ -12,13 +12,13 @@ import java.util.concurrent.Executor;
 @RequiredArgsConstructor
 public class AsyncCacheConfig {
 
-    @Value("${async.corePoolSize}")
+    @Value("${async.redis.corePoolSize}")
     private int corePoolSize;
 
-    @Value("${async.maxPoolSize}")
+    @Value("${async.redis.maxPoolSize}")
     private int maxPoolSize;
 
-    @Value("${async.queueCapacity}")
+    @Value("${async.redis.queueCapacity}")
     private int queueCapacity;
 
     @Bean

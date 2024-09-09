@@ -5,24 +5,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Configuration
 public class KafkaTopicConfig {
 
-    @Value("${spring.data.kafka.post-likes.name}")
+    @Value("${spring.data.kafka.topics.topic-settings.post-likes.name}")
     private String postLikesName;
 
-    @Value("${spring.data.kafka.comment-likes.name}")
+    @Value("${spring.data.kafka.topics.topic-settings.comment-likes.name}")
     private String commentLikesName;
 
-    @Value("${spring.data.kafka.posts.name}")
+    @Value("${spring.data.kafka.topics.topic-settings.posts.name}")
     private String posts;
 
-    @Value("${spring.data.kafka.comments.name}")
+    @Value("${spring.data.kafka.topics.topic-settings.comments.name}")
     private String comment;
 
-    @Value("${spring.data.kafka.post-views.name}")
+    @Value("${spring.data.kafka.topics.topic-settings.post-views.name}")
     private String postViems;
-
 
     @Bean
     public NewTopic postLikesTopic() {
