@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
@@ -12,9 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDto {
 
-    private Integer id;
+    private Long id;
     private String content;
-    private Integer authorId;
+    private Long authorId;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -23,5 +22,6 @@ public class PostDto {
     private LocalDateTime updatedAt;
     private boolean published;
     private boolean deleted;
-    private List<LikeDto> likeIds;
+    private int likesCount;
+    private long viewsCount;
 }
