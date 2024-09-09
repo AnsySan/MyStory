@@ -2,10 +2,8 @@ package com.clone.twitter.postservice.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,16 +20,17 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "content", nullable = false, length = 4096)
     private String content;
 
     @Column(name = "author_id")
-    private Integer authorId;
+    private Long authorId;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
-    private List<Like> likes;
+    @ToString.Exclude
+    private List<PostLike> likes;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments;
@@ -61,4 +60,8 @@ public class Post {
 
     @Column(name = "verified", nullable = false)
     private Boolean verified;
+
+    @Column(name = "views_count", nullable = false)
+    @ColumnDefault("0")
+    private long viewsCount;
 }

@@ -1,10 +1,7 @@
 package com.clone.twitter.postservice.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -21,16 +18,17 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "content", nullable = false, length = 4096)
     private String content;
 
     @Column(name = "author_id", nullable = false)
-    private Integer authorId;
+    private Long authorId;
 
     @OneToMany(mappedBy = "comment", orphanRemoval = true)
-    private List<Like> likes;
+    @ToString.Exclude
+    private List<CommentLike> likes;
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
@@ -45,4 +43,7 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "verified")
+    private Boolean verified;
 }
