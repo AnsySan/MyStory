@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.validator;
+package com.clone.twitter.postservice.validator.user;
 
 import com.clone.twitter.postservice.client.UserServiceClient;
 import com.clone.twitter.postservice.dto.UserDto;
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UserValidator {
+public class UserValidatorImpl implements UserValidator {
     private final UserServiceClient userServiceClient;
 
-    public void validateUserExistence(int userId) {
+    @Override
+    public void validateUserExistence(long userId) {
         try {
             log.debug("Fetching user with ID: " + userId);
             UserDto userDto = userServiceClient.getUser(userId);

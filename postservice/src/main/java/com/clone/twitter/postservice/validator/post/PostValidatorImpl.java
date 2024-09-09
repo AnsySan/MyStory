@@ -1,9 +1,8 @@
-package com.clone.twitter.postservice.validator;
+package com.clone.twitter.postservice.validator.post;
 
 
 import com.clone.twitter.postservice.client.UserServiceClient;
 import com.clone.twitter.postservice.context.UserContext;
-import com.clone.twitter.postservice.dto.PostDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.exception.DataValidationException;
 import feign.FeignException;
@@ -13,23 +12,36 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class PostValidator {
+public class PostValidatorImpl implements PostValidator {
 
 private final UserContext userContext;
 private final UserServiceClient userServiceClient;
 
-public void validateAuthor(PostDto postDto) {
-    if (postDto.getAuthorId() == null) {
+@Override
+public void validateAuthor(Long userId) {
+    if (userId == null) {
         throw new DataValidationException("The post does not have an author specified");
     }
-    if (postDto.getAuthorId() == null) { throw new DataValidationException("A post cannot have two authors");
+    if (userId == null) {
+        throw new DataValidationException("A post cannot have two authors");
     }
-    if (postDto.getAuthorId() != null && userServiceClient.getUser(postDto.getAuthorId()) == null) {
+    if (userId != null && userServiceClient.getUser(userId) == null) {
         throw new DataValidationException("The author must be an existing user in the system");
+    }
+    if (userId != null) {
+        validateUser(userId);
     }
 }
 
-public void isPublishedPost(Post post) {
+@Override
+public void validatePostContent(String content) {
+    if (content == null || content.isEmpty()) {
+        throw new DataValidationException("Content should not be empty");
+    }
+}
+
+@Override
+public void validatePublicationPost(Post post) {
     if (post.isPublished()) {
         throw new DataValidationException("The post cannot publish that has already been published before");
     }
@@ -48,7 +60,7 @@ public void checkPostAuthorship(Post post) {
     }
 }
 
-public void validateUserExist(Integer userId) {
+public void validateUser(Long userId) {
     try {
         userServiceClient.getUser(userId);
     } catch (FeignException e) {
@@ -58,5 +70,5 @@ public void validateUserExist(Integer userId) {
 
 private long getContextUserId() {
     return userContext.getUserId();
-}
+    }
 }
