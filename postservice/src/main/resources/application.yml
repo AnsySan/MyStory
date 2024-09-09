@@ -52,16 +52,6 @@ spring:
       host: localhost
       group-id: account_service
 
-      post-likes:
-        name: post-likes
-      comment-likes:
-        name: comment-likes
-      posts:
-        name: posts
-      comments:
-        name: comments
-      post-views:
-        name: post-views
       topics:
         topic-settings:
           comments:
@@ -74,6 +64,10 @@ spring:
             name: post
           post-views:
             name: post-view
+  servlet:
+    multipart:
+      max-file-size: 5MB
+
 server:
   port: 8091
 
@@ -92,23 +86,9 @@ async:
     maxPoolSize: 10
     queueCapacity: 100
   redis:
-    settings:
-      posts:
-        corePoolSize: 5
-        maxPoolSize: 10
-        queueCapacity: 100
-      feed:
-        corePoolSize: 5
-        maxPoolSize: 10
-        queueCapacity: 100
-      comments:
-        corePoolSize: 5
-        maxPoolSize: 10
-        queueCapacity: 100
-      authors:
-        corePoolSize: 5
-        maxPoolSize: 10
-        queueCapacity: 100
+    corePoolSize: 5
+    maxPoolSize: 10
+    queueCapacity: 100
   corePoolSize: 5
   maxPoolSize: 10
   queueCapacity: 100
@@ -129,11 +109,9 @@ logging:
   level:
     root: info
 
-scheduled:
-  author-banner: "@daily"
-
-limits:
-
+spelling:
+  url: https://speller.yandex.net/services/spellservice.json/checkText?text=
+  threads: 4
 
 api:
   path: /api/v1
