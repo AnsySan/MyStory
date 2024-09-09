@@ -7,10 +7,10 @@ import com.clone.twitter.postservice.dto.ResourceDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.Resource;
 import com.clone.twitter.postservice.mapper.ResourceMapper;
+import com.clone.twitter.postservice.repository.post.PostRepository;
 import com.clone.twitter.postservice.repository.resource.ResourceRepository;
 import com.clone.twitter.postservice.service.s3.S3ServiceImpl;
-import com.clone.twitter.postservice.service.post.PostServiceImpl;
-import com.clone.twitter.postservice.validator.resource.ResourceValidator;
+import com.clone.twitter.postservice.validator.resource.ResourceValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,8 +33,8 @@ public class ResourceServiceImpl implements ResourceService {
 
     private final ResourceRepository resourceRepository;
     private final ResourceMapper resourceMapper;
-    private final ResourceValidator resourceValidator;
-    private final PostServiceImpl postService;
+    private final ResourceValidatorImpl resourceValidatorImpl;
+    private final PostRepository postRepository;
     private final S3ServiceImpl s3ServiceImpl;
 
     @Override
@@ -48,9 +48,10 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public List<ResourceDto> create(Long postId, Long userId, List<MultipartFile> files) {
 
-        Post post = postService.existsPost(postId);
-        resourceValidator.validatePostAuthorAndResourceAuthor(post.getAuthorId(), userId);
-        resourceValidator.validateCountFilesPerPost(postId, files.size());
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(String.format("Post with id %s not found", postId)));
+        resourceValidatorImpl.validatePostAuthorAndResourceAuthor(post.getAuthorId(), userId);
+        resourceValidatorImpl.validateCountFilesPerPost(postId, files.size());
 
         ExecutorService executorService = Executors.newFixedThreadPool(files.size());
         try(Closeable ignored = executorService::shutdown) {
@@ -89,7 +90,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public InputStream downloadResource(String key) {
-        resourceValidator.validateExistenceByKey(key);
+        resourceValidatorImpl.validateExistenceByKey(key);
         return s3ServiceImpl.downloadFile(key);
     }
 
@@ -99,8 +100,8 @@ public class ResourceServiceImpl implements ResourceService {
         Resource resourceToRemove = resourceRepository.findByKey(key);
         Post post = resourceToRemove.getPost();
 
-        resourceValidator.validatePostAuthorAndResourceAuthor(post.getAuthorId(), userId);
-        resourceValidator.validateExistenceByKey(key);
+        resourceValidatorImpl.validatePostAuthorAndResourceAuthor(post.getAuthorId(), userId);
+        resourceValidatorImpl.validateExistenceByKey(key);
 
         resourceRepository.deleteByKey(key);
         s3ServiceImpl.deleteFile(key);

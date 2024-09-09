@@ -9,7 +9,7 @@ import com.clone.twitter.postservice.kafka.producer.post.PostProducer;
 import com.clone.twitter.postservice.kafka.producer.post.PostViewProducer;
 import com.clone.twitter.postservice.mapper.PostMapper;
 import com.clone.twitter.postservice.repository.post.PostRepository;
-import com.clone.twitter.postservice.validator.post.PostValidator;
+import com.clone.twitter.postservice.validator.post.PostValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 public class PostServiceImpl implements PostService {
 
-    private final PostValidator postValidator;
+    private final PostValidatorImpl postValidatorImpl;
     private final PostMapper postMapper;
     private final PostRepository postRepository;
     private final PostProducer postProducer;
@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public PostDto createPost(PostDto postDto) {
-        postValidator.validateAuthor(postDto);
+        postValidatorImpl.validateAuthor(postDto.getAuthorId());
         Post post = postMapper.toEntity(postDto);
         post = postRepository.save(post);
         return postMapper.toDto(post);
@@ -56,8 +56,8 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostDto publishPost(long postId) {
         Post post = existsPost(postId);
-        postValidator.checkPostAuthorship(post);
-        postValidator.isPublishedPost(post);
+        postValidatorImpl.checkPostAuthorship(post);
+        postValidatorImpl.validatePublicationPost(post);
         post.setPublished(true);
         post.setPublishedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         postRepository.save(post);
@@ -68,7 +68,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostDto updatePost(long postId, PostDto postDto) {
         Post post = existsPost(postId);
-        postValidator.checkPostAuthorship(post);
+        postValidatorImpl.checkPostAuthorship(post);
         post.setUpdatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         post = postRepository.save(post);
         return postMapper.toDto(post);
@@ -78,8 +78,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostDto deletePost(long postId) {
         Post post = existsPost(postId);
-        postValidator.checkPostAuthorship(post);
-        postValidator.isDeletedPost(post);
+        postValidatorImpl.isDeletedPost(post);
         post.setPublished(false);
         post.setDeleted(true);
         return postMapper.toDto(post);
@@ -114,8 +113,7 @@ public class PostServiceImpl implements PostService {
         return postMapper.toDto(existsPost(postId));
     }
 
-    @Override
-    public Post existsPost(long postId) {
+    private Post existsPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new DataValidationException("Post with ID " + postId + " not found"));
     }

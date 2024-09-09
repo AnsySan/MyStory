@@ -9,8 +9,7 @@ import com.clone.twitter.postservice.mapper.CommentMapper;
 import com.clone.twitter.postservice.repository.comment.CommentRepository;
 import com.clone.twitter.postservice.repository.post.PostRepository;
 import com.clone.twitter.postservice.service.commonMethods.CommonServiceMethods;
-import com.clone.twitter.postservice.validator.comment.CommentValidator;
-import jakarta.persistence.EntityNotFoundException;
+import com.clone.twitter.postservice.validator.comment.CommentValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentValidator commentValidator;
+    private final CommentValidatorImpl commentValidatorImpl;
     private final CommentMapper commentMapper;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
@@ -38,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setAuthorId(userId);
         comment.setPost(post);
 
-        commentValidator.validateCreateComment(userId);
+        commentValidatorImpl.validateCreateComment(userId);
 
         comment = commentRepository.save(comment);
 
@@ -83,11 +82,5 @@ public class CommentServiceImpl implements CommentService {
         log.info("Deleted comment {} on post {} authored by {}", commentId, comment.getPost().getId(), userId);
 
         return commentToDelete;
-    }
-
-    @Override
-    public Comment findCommentById(long commentId) {
-        return commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("Comment by id: " + commentId + " not found"));
     }
 }
