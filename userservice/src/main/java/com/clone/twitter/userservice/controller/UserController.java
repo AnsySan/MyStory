@@ -1,16 +1,13 @@
 package com.clone.twitter.userservice.controller;
 
 import com.clone.twitter.userservice.dto.user.UserDto;
-import com.clone.twitter.userservice.service.user.UserService;
+import com.clone.twitter.userservice.service.user.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,27 +17,33 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @GetMapping("/{userId}")
+    @Operation(summary = "Get user by ID")
     public UserDto getUser(@PathVariable long userId) {
         log.info("getUser method was called");
-        return userService.getUser(userId);
+        return userServiceImpl.getUser(userId);
     }
 
-    @PostMapping("/create")
+
+    @Operation(summary = "Create user")
+    @PostMapping("creature")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public UserDto create(@RequestBody @Valid UserDto userDto) {
-        return userService.create( userDto );
+        return userServiceImpl.create( userDto );
     }
 
     @PostMapping
+    @Operation(summary = "Get users by ids")
     public List<UserDto> getUsersByIds(@RequestBody List<Long> ids) {
         log.info("getUsersByIds was called");
-        return userService.getUsersByIds(ids);
+        return userServiceImpl.getUsersByIds(ids);
     }
 
     @PostMapping("/deactivate/{userId}")
+    @Operation(summary = "Deactivate user")
     public void deactivate(@PathVariable long userId) {
-        userService.deactivate(userId);
+        userServiceImpl.deactivate(userId);
     }
 }

@@ -3,7 +3,7 @@ package com.clone.twitter.userservice.controller;
 import com.clone.twitter.userservice.dto.subscription.SubscriptionUserDto;
 import com.clone.twitter.userservice.exception.DataValidationException;
 import com.clone.twitter.userservice.dto.subscription.SubscriptionUserFilterDto;
-import com.clone.twitter.userservice.service.subscription.SubscriptionService;
+import com.clone.twitter.userservice.service.subscription.SubscriptionServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/subscriptions")
 public class FollowingController {
-    private final SubscriptionService subscriptionService;
+    private final SubscriptionServiceImpl subscriptionServiceImpl;
 
     @PostMapping("/following")
     public void followUser(@RequestParam("followerId") long followerId,
@@ -21,29 +21,29 @@ public class FollowingController {
         if (followerId == followeeId) {
             throw new DataValidationException( "You can not follow yourself!" );
         }
-        subscriptionService.followUser( followerId, followeeId );
+        subscriptionServiceImpl.followUser( followerId, followeeId );
     }
     @PostMapping("/unfollowing")
     public void unfollowUser(long followerId, long followeeId) {
         if (followerId == followeeId) {
             throw new DataValidationException( "You can not unfollow yourself!" );
         }
-        subscriptionService.unfollowUser( followerId, followeeId );
+        subscriptionServiceImpl.unfollowUser( followerId, followeeId );
     }
     @GetMapping("followers/{followeeId}/filter")
     public List<SubscriptionUserDto> getFollowers(long followeeId, SubscriptionUserFilterDto filter) {
-        return subscriptionService.getFollowers( followeeId, filter );
+        return subscriptionServiceImpl.getFollowers( followeeId, filter );
     }
     @GetMapping("followers/count/{followeeId}")
     public int getFollowersCount(long followeeId) {
-        return subscriptionService.getFollowersCount( followeeId );
+        return subscriptionServiceImpl.getFollowersCount( followeeId );
     }
     @GetMapping("followings/{followerId}")
     public List<SubscriptionUserDto> getFollowing(long followeeId, SubscriptionUserFilterDto filter) {
-        return subscriptionService.getFollowing( followeeId, filter );
+        return subscriptionServiceImpl.getFollowing( followeeId, filter );
     }
     @GetMapping("followings/count/{followerId}")
     public int getFollowingCount(long followerId) {
-        return subscriptionService.getFollowingCount( followerId );
+        return subscriptionServiceImpl.getFollowingCount( followerId );
     }
 }

@@ -1,7 +1,7 @@
 package com.clone.twitter.userservice.controller;
 
 import com.clone.twitter.userservice.dto.avatar.UserProfilePictureDto;
-import com.clone.twitter.userservice.service.avatar.ProfilePictureService;
+import com.clone.twitter.userservice.service.avatar.ProfilePictureServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
@@ -24,25 +24,25 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/pic")
 public class ProfilePictureController {
-    private final ProfilePictureService profilePictureService;
+    private final ProfilePictureServiceImpl profilePictureServiceImpl;
 
     @PostMapping("/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Save profile picture")
     public @Valid UserProfilePictureDto saveProfilePic(@Positive @Parameter @PathVariable long userId,
                                                            @NotEmpty @RequestParam("file") MultipartFile file) {
-        return profilePictureService.saveProfilePic(userId, file);
+        return profilePictureServiceImpl.saveProfilePic(userId, file);
     }
 
     @GetMapping("/{userId}")
     @Operation(summary = "Get profile picture")
     public InputStreamResource getProfilePic(@Positive @Parameter @PathVariable long userId) {
-        return profilePictureService.getProfilePic(userId);
+        return profilePictureServiceImpl.getProfilePic(userId);
     }
 
     @DeleteMapping("/{userId}")
     @Operation(summary = "Delete profile picture")
     public UserProfilePictureDto deleteProfilePic(@Positive @Parameter @PathVariable long userId) {
-        return profilePictureService.deleteProfilePic(userId);
+        return profilePictureServiceImpl.deleteProfilePic(userId);
     }
 }

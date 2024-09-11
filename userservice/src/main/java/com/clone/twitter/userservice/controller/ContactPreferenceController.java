@@ -1,7 +1,7 @@
 package com.clone.twitter.userservice.controller;
 
 import com.clone.twitter.userservice.dto.contact.ContactPreferenceDto;
-import com.clone.twitter.userservice.service.contact.ContactPreferenceService;
+import com.clone.twitter.userservice.service.contact.ContactPreferenceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/contacts/preferences")
 public class ContactPreferenceController {
 
-    private final ContactPreferenceService contactService;
+    private final ContactPreferenceServiceImpl contactService;
 
     @GetMapping("/{userName}")
     public ContactPreferenceDto getContact(@RequestParam String contact) {
