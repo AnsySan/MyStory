@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SubscriptionService {
+public class SubscriptionServiceImpl implements SubscriptonService {
     private final SubscriptionRepository subscriptionRepository;
     private final SubscriptionUserMapper userMapper;
     private final List<UserFilter> userFilters;
