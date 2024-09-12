@@ -8,9 +8,9 @@ import com.clone.twitter.userservice.model.user.UserProfilePicture;
 import com.clone.twitter.userservice.exception.DataValidationException;
 import com.clone.twitter.userservice.mapper.avatar.PictureMapper;
 import com.clone.twitter.userservice.repository.UserRepository;
-import com.clone.twitter.userservice.service.avatar.ProfilePictureService;
+import com.clone.twitter.userservice.service.avatar.ProfilePictureServiceImpl;
 import com.clone.twitter.userservice.service.cloud.S3Service;
-import com.clone.twitter.userservice.service.user.UserService;
+import com.clone.twitter.userservice.service.user.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,9 +53,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class ProfilePicServiceImplTest {
     @InjectMocks
-    private ProfilePictureService profilePicService;
+    private ProfilePictureServiceImpl profilePicService;
     @Mock
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -119,7 +119,7 @@ public class ProfilePicServiceImplTest {
 
     @Test
     public void testSaveProfilePicWithSaving() {
-        when(userService.getUserEntityById(user.getId())).thenReturn(user);
+        when(userServiceImpl.getUserEntityById(user.getId())).thenReturn(user);
         MockMultipartFile file = new MockMultipartFile("file", "example.jpg", MediaType.IMAGE_JPEG_VALUE, getImageBytes());
         ReflectionTestUtils.setField(profilePicService, "smallSize", 170);
         ReflectionTestUtils.setField(profilePicService, "largeSize", 1080);
@@ -127,7 +127,7 @@ public class ProfilePicServiceImplTest {
 
         UserProfilePictureDto result = profilePicService.saveProfilePic(user.getId(), file);
 
-        verify(userService, times(1)).getUserEntityById(user.getId());
+        verify(userServiceImpl, times(1)).getUserEntityById(user.getId());
         verify(s3Service, times(2)).uploadFile(eq(backetName), forPictures.capture(), any(InputStream.class));
         var pictures = forPictures.getAllValues();
         String forSmallPicture = pictures.get(0);
@@ -140,25 +140,25 @@ public class ProfilePicServiceImplTest {
 
     @Test
     public void testGetProfilePic() {
-        when(userService.getUserEntityById(user.getId())).thenReturn(user);
+        when(userServiceImpl.getUserEntityById(user.getId())).thenReturn(user);
         ReflectionTestUtils.setField(profilePicService, "bucketName", backetName);
         S3Object s3Object = new S3Object();
         s3Object.setObjectContent(new ByteArrayInputStream(getImageBytes()));
         when(s3Service.getFile(backetName, user.getUserProfilePic().getFileId())).thenReturn(s3Object);
 
         InputStreamResource result = profilePicService.getProfilePic(user.getId());
-        verify(userService, times(1)).getUserEntityById(user.getId());
+        verify(userServiceImpl, times(1)).getUserEntityById(user.getId());
         verify(s3Service, times(1)).getFile(backetName, user.getUserProfilePic().getFileId());
         assertNotNull(result);
     }
 
     @Test
     public void testDeleteProfilePic() {
-        when(userService.getUserEntityById(user.getId())).thenReturn(user);
+        when(userServiceImpl.getUserEntityById(user.getId())).thenReturn(user);
         ReflectionTestUtils.setField(profilePicService, "bucketName", backetName);
 
         profilePicService.deleteProfilePic(user.getId());
-        verify(userService, times(1)).getUserEntityById(user.getId());
+        verify(userServiceImpl, times(1)).getUserEntityById(user.getId());
         verify(s3Service, times(2)).deleteFile(eq(backetName), anyString());
         verify(userRepository, times(1)).save(user);
         assertNull(user.getUserProfilePic().getFileId());

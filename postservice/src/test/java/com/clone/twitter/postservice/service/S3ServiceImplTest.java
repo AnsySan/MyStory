@@ -3,7 +3,7 @@ package com.clone.twitter.postservice.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.clone.twitter.postservice.config.S3Config;
+import com.clone.twitter.postservice.config.cloud.S3Config;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,19 +18,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class S3ServiceTest {
+class S3ServiceImplTest {
 
     @Mock
     private AmazonS3 amazonS3;
     @InjectMocks
-    private S3Service S3Service;
+    private com.clone.twitter.postservice.service.s3.S3ServiceImpl S3ServiceImpl;
     @Mock
     private S3Config s3Config;
 
     @Test
     void successUploadFile() {
         MultipartFile file = mock(MultipartFile.class);
-        String uuid = S3Service.uploadFile(file);
+        String uuid = S3ServiceImpl.uploadFile(file);
 
         assertNotNull(UUID.fromString(uuid));
 
@@ -46,7 +46,7 @@ class S3ServiceTest {
         when(amazonS3.getObject(any(), anyString())).thenReturn(s3Object);
         when(s3Object.getObjectContent()).thenReturn(inputStreamMock);
 
-        S3Service.downloadFile(UUID.randomUUID().toString());
+        S3ServiceImpl.downloadFile(UUID.randomUUID().toString());
 
         verify(amazonS3, times(1)).getObject(any(), anyString());
         verify(s3Object, times(1)).getObjectContent();
@@ -54,7 +54,7 @@ class S3ServiceTest {
 
     @Test
     void successDeleteFile() {
-        S3Service.deleteFile(UUID.randomUUID().toString());
+        S3ServiceImpl.deleteFile(UUID.randomUUID().toString());
 
         verify(amazonS3, times(1)).deleteObject(any(), anyString());
     }

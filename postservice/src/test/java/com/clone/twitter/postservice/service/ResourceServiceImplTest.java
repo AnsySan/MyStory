@@ -5,8 +5,11 @@ import com.clone.twitter.postservice.dto.ResourceDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.Resource;
 import com.clone.twitter.postservice.mapper.ResourceMapper;
-import com.clone.twitter.postservice.repository.ResourceRepository;
-import com.clone.twitter.postservice.validator.ResourceValidator;
+import com.clone.twitter.postservice.repository.post.PostRepository;
+import com.clone.twitter.postservice.repository.resource.ResourceRepository;
+import com.clone.twitter.postservice.service.resource.ResourceServiceImpl;
+import com.clone.twitter.postservice.service.s3.S3ServiceImpl;
+import com.clone.twitter.postservice.validator.resource.ResourceValidatorImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -21,33 +24,39 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
-class ResourceServiceTest {
+class ResourceServiceImplTest {
 
     @Mock
     private ResourceRepository resourceRepository;
     @Spy
     private ResourceMapper resourceMapper = Mappers.getMapper(ResourceMapper.class);
     @Mock
-    private ResourceValidator resourceValidator;
+    private ResourceValidatorImpl resourceValidatorImpl;
     @Mock
-    private S3Service amazonS3Service;
+    private S3ServiceImpl amazonS3ServiceImpl;
     @Mock
-    private PostService postService;
+    private PostRepository postRepository;
 
     @InjectMocks
-    private ResourceService resourceServiceImpl;
+    private ResourceServiceImpl resourceServiceImpl;
 
     @Test
     void successFindById() {
-        Resource resource = Resource.builder().id(1).build();
+        Resource resource = Resource.builder().id(1L).build();
 
-        when(resourceRepository.findById(1)).thenReturn(Optional.ofNullable(resource));
+        when(resourceRepository.findById(1L)).thenReturn(Optional.ofNullable(resource));
 
-        Resource result = resourceServiceImpl.findById(1);
+        Resource result = resourceServiceImpl.findById(1L);
 
         assertEquals(resource, result);
     }
@@ -55,14 +64,14 @@ class ResourceServiceTest {
     @Test
     void successCreate() {
         MultipartFile file = mock(MultipartFile.class);
-        Post post = Post.builder().id(1).build();
+        Post post = Post.builder().id(1L).build();
         String key = UUID.randomUUID().toString();
 
-        when(postService.existsPost(1)).thenReturn(post);
-        when(amazonS3Service.uploadFile(file)).thenReturn(key);
+        when(postRepository.findById(1L)).thenReturn(Optional.of(post));
+        when(amazonS3ServiceImpl.uploadFile(file)).thenReturn(key);
         when(resourceRepository.save(any(Resource.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        List<ResourceDto> result = resourceServiceImpl.create(1, 1, List.of(file));
+        List<ResourceDto> result = resourceServiceImpl.create(1L, 1L, List.of(file));
         assertEquals(key, result.get(0).getKey());
     }
 
@@ -70,7 +79,7 @@ class ResourceServiceTest {
     void successDownloadResource() {
         S3ObjectInputStream inputStreamMock = mock(S3ObjectInputStream.class);
 
-        when(amazonS3Service.downloadFile(anyString())).thenReturn(inputStreamMock);
+        when(amazonS3ServiceImpl.downloadFile(anyString())).thenReturn(inputStreamMock);
 
         InputStream result = resourceServiceImpl.downloadResource(anyString());
 
@@ -81,20 +90,20 @@ class ResourceServiceTest {
     void successDeleteFile() {
         String key = "test";
         Post post = Post.builder()
-                .id(1)
-                .authorId(1)
+                .id(1L)
+                .authorId(1L)
                 .build();
         Resource resource = Resource.builder()
-                .id(1)
+                .id(1L)
                 .post(post)
                 .build();
 
         when(resourceRepository.findByKey(key)).thenReturn(resource);
 
-        resourceServiceImpl.deleteFile(key, 1);
+        resourceServiceImpl.deleteFile(key, 1L);
 
-        verify(resourceValidator, times(1)).validateExistenceByKey(key);
+        verify(resourceValidatorImpl, times(1)).validateExistenceByKey(key);
         verify(resourceRepository, times(1)).deleteByKey(key);
-        verify(amazonS3Service, times(1)).deleteFile(key);
+        verify(amazonS3ServiceImpl, times(1)).deleteFile(key);
     }
 }

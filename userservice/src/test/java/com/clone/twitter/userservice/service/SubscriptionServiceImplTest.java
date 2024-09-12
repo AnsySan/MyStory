@@ -10,7 +10,7 @@ import com.clone.twitter.userservice.filter.*;
 import com.clone.twitter.userservice.mapper.subscription.SubscriptionUserMapper;
 import com.clone.twitter.userservice.publisher.SearchAppearanceEventPublisher;
 import com.clone.twitter.userservice.repository.SubscriptionRepository;
-import com.clone.twitter.userservice.service.subscription.SubscriptionService;
+import com.clone.twitter.userservice.service.subscription.SubscriptionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class SubscriptionServiceTest {
+public class SubscriptionServiceImplTest {
     private static Long userId1;
     private static Long userId2;
     private final List<UserFilter> userFilters = new ArrayList<>();
@@ -47,7 +47,7 @@ public class SubscriptionServiceTest {
     private SubscriptionUserMapper userMapper = Mappers.getMapper(SubscriptionUserMapper.class);
 
     @InjectMocks
-    private SubscriptionService subscriptionService;
+    private SubscriptionServiceImpl subscriptionServiceImpl;
 
     @BeforeEach
     public void initialize() {
@@ -56,7 +56,7 @@ public class SubscriptionServiceTest {
         userFilters.add(new CityPatternFilter());
         userFilters.add(new CountryPatternFilter());
         userFilters.add(new NamePatternFilter());
-        subscriptionService = new SubscriptionService(subscriptionRepository,
+        subscriptionServiceImpl = new SubscriptionServiceImpl(subscriptionRepository,
                 userMapper,
                 userFilters,
                 searchAppearanceEventPublisher,
@@ -65,29 +65,29 @@ public class SubscriptionServiceTest {
 
     @Test
     public void testFollowUserThrowsExceptionWhenFollowsItself() {
-        assertThrows(DataValidationException.class, () -> subscriptionService.followUser(userId1, userId1));
+        assertThrows(DataValidationException.class, () -> subscriptionServiceImpl.followUser(userId1, userId1));
     }
 
     @Test
     public void testFollowUserThrowsExceptionWhenSubscriptionExists() {
         when(subscriptionRepository.existsByFollowerIdAndFolloweeId(userId1, userId2)).thenReturn(true);
-        assertThrows(DataValidationException.class, () -> subscriptionService.followUser(userId1, userId2));
+        assertThrows(DataValidationException.class, () -> subscriptionServiceImpl.followUser(userId1, userId2));
     }
 
     @Test
     public void testFollowUser() {
-        subscriptionService.followUser(userId1, userId2);
+        subscriptionServiceImpl.followUser(userId1, userId2);
         verify(subscriptionRepository, times(1)).followUser(userId1, userId2);
     }
 
     @Test
     public void testUnfollowUserThrowsExceptionWhenUnfollowYourself() {
-        assertThrows(DataValidationException.class, () -> subscriptionService.unfollowUser(userId2, userId2));
+        assertThrows(DataValidationException.class, () -> subscriptionServiceImpl.unfollowUser(userId2, userId2));
     }
 
     @Test
     public void testUnfollowUser() {
-        subscriptionService.unfollowUser(userId1, userId2);
+        subscriptionServiceImpl.unfollowUser(userId1, userId2);
         verify(subscriptionRepository, times(1)).unfollowUser(userId1, userId2);
     }
 
@@ -97,7 +97,7 @@ public class SubscriptionServiceTest {
         user1.setId(userId1);
         user1.setFollowers(List.of(User.builder().id(userId2).build()));
         when(subscriptionRepository.findByFolloweeId(userId1)).thenReturn(user1.getFollowers().stream());
-        List<SubscriptionUserDto> result = subscriptionService.getFollowers(userId1, new SubscriptionUserFilterDto());
+        List<SubscriptionUserDto> result = subscriptionServiceImpl.getFollowers(userId1, new SubscriptionUserFilterDto());
         assertEquals(result.get(0).getId(), userId2);
         verify(searchAppearanceEventPublisher, times(1)).publish(any(SearchAppearanceEvent.class));
     }
@@ -105,9 +105,9 @@ public class SubscriptionServiceTest {
     @Test
     public void testGetFollowersCount() {
         when(subscriptionRepository.findFollowersAmountByFolloweeId(userId1)).thenReturn(100);
-        subscriptionService.getFollowersCount(userId1);
+        subscriptionServiceImpl.getFollowersCount(userId1);
         verify(subscriptionRepository, times(1)).findFollowersAmountByFolloweeId(userId1);
-        assertEquals(100, subscriptionService.getFollowersCount(userId1));
+        assertEquals(100, subscriptionServiceImpl.getFollowersCount(userId1));
     }
 
     @Test
@@ -116,16 +116,16 @@ public class SubscriptionServiceTest {
         user1.setId(userId1);
         user1.setFollowees(List.of(User.builder().id(userId2).build()));
         when(subscriptionRepository.findByFolloweeId(userId1)).thenReturn(user1.getFollowees().stream());
-        List<SubscriptionUserDto> result = subscriptionService.getFollowing(userId1, new SubscriptionUserFilterDto());
+        List<SubscriptionUserDto> result = subscriptionServiceImpl.getFollowing(userId1, new SubscriptionUserFilterDto());
         assertEquals(result.get(0).getId(), userId2);
         verify(searchAppearanceEventPublisher, times(1)).publish(any(SearchAppearanceEvent.class));
     }
 
     @Test
     public void testGetFollowingCount() {
-        subscriptionService.getFollowingCount(userId1);
+        subscriptionServiceImpl.getFollowingCount(userId1);
         when(subscriptionRepository.findFolloweesAmountByFollowerId(userId1)).thenReturn(500);
         verify(subscriptionRepository, times(1)).findFolloweesAmountByFollowerId(userId1);
-        assertEquals(500, subscriptionService.getFollowingCount(userId1));
+        assertEquals(500, subscriptionServiceImpl.getFollowingCount(userId1));
     }
 }

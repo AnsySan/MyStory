@@ -12,7 +12,7 @@ import com.clone.twitter.userservice.exception.UserNotFoundException;
 import com.clone.twitter.userservice.publisher.ProfileViewEventPublisher;
 import com.clone.twitter.userservice.repository.UserRepository;
 import com.clone.twitter.userservice.service.cloud.S3Service;
-import com.clone.twitter.userservice.service.user.UserService;
+import com.clone.twitter.userservice.service.user.UserServiceImpl;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,9 +32,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class UserServiceImplTest {
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Mock
     private UserRepository userRepository;
 
@@ -74,7 +74,7 @@ public class UserServiceTest {
     public void testGetUser_UserDoesNotExist() {
         when(userRepository.findById(firstUser.getId())).thenReturn(Optional.empty());
 
-        UserNotFoundException e = assertThrows(UserNotFoundException.class, () -> userService.getUser(firstUser.getId()));
+        UserNotFoundException e = assertThrows(UserNotFoundException.class, () -> userServiceImpl.getUser(firstUser.getId()));
         assertEquals(e.getMessage(), MessageError.USER_NOT_FOUND_EXCEPTION.getMessage());
     }
 
@@ -83,7 +83,7 @@ public class UserServiceTest {
         when(userRepository.findById(firstUser.getId())).thenReturn(Optional.ofNullable(firstUser));
         when(userContext.getUserId()).thenReturn(secondUser.getId());
 
-        userService.getUser(firstUser.getId());
+        userServiceImpl.getUser(firstUser.getId());
 
         verify(userRepository, times(1)).findById(firstUser.getId());
         verify(userMapper, times(1)).toDto(firstUser);
@@ -94,7 +94,7 @@ public class UserServiceTest {
     public void testGetUsers() {
         when(userRepository.findAllById(userIds)).thenReturn(users);
 
-        userService.getUsersByIds(userIds);
+        userServiceImpl.getUsersByIds(userIds);
 
         verify(userRepository, times(1)).findAllById(userIds);
         verify(userMapper, times(1)).toDto(users);
@@ -105,7 +105,7 @@ public class UserServiceTest {
         long id = 1L;
         User user = User.builder().id(id).active(true).build();
         when(userRepository.findById(id)).thenReturn(Optional.of(user));
-        userService.deactivate(id);
+        userServiceImpl.deactivate(id);
         assertFalse(user.isActive());
     }
 
@@ -129,7 +129,7 @@ public class UserServiceTest {
         when(userMapper.toEntity(userDto)).thenReturn(user);
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toDto(user)).thenReturn(userDto);
-        UserDto createdUserDto = userService.create(userDto);
+        UserDto createdUserDto = userServiceImpl.create(userDto);
 
         assertNotNull(createdUserDto);
         assertEquals(userDto.getId(), createdUserDto.getId());
@@ -145,7 +145,7 @@ public class UserServiceTest {
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
         DataValidationException exception = assertThrows(DataValidationException.class,
-                () -> userService.create(userDto));
+                () -> userServiceImpl.create(userDto));
         assertEquals("User with id 1 exists", exception.getMessage());
 
     }

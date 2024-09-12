@@ -1,8 +1,8 @@
 package com.clone.twitter.userservice.service;
 
 import com.clone.twitter.userservice.model.user.User;
-import com.clone.twitter.userservice.service.user.UserBannerService;
-import com.clone.twitter.userservice.service.user.UserService;
+import com.clone.twitter.userservice.service.user.UserBannerServiceImpl;
+import com.clone.twitter.userservice.service.user.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,11 +14,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-class UserBannerServiceTest {
+class UserBannerServiceImplTest {
     @Mock
-    UserService userService;
+    UserServiceImpl userServiceImpl;
     @InjectMocks
-    UserBannerService userBannerService;
+    UserBannerServiceImpl userBannerServiceImpl;
     User firstUser;
     List<Long> userIdsToBan;
     List<User> usersToBan;
@@ -36,13 +36,13 @@ class UserBannerServiceTest {
 
     @Test
     public void testBanUserById(){
-        Mockito.when(userService.getUserEntityById(firstUser.getId())).thenReturn(firstUser);
-        userBannerService.banUserById(firstUser.getId());
+        Mockito.when(userServiceImpl.getUserEntityById(firstUser.getId())).thenReturn(firstUser);
+        userBannerServiceImpl.banUserById(firstUser.getId());
     }
 
     @Test
     public void testBanUsersByIds(){
-        Mockito.when(userService.getUsersEntityByIds(userIdsToBan)).thenReturn(usersToBan);
-        userBannerService.banUsersByIds(userIdsToBan);
+        Mockito.when(userServiceImpl.getUsersEntityByIds(userIdsToBan)).thenReturn(usersToBan);
+        userBannerServiceImpl.banUsersByIds(userIdsToBan);
     }
 }

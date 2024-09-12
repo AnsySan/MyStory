@@ -7,7 +7,7 @@ import com.clone.twitter.userservice.model.user.User;
 import com.clone.twitter.userservice.exception.NotFoundException;
 import com.clone.twitter.userservice.mapper.contact.ContactPreferenceMapper;
 import com.clone.twitter.userservice.repository.contact.ContactPreferenceRepository;
-import com.clone.twitter.userservice.service.contact.ContactPreferenceService;
+import com.clone.twitter.userservice.service.contact.ContactPreferenceServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ContactPreferenceServiceTest {
+class ContactPreferenceServiceImplTest {
 
     @Mock
     private ContactPreferenceRepository contactRepository;
@@ -31,7 +31,7 @@ class ContactPreferenceServiceTest {
     private ContactPreferenceMapper contactPreferenceMapper;
 
     @InjectMocks
-    private ContactPreferenceService contactPreferenceService;
+    private ContactPreferenceServiceImpl contactPreferenceServiceImpl;
 
     private final String username = "username";
     private ContactPreferenceDto contactPreferenceDto;
@@ -57,7 +57,7 @@ class ContactPreferenceServiceTest {
         when(contactRepository.findByUserUsername(username)).thenReturn(Optional.of(contactPreference));
         when(contactPreferenceMapper.toDto(contactPreference)).thenReturn(contactPreferenceDto);
 
-        ContactPreferenceDto actual = contactPreferenceService.getContact(username);
+        ContactPreferenceDto actual = contactPreferenceServiceImpl.getContact(username);
         assertEquals(contactPreferenceDto, actual);
 
         InOrder inOrder = inOrder(contactPreferenceMapper, contactRepository);
@@ -69,7 +69,7 @@ class ContactPreferenceServiceTest {
     void getContactNotFoundException() {
         when(contactRepository.findByUserUsername(username)).thenReturn(Optional.empty());
 
-        NotFoundException e = assertThrows(NotFoundException.class, () -> contactPreferenceService.getContact(username));
+        NotFoundException e = assertThrows(NotFoundException.class, () -> contactPreferenceServiceImpl.getContact(username));
         assertEquals("Contact with username " + username + " not found", e.getMessage());
     }
 }
