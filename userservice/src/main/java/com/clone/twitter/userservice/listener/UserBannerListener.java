@@ -1,6 +1,6 @@
 package com.clone.twitter.userservice.listener;
 
-import com.clone.twitter.userservice.service.user.UserBannerService;
+import com.clone.twitter.userservice.service.user.UserBannerServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserBannerListener implements MessageListener {
     private final ObjectMapper objectMapper;
-    private final UserBannerService userBannerService;
+    private final UserBannerServiceImpl userBannerServiceImpl;
 
     public void onMessage(Message message, byte[] pattern) {
         List<Long> userIdsToBan;
@@ -28,7 +28,7 @@ public class UserBannerListener implements MessageListener {
             log.warn("Mapping the body of the message throws exception {}", message, e);
             throw new RuntimeException(e);
         }
-        userBannerService.banUsersByIds(userIdsToBan);
+        userBannerServiceImpl.banUsersByIds(userIdsToBan);
         String channel = new String(message.getChannel());
 
         log.info("Receiving message from channel {} , consumed event: {}", channel, userIdsToBan);
