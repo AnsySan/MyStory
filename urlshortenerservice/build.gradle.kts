@@ -1,5 +1,5 @@
 plugins {
-    id "java"
+    java
     id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
 }
@@ -64,6 +64,12 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
-tasks.named('test') {
+tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+val test by tasks.getting(Test::class) { testLogging.showStandardStreams = true }
+
+tasks.bootJar {
+    archiveFileName.set("service.jar")
 }
