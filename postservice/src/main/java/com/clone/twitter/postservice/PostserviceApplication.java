@@ -3,6 +3,8 @@ package com.clone.twitter.postservice;
 import com.clone.twitter.postservice.config.redis.RedisCacheConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -25,6 +27,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         shadowCopy = RedisKeyValueAdapter.ShadowCopy.OFF)
 @EnableFeignClients(basePackages = "com.clone.twitter.postservice.client")
 @EnableRetry
+@OpenAPIDefinition(
+        info = @Info(
+                title = "User Service",
+                version = "1.0.0")
+)
 public class PostserviceApplication {
     public static void main(String[] args) {
         new SpringApplicationBuilder(PostserviceApplication.class)

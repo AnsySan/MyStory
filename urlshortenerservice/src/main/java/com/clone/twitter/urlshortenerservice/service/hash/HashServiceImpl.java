@@ -1,4 +1,4 @@
-package com.clone.twitter.urlshortenerservice.service;
+package com.clone.twitter.urlshortenerservice.service.hash;
 
 import com.clone.twitter.urlshortenerservice.entity.Hash;
 import com.clone.twitter.urlshortenerservice.repository.HashRepository;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class HashService {
+public class HashServiceImpl implements HashService {
 
     private final UrlRepository urlRepository;
     private final HashRepository hashRepository;
@@ -24,6 +24,7 @@ public class HashService {
     private int period;
     private final LocalDateTime dateTime = LocalDateTime.now().minusDays(period);
 
+    @Override
     @Transactional
     public void clean() {
         log.info("Clean hash urlRepository {}", LocalDateTime.now());

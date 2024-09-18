@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-class LikeValidatorImpl implements LikeValidator{
+public class LikeValidatorImpl implements LikeValidator{
 
     private final UserServiceClient userServiceClient;
     private final PostRepository postRepository;
@@ -42,7 +42,7 @@ class LikeValidatorImpl implements LikeValidator{
 
     @Override
     @Transactional(readOnly = true)
-    public Comment validateAndGetCommentToLike(long userId, long commentId) {
+    public Comment validateCommentToLike(long userId, long commentId) {
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("comment with commentId:" + commentId + " not found"));

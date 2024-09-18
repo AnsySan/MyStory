@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.validation;
+package com.clone.twitter.postservice.validation.comment;
 
 import com.clone.twitter.postservice.exception.DataValidationException;
 import com.clone.twitter.postservice.validator.comment.CommentValidatorImpl;

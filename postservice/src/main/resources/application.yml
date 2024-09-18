@@ -108,10 +108,3 @@ services:
 logging:
   level:
     root: info
-
-spelling:
-  url: https://speller.yandex.net/services/spellservice.json/checkText?text=
-  threads: 4
-
-api:
-  path: /api/v1

@@ -13,7 +13,7 @@ import com.clone.twitter.userservice.mapper.user.UserMapper;
 import com.clone.twitter.userservice.publisher.ProfileViewEventPublisher;
 import com.clone.twitter.userservice.repository.UserRepository;
 import com.clone.twitter.userservice.service.cloud.S3Service;
-import com.clone.twitter.userservice.validator.UserValidator;
+import com.clone.twitter.userservice.validator.UserValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
     private final S3Service s3Service;
     private final S3Config s3Config;
     private final String bucketName;
-    private final UserValidator userValidator;
+    private final UserValidatorImpl userValidatorImpl;
 
     @Override
     public UserDto getUser(Long userId) {

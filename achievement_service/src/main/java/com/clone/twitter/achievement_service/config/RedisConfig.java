@@ -22,8 +22,6 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int port;
 
-    @Value("${spring.data.redis.channels.achievement_channel.name}")
-    private String a;
     @Value("${spring.data.redis.channels.comment_channel.name}")
     private String commentTopic;
     @Value("${spring.data.redis.channels.follower_channel.name}")

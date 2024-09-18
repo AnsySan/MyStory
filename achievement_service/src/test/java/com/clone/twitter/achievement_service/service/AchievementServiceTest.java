@@ -27,7 +27,7 @@ class AchievementServiceTest {
     AchievementProgressRepository achievementProgressRepository;
 
     @InjectMocks
-    AchievementService achievementService;
+    AchievementServiceImpl achievementService;
 
     long userId = 1L;
     Achievement firstAchievement;

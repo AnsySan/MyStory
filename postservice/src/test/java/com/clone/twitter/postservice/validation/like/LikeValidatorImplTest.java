@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.validation;
+package com.clone.twitter.postservice.validation.like;
 
 import com.clone.twitter.postservice.client.UserServiceClient;
 import com.clone.twitter.postservice.entity.Comment;
@@ -9,7 +9,7 @@ import com.clone.twitter.postservice.exception.DataValidationException;
 import com.clone.twitter.postservice.exception.NotFoundException;
 import com.clone.twitter.postservice.repository.comment.CommentRepository;
 import com.clone.twitter.postservice.repository.post.PostRepository;
-import com.clone.twitter.postservice.validator.like.LikeValidator;
+import com.clone.twitter.postservice.validator.like.LikeValidatorImpl;
 import feign.FeignException;
 import feign.Request;
 import feign.RequestTemplate;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class LikeValidatorTest {
+class LikeValidatorImplTest {
     @Mock
     private UserServiceClient userServiceClient;
     @Mock
@@ -39,7 +39,7 @@ class LikeValidatorTest {
     @Mock
     private CommentRepository commentRepository;
     @InjectMocks
-    private LikeValidator validator;
+    private LikeValidatorImpl validator;
 
     private final long userId = 1L;
     private final long commentId = 2L;
@@ -79,7 +79,7 @@ class LikeValidatorTest {
 
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
-        DataValidationException e = assertThrows(DataValidationException.class, () -> validator.validateAndGetCommentToLike(userId, commentId));
+        DataValidationException e = assertThrows(DataValidationException.class, () -> validator.validateCommentToLike(userId, commentId));
         assertEquals(
                 "user with userId:" + userId + " can't like comment with commentId:" + commentId + " two times",
                 e.getMessage()
@@ -92,7 +92,7 @@ class LikeValidatorTest {
 
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
-        assertDoesNotThrow(() -> validator.validateAndGetCommentToLike(userId, commentId));
+        assertDoesNotThrow(() -> validator.validateCommentToLike(userId, commentId));
     }
 
     @Test

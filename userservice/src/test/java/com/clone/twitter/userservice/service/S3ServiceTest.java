@@ -3,6 +3,7 @@ package com.clone.twitter.userservice.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.clone.twitter.userservice.service.cloud.S3Service;
+import com.clone.twitter.userservice.service.cloud.S3ServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,7 +27,7 @@ class S3ServiceTest {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private S3Service s3Service;
+    private S3ServiceImpl s3Service;
 
 
     @Test

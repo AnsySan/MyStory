@@ -1,7 +1,7 @@
 package com.clone.twitter.urlshortenerservice.controller;
 
 import com.clone.twitter.urlshortenerservice.dto.UrlDto;
-import com.clone.twitter.urlshortenerservice.service.UrlService;
+import com.clone.twitter.urlshortenerservice.service.url.UrlServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping
 public class UrlController {
 
-    private final UrlService urlService;
+    private final UrlServiceImpl urlServiceImpl;
 
     @Operation(summary = "Converts long url to short url")
     @ApiResponses(value = {
@@ -31,7 +31,7 @@ public class UrlController {
     })
     @PostMapping("/url")
     public String convertToShortUrl(@RequestBody @Valid UrlDto urlDto) {
-        return urlService.convertToShortUrl(urlDto);
+        return urlServiceImpl.convertToShortUrl(urlDto);
     }
 
     @GetMapping("/{hash}")
@@ -41,7 +41,7 @@ public class UrlController {
             @ApiResponse(responseCode = "500", description = "Internal error occurred on the server when redirecting to the original URL")
     })
     public RedirectView redirectOriginalUrl(@PathVariable String hash) {
-        String url = urlService.redirectOriginalUrl(hash);
+        String url = urlServiceImpl.redirectOriginalUrl(hash);
         return new RedirectView(url);
     }
 

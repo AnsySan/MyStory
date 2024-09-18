@@ -1,4 +1,4 @@
-package com.clone.twitter.urlshortenerservice.service;
+package com.clone.twitter.urlshortenerservice.service.url;
 
 import com.clone.twitter.urlshortenerservice.cache.HashCache;
 import com.clone.twitter.urlshortenerservice.dto.UrlDto;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Slf4j
 @Service
-public class UrlService {
+public class UrlServiceImpl implements UrlService {
 
     private final HashCache hashCache;
     private final UrlCacheRepository urlCacheRepository;
@@ -27,12 +27,14 @@ public class UrlService {
     @Value("${app.url-prefix}")
     private String urlPrefix;
 
+    @Override
     public String redirectOriginalUrl(String hash) {
         return urlCacheRepository.getUrlByHash(hash).orElseGet(
                 () -> urlRepository.getUrlByHash(hash).map(Url::getBaseUrl).orElseThrow(
                         () -> new EntityNotFoundException("URL not found for hash: " + hash)));
     }
 
+    @Override
     @Transactional
     public String convertToShortUrl(UrlDto urlDto) {
         String urlPostfix = findHashByUrl(urlDto.getBaseUrl());

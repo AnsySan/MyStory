@@ -28,7 +28,7 @@ public class CommentLikeServiceImpl implements LikeService<CommentLikeDto> {
         CommentLikeDto likeDto = createLikeDto(userId, id);
 
         likeValidator.validateUserExistence(userId);
-        Comment comment = likeValidator.validateAndGetCommentToLike(userId, id);
+        Comment comment = likeValidator.validateCommentToLike(userId, id);
 
         CommentLike like = commentLikeMapper.toEntity(likeDto);
         like.setComment(comment);
