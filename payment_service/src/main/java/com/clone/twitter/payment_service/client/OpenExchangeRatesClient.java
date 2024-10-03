@@ -9,5 +9,4 @@ public interface OpenExchangeRatesClient {
 
     @GetMapping("/latest.json?app_id=${feign.openExchangeRatesClient.appId}")
     ExchangeRatesResponse getRates();
-
 }
