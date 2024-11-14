@@ -1,10 +1,10 @@
 package com.clone.twitter.postservice.service;
 
-import com.clone.twitter.postservice.dto.CommentDto;
 import com.clone.twitter.postservice.entity.Comment;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.kafka.producer.comment.CommentProducer;
 import com.clone.twitter.postservice.mapper.CommentMapper;
+import com.clone.twitter.postservice.dto.comment.CommentDto;
 import com.clone.twitter.postservice.redis.cache.service.author.AuthorRedisCacheServiceImpl;
 import com.clone.twitter.postservice.repository.comment.CommentRepository;
 import com.clone.twitter.postservice.repository.post.PostRepository;
