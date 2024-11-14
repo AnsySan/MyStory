@@ -74,6 +74,9 @@ server:
 user-service:
   host: localhost
   port: 8090
+payment-service:
+  host: localhost
+  port: 8096
 
 
 post:
