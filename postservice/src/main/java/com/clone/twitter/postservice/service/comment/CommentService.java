@@ -1,7 +1,6 @@
 package com.clone.twitter.postservice.service.comment;
 
-import com.clone.twitter.postservice.dto.CommentDto;
-import com.clone.twitter.postservice.entity.Comment;
+import com.clone.twitter.postservice.dto.comment.CommentDto;
 
 import java.util.List;
 

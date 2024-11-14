@@ -1,7 +1,7 @@
 package com.clone.twitter.postservice.controller;
 
 import com.clone.twitter.postservice.context.UserContext;
-import com.clone.twitter.postservice.dto.PostLikeDto;
+import com.clone.twitter.postservice.dto.like.PostLikeDto;
 import com.clone.twitter.postservice.service.like.PostLikeServiceImpl;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

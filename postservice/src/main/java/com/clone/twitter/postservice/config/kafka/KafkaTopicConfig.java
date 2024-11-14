@@ -5,9 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Configuration
 public class KafkaTopicConfig {
 
@@ -47,7 +44,7 @@ public class KafkaTopicConfig {
     }
 
     @Bean
-    public NewTopic postViemsTopic() {
+    public NewTopic postViemTopic() {
         return new NewTopic(postViems, 1, (short) 1);
     }
 }

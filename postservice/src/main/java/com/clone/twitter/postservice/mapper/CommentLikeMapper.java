@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.mapper;
 
-import com.clone.twitter.postservice.dto.CommentLikeDto;
+import com.clone.twitter.postservice.dto.like.CommentLikeDto;
 import com.clone.twitter.postservice.entity.CommentLike;
 import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.event.like.CommentLikeKafkaEvent;

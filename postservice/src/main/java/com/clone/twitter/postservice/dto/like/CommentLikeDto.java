@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.dto;
+package com.clone.twitter.postservice.dto.like;
 
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
