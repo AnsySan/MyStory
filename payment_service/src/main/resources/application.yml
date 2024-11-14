@@ -29,3 +29,6 @@ feign:
   openExchangeRatesClient:
     url: https://openexchangerates.org/api
     appId: ca800d6c1f28496a9461bd842d20b919
+
+server:
+  port: 8096
