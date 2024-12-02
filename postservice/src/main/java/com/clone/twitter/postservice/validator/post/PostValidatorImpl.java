@@ -2,7 +2,7 @@ package com.clone.twitter.postservice.validator.post;
 
 
 import com.clone.twitter.postservice.client.UserServiceClient;
-import com.clone.twitter.postservice.context.UserContext;
+import com.clone.twitter.postservice.config.context.UserContext;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.exception.DataValidationException;
 import feign.FeignException;

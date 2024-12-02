@@ -1,7 +1,7 @@
 package com.clone.twitter.postservice.validator.user;
 
 import com.clone.twitter.postservice.client.UserServiceClient;
-import com.clone.twitter.postservice.dto.UserDto;
+import com.clone.twitter.postservice.dto.user.UserDto;
 import com.clone.twitter.postservice.exception.NotFoundException;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;

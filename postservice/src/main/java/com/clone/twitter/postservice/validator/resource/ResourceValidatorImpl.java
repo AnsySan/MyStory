@@ -1,8 +1,8 @@
 package com.clone.twitter.postservice.validator.resource;
 
-import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
 import com.clone.twitter.postservice.config.cloud.S3Config;
 import com.clone.twitter.postservice.exception.DataValidationException;
+import com.clone.twitter.postservice.exception.NotFoundException;
 import com.clone.twitter.postservice.repository.resource.ResourceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
