@@ -1,10 +1,10 @@
 package com.clone.twitter.postservice.service;
 
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.clone.twitter.postservice.dto.ResourceDto;
+import com.clone.twitter.postservice.dto.resource.ResourceDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.Resource;
-import com.clone.twitter.postservice.mapper.ResourceMapper;
+import com.clone.twitter.postservice.mapper.resource.ResourceMapper;
 import com.clone.twitter.postservice.repository.post.PostRepository;
 import com.clone.twitter.postservice.repository.resource.ResourceRepository;
 import com.clone.twitter.postservice.service.resource.ResourceServiceImpl;

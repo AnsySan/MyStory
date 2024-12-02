@@ -8,7 +8,6 @@ group = "com.clone.twitter"
 version = "1.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
-
 configurations {
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
@@ -21,13 +20,6 @@ repositories {
 
 dependencies {
     /**
-     * Swagger
-     *
-     * springdoc-openapi-starter-webmvc-ui
-     * implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
-     */
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
-    /**
      * Spring boot starters
      */
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
@@ -35,31 +27,43 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")
-    implementation("org.springframework.retry:spring-retry:2.0.2")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.2")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.retry:spring-retry:2.0.2")
+    implementation("org.springframework.kafka:spring-kafka:3.1.3")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-integration")
     implementation("org.springframework.integration:spring-integration-redis")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    implementation("org.springframework.kafka:spring-kafka:3.1.3")
+
+
     /**
      * Database
      */
     implementation("org.liquibase:liquibase-core")
     implementation("redis.clients:jedis:4.3.2")
     runtimeOnly("org.postgresql:postgresql")
-    implementation("com.amazonaws:aws-java-sdk:1.12.726")
+
+    /**
+     * Amazon S3
+     */
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.464")
+    implementation("net.coobird:thumbnailator:0.4.9")
+    implementation("org.springframework.retry:spring-retry:2.0.2")
 
     /**
      * Utils & Logging
      */
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("org.slf4j:slf4j-api:2.0.5")
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.13.0")
 
     /**
      * Test containers
@@ -75,6 +79,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation(kotlin("script-runtime"))
 }
 
 tasks.withType<Test> {
