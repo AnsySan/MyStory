@@ -1,6 +1,6 @@
 package com.clone.twitter.payment_service.client;
 
-import com.clone.twitter.payment_service.model.ExchangeRatesResponse;
+import com.clone.twitter.payment_service.entity.ExchangeRatesResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

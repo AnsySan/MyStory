@@ -1,4 +1,4 @@
-package com.clone.twitter.payment_service.model;
+package com.clone.twitter.payment_service.entity;
 
 import com.clone.twitter.payment_service.dto.Currency;
 import com.fasterxml.jackson.annotation.JsonIgnore;

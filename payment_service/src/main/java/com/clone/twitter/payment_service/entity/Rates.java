@@ -1,4 +1,4 @@
-package com.clone.twitter.payment_service.model;
+package com.clone.twitter.payment_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

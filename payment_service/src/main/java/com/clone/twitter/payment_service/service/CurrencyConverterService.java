@@ -4,7 +4,7 @@ import com.clone.twitter.payment_service.client.OpenExchangeRatesClient;
 import com.clone.twitter.payment_service.dto.Currency;
 import com.clone.twitter.payment_service.dto.PaymentRequest;
 import com.clone.twitter.payment_service.exception.NoSuchCurrencyException;
-import com.clone.twitter.payment_service.model.ExchangeRatesResponse;
+import com.clone.twitter.payment_service.entity.ExchangeRatesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
