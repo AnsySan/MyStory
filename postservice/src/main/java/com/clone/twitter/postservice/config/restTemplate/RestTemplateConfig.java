@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.config;
+package com.clone.twitter.postservice.config.restTemplate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

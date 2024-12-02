@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.mapper;
+package com.clone.twitter.postservice.mapper.like;
 
 import com.clone.twitter.postservice.dto.like.CommentLikeDto;
 import com.clone.twitter.postservice.entity.CommentLike;

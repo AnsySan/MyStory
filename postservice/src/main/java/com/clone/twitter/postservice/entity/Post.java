@@ -45,6 +45,10 @@ public class Post {
     @Column(name = "published_at")
     private LocalDateTime publishedAt;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "scheduled_at")
+    private LocalDateTime scheduledAt;
+
     @Column(name = "deleted", nullable = false)
     private boolean deleted;
 
@@ -58,8 +62,17 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "verified", nullable = false)
-    private Boolean verified;
+    @Column(name = "is_verify", length = 64, nullable = false)
+    @ColumnDefault("UNCHECKED")
+    @Enumerated(EnumType.STRING)
+    private VerificationStatus isVerify;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "verified_date")
+    private LocalDateTime verifiedDate;
+
+    @Column(name = "is_checked_for_spelling", nullable = false)
+    private boolean isCheckedForSpelling;
 
     @Column(name = "views_count", nullable = false)
     @ColumnDefault("0")

@@ -1,14 +1,14 @@
 package com.clone.twitter.postservice.repository.post;
 
 import com.clone.twitter.postservice.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PostRepository extends CrudRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("""
             SELECT p FROM Post p
@@ -17,9 +17,11 @@ public interface PostRepository extends CrudRepository<Post, Long> {
             """)
     List<Post> findByAuthorIdAndPublishedAndDeletedWithLikes(long authorId, boolean published, boolean deleted);
 
-    void deleteAllByAuthorIdIn(List<Long> authorIds);
+    @Query("SELECT p FROM Post p WHERE p.published = false AND p.deleted = false AND p.scheduledAt <= CURRENT_TIMESTAMP")
+    List<Post> findReadyToPublish();
 
-    List<Post> findAllByVerified(boolean isVerified);
+    @Query("SELECT p FROM Post p WHERE p.isVerify = 'NOT_VERIFIED'")
+    List<Post> findAllNotVerifiedPosts();
 
     @Query(nativeQuery = true, value = """
             SELECT follower_id FROM subscription

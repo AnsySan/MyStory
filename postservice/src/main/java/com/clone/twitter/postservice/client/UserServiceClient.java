@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.client;
 
-import com.clone.twitter.postservice.dto.UserDto;
+import com.clone.twitter.postservice.dto.user.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

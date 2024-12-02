@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.context;
+package com.clone.twitter.postservice.config.context;
 
 import org.springframework.stereotype.Component;
 

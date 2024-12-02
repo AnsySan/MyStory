@@ -2,7 +2,7 @@ package com.clone.twitter.postservice.kafka.consumer.post;
 
 import com.clone.twitter.postservice.kafka.consumer.KafkaConsumer;
 import com.clone.twitter.postservice.kafka.event.post.PostKafkaEvent;
-import com.clone.twitter.postservice.mapper.PostMapper;
+import com.clone.twitter.postservice.mapper.post.PostMapper;
 import com.clone.twitter.postservice.redis.cache.service.post.PostRedisCacheService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.mapper;
 
-import com.clone.twitter.postservice.dto.UserDto;
+import com.clone.twitter.postservice.dto.user.UserDto;
 import com.clone.twitter.postservice.redis.cache.entity.AuthorRedisCache;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

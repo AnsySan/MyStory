@@ -5,7 +5,7 @@ import com.clone.twitter.postservice.entity.Comment;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.producer.comment.CommentProducer;
-import com.clone.twitter.postservice.mapper.CommentMapper;
+import com.clone.twitter.postservice.mapper.comment.CommentMapper;
 import com.clone.twitter.postservice.repository.comment.CommentRepository;
 import com.clone.twitter.postservice.repository.post.PostRepository;
 import com.clone.twitter.postservice.service.commonMethods.CommonServiceMethods;

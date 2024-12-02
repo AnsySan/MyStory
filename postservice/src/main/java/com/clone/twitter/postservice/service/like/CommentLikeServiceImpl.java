@@ -5,7 +5,7 @@ import com.clone.twitter.postservice.entity.Comment;
 import com.clone.twitter.postservice.entity.CommentLike;
 import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.producer.like.CommentLikeProducer;
-import com.clone.twitter.postservice.mapper.CommentLikeMapper;
+import com.clone.twitter.postservice.mapper.like.CommentLikeMapper;
 import com.clone.twitter.postservice.repository.like.CommentLikeRepository;
 import com.clone.twitter.postservice.validator.like.LikeValidator;
 import lombok.RequiredArgsConstructor;

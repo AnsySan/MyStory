@@ -6,7 +6,7 @@ import com.clone.twitter.postservice.entity.PostLike;
 import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.event.like.PostLikeKafkaEvent;
 import com.clone.twitter.postservice.kafka.producer.like.PostLikeProducer;
-import com.clone.twitter.postservice.mapper.PostLikeMapper;
+import com.clone.twitter.postservice.mapper.like.PostLikeMapper;
 import com.clone.twitter.postservice.redis.publisher.LikeEventPublisher;
 import com.clone.twitter.postservice.redis.publisher.event.LikeRedisEvent;
 import com.clone.twitter.postservice.repository.like.PostLikeRepository;

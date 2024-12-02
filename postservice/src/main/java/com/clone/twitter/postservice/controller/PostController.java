@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.controller;
 
-import com.clone.twitter.postservice.dto.PostDto;
+import com.clone.twitter.postservice.dto.post.PostDto;
 import com.clone.twitter.postservice.service.post.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -88,5 +90,13 @@ public class PostController {
     @GetMapping("publication-by-user/{userId}")
     public List<PostDto> findAllPostPublicationByAuthorId(@PathVariable Long userId) {
         return postService.findPostPublicationsByUserAuthorId(userId);
+    }
+
+    @GetMapping("hashtag/{hashtag}")
+    public List<PostDto> getAllByHashtag(@PathVariable String hashtag,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postService.findAllByHashtag(hashtag, pageable);
     }
 }

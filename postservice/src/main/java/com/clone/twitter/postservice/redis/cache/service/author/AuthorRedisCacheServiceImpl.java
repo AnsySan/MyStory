@@ -1,13 +1,12 @@
 package com.clone.twitter.postservice.redis.cache.service.author;
 
-import com.clone.twitter.postservice.context.UserContext;
+import com.clone.twitter.postservice.config.context.UserContext;
 import com.clone.twitter.postservice.redis.cache.entity.AuthorRedisCache;
 import com.clone.twitter.postservice.redis.cache.repository.AuthorRedisRepository;
 import com.clone.twitter.postservice.redis.cache.service.RedisOperations;
 import com.clone.twitter.postservice.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 

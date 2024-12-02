@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.service.resource;
 
-import com.clone.twitter.postservice.dto.ResourceDto;
+import com.clone.twitter.postservice.dto.resource.ResourceDto;
 import com.clone.twitter.postservice.entity.Resource;
 import org.springframework.web.multipart.MultipartFile;
 

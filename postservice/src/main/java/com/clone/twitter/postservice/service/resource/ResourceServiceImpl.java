@@ -1,12 +1,12 @@
 package com.clone.twitter.postservice.service.resource;
 
-import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
-import com.amazonaws.services.neptunedata.model.S3Exception;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
-import com.clone.twitter.postservice.dto.ResourceDto;
+import com.clone.twitter.postservice.dto.resource.ResourceDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.Resource;
-import com.clone.twitter.postservice.mapper.ResourceMapper;
+import com.clone.twitter.postservice.exception.NotFoundException;
+import com.clone.twitter.postservice.exception.S3Exception;
+import com.clone.twitter.postservice.mapper.resource.ResourceMapper;
 import com.clone.twitter.postservice.repository.post.PostRepository;
 import com.clone.twitter.postservice.repository.resource.ResourceRepository;
 import com.clone.twitter.postservice.service.s3.S3ServiceImpl;

@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.config.async;
+package com.clone.twitter.postservice.config.cloud.async;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

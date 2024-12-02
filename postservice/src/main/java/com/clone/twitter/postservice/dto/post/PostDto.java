@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.dto;
+package com.clone.twitter.postservice.dto.post;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -22,6 +22,6 @@ public class PostDto {
     private LocalDateTime updatedAt;
     private boolean published;
     private boolean deleted;
-    private int likesCount;
+    private long likesCount;
     private long viewsCount;
 }

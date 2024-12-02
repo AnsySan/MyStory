@@ -1,24 +1,31 @@
 package com.clone.twitter.postservice.service.post;
 
-import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
-import com.clone.twitter.postservice.dto.PostDto;
+import com.clone.twitter.postservice.config.moderation.ModerationDictionary;
+import com.clone.twitter.postservice.dto.post.PostDto;
 import com.clone.twitter.postservice.entity.Post;
+import com.clone.twitter.postservice.entity.VerificationStatus;
 import com.clone.twitter.postservice.exception.DataValidationException;
+import com.clone.twitter.postservice.exception.NotFoundException;
 import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.producer.post.PostProducer;
 import com.clone.twitter.postservice.kafka.producer.post.PostViewProducer;
-import com.clone.twitter.postservice.mapper.PostMapper;
+import com.clone.twitter.postservice.mapper.post.PostMapper;
 import com.clone.twitter.postservice.repository.post.PostRepository;
+import com.clone.twitter.postservice.service.hashtag.async.AsyncHashtagService;
+import com.clone.twitter.postservice.service.spelling.SpellingService;
 import com.clone.twitter.postservice.validator.post.PostValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @RequiredArgsConstructor
 @Service
@@ -28,6 +35,9 @@ public class PostServiceImpl implements PostService {
     private final PostValidatorImpl postValidatorImpl;
     private final PostMapper postMapper;
     private final PostRepository postRepository;
+    private final AsyncHashtagService asyncHashtagService;
+    private final ModerationDictionary moderationDictionary;
+    private final SpellingService spellingService;
     private final PostProducer postProducer;
     private final PostViewProducer postViewProducer;
 
@@ -84,6 +94,13 @@ public class PostServiceImpl implements PostService {
         return postMapper.toDto(post);
     }
 
+    @Override
+    public List<PostDto> findAllByHashtag(String hashtag, Pageable pageable) {
+        return asyncHashtagService.getPostsByHashtag(hashtag, pageable).join().stream()
+                .map(postMapper::toDto)
+                .toList();
+    }
+
     private void sendMessageToKafka(Post post, State state) {
         if (post.getAuthorId() != null) {
             List<Long> subscriberIds = postRepository.getAuthorSubscriberIds(post.getAuthorId());
@@ -111,6 +128,52 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public PostDto getPostById(long postId) {
         return postMapper.toDto(existsPost(postId));
+    }
+
+    @Override
+    @Async("executorService")
+    public void verifyPost(List<Post> posts) {
+        for (Post post : posts) {
+
+            if (moderationDictionary.checkCurseWordsInPost(post.getContent())) {
+                post.setIsVerify(VerificationStatus.NOT_VERIFIED);
+            } else {
+                post.setIsVerify(VerificationStatus.VERIFIED);
+            }
+
+            post.setVerifiedDate(LocalDateTime.now());
+            postRepository.save(post);
+        }
+    }
+
+    @Override
+    public List<Long> findAllAuthorIdsWithNotVerifiedPosts() {
+        return postRepository.findAllNotVerifiedPosts().stream()
+                .map(Post::getAuthorId)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    @Override
+    public void correctPosts(){
+        List<Post> unpublishedPosts = postRepository.findReadyToPublish();
+        Map<Post, CompletableFuture<Optional<String>>> correctedContents = new HashMap<>();
+        unpublishedPosts.stream()
+                .filter(post -> !post.isCheckedForSpelling())
+                .forEach(post->correctedContents.put(post, spellingService.checkSpelling(post.getContent())));
+
+        correctedContents.forEach((post, correctedContent)->{
+            try {
+                correctedContent.get().ifPresent((content) -> {
+                    post.setContent(content);
+                    post.setCheckedForSpelling(true);
+                });
+            }
+            catch (InterruptedException | ExecutionException e) {
+                log.error("Error when updating a post with an id: {}", post.getId(), e);
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private Post existsPost(Long postId) {

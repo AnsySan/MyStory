@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.client;
 
-import com.clone.twitter.postservice.context.UserContext;
+import com.clone.twitter.postservice.config.context.UserContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

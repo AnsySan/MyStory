@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.mapper;
+package com.clone.twitter.postservice.mapper.comment;
 
 import com.clone.twitter.postservice.dto.comment.CommentDto;
 import com.clone.twitter.postservice.entity.Comment;
@@ -27,9 +27,6 @@ public interface CommentMapper {
     @Mapping(source = "comment.post.id", target = "postId")
     @Mapping(source = "comment.authorId", target = "userId")
     CommentKafkaEvent toKafkaEvent(Comment comment, State state);
-
-    @Mapping(source = "authorId", target = "id")
-    AuthorRedisCache toAuthorCache(Comment comment);
 
     @Mapping(source = "userId", target = "author.id")
     CommentRedisCache toRedisCache(CommentKafkaEvent comment);

@@ -1,6 +1,7 @@
-package com.clone.twitter.postservice.mapper;
+package com.clone.twitter.postservice.mapper.post;
 
-import com.clone.twitter.postservice.dto.PostDto;
+import com.clone.twitter.postservice.dto.post.PostDto;
+import com.clone.twitter.postservice.dto.post.PostHashtagDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.PostLike;
 import com.clone.twitter.postservice.entity.Resource;
@@ -22,6 +23,16 @@ public interface PostMapper {
     @Mapping(target = "deleted", expression = "java(false)")
     Post toEntity(PostDto postDto);
 
+    @Mapping(source = "likes", target = "likeIds", qualifiedByName = "getIdFromLike")
+    PostHashtagDto toHashtagDto(Post post);
+
+    @Mapping(source = "likeIds", target = "likes", qualifiedByName = "getLikeFromId")
+    Post toEntity(PostHashtagDto post);
+
+    @Mapping(source = "likeIds", target = "likesCount", qualifiedByName = "getCountFromList")
+    PostDto toDto(PostHashtagDto post);
+
+    @Mapping(source = "likes", target = "likesCount", qualifiedByName = "getCountFromLikeList")
     PostDto toDto(Post post);
 
     @Mapping(source = "post.resources", target = "resourceIds", qualifiedByName = "getIdFromResource")

@@ -1,10 +1,10 @@
 package com.clone.twitter.postservice.service.s3;
 
-import com.amazonaws.services.neptunedata.model.S3Exception;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.clone.twitter.postservice.config.cloud.S3Config;
+import com.clone.twitter.postservice.exception.S3Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

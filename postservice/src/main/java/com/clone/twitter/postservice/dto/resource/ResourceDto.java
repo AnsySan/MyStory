@@ -1,4 +1,4 @@
-package com.clone.twitter.postservice.dto;
+package com.clone.twitter.postservice.dto.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

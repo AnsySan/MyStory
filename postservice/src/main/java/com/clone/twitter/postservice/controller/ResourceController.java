@@ -1,7 +1,7 @@
 package com.clone.twitter.postservice.controller;
 
-import com.clone.twitter.postservice.context.UserContext;
-import com.clone.twitter.postservice.dto.ResourceDto;
+import com.clone.twitter.postservice.config.context.UserContext;
+import com.clone.twitter.postservice.dto.resource.ResourceDto;
 import com.clone.twitter.postservice.service.resource.ResourceServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

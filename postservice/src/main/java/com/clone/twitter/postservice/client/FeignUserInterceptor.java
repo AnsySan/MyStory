@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.client;
 
-import com.clone.twitter.postservice.context.UserContext;
+import com.clone.twitter.postservice.config.context.UserContext;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.RequiredArgsConstructor;
