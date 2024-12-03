@@ -14,21 +14,35 @@ spring:
       hibernate:
         format_sql: true
 
-#  liquibase:
-#    change-log: classpath:db/changelog/db.changelog-master.yaml
+    liquibase:
+      change-log: classpath:db/changelog/db.changelog-master-payment_service.yaml
 
   data:
     redis:
       port: 6379
       host: localhost
-      channels:
-        pending_operation_channel:
-          name: pending-operation-channel
+
+messaging:
+  topics:
+    payment-topic-name: payment-channel
 
 feign:
   openExchangeRatesClient:
     url: https://openexchangerates.org/api
     appId: ca800d6c1f28496a9461bd842d20b919
 
+account-service:
+  host: localhost
+  port: 8090
+
 server:
   port: 8096
+
+logging:
+  level:
+    root: info
+
+scheduling:
+  gather-payment: * * * ? * *
+  payment-scheduler-pool-size: 10
+  payment-scheduler-thread-name-prefix: payment-scheduler-
