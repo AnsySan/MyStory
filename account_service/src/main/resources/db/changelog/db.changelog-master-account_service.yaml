@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/V001__account-service_account.sql
+  - include:
+      file: db/changelog/changeset/V003__request.sql
+  - include:
+      file: db/changelog/changeset/V007__indexes
+  - include:
+      file: db/changelog/changeset/V002__free_account_numbers.sql
+  - include:
+      file: db/changelog/changeset/V002__account-service_account.sql
+  - include:
+      file: db/changelog/changeset/V003__saving_account.sql
+  - include:
+      file: db/changelog/changeset/V003__account-service_account.sql
+  - include:
+      file: db/changelog/changeset/V004__account-service_balance-table.sql
