@@ -43,6 +43,7 @@ spring:
         feed:
           name: feed
         settings:
+          max-hashtags-size: 1000
           max-feed-size: 5
           max-post-comments-size: 5
 
@@ -78,11 +79,6 @@ payment-service:
   host: localhost
   port: 8096
 
-
-post:
-  moderator:
-    threads-count: 20
-
 async:
   kafka:
     corePoolSize: 5
@@ -107,6 +103,40 @@ services:
     targetWidth: 1080
     targetHeight: 566
     maxFilesAmount: 10
+
+post:
+  publisher:
+    scheduler:
+      cron: "0 0/1 * 1/1 * ?" # every minute
+  ad-remover:
+    scheduler:
+      cron: "0 0 0 * * *"  # Каждый день в полночь
+    threads-count: 20
+    max-list-size: 100
+  moderator:
+    path-curse-words: "src/main/resources/curse-words.txt"
+    scheduler:
+      cron: "0 0 * * * ?" # every midnight
+    threads-count: 20
+    max-list-size: 100
+  user-ban:
+    scheduler:
+      cron: "0 0 * * * ?"
+  correcter:
+    scheduler:
+      cron: "0 0 0 * * *"
+
+
+spelling:
+  url: https://speller.yandex.net/services/spellservice.json/checkText?text=
+  threads: 4
+
+moderation:
+  cron: "0 0 0 * * *"  # Каждый день в полночь
+  dictionary:
+    filepath: "classpath:bad-words.txt"
+  threads-count: 30
+  batch-size: 100
 
 logging:
   level:

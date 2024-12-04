@@ -74,15 +74,5 @@ public class RedisConfig {
         return new ChannelTopic(likeTopic);
     }
 
-    @Bean
-    public RedisMessageListenerContainer redisContainer(MessageListenerAdapter commentListener,
-                                                        MessageListenerAdapter followerListener,
-                                                        MessageListenerAdapter likeListener) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(redisConnectionFactory());
-        container.addMessageListener(commentListener, commentEventTopic());
-        container.addMessageListener(followerListener, followerEventTopic());
-        container.addMessageListener(likeListener, likeEventTopic());
-        return container;
-    }
+
 }

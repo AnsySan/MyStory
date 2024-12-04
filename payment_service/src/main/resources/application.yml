@@ -14,8 +14,9 @@ spring:
       hibernate:
         format_sql: true
 
-    liquibase:
-      change-log: classpath:db/changelog/db.changelog-master-payment_service.yaml
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master-payment_service.yaml
 
   data:
     redis:
@@ -33,7 +34,7 @@ feign:
 
 account-service:
   host: localhost
-  port: 8090
+  port: 8095
 
 server:
   port: 8096
@@ -43,6 +44,6 @@ logging:
     root: info
 
 scheduling:
-  gather-payment: * * * ? * *
+  gather-payment: "0 0 0 * * ?"
   payment-scheduler-pool-size: 10
   payment-scheduler-thread-name-prefix: payment-scheduler-

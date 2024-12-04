@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS payments (
     currency varchar(3) NOT NULL,
     amount decimal NOT NULL,
     status varchar(11) NOT NULL,
-    idempotency_key uuid DEFAULT uuid_generate_v4(),
-    scheduled_at timestamptz,
+    idempotency_key uuid ,
+    scheduled_at timestamptz  DEFAULT current_timestamp,
     created_at timestamptz DEFAULT current_timestamp
-    )
+    );
