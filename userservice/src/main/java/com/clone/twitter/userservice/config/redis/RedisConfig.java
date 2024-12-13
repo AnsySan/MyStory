@@ -1,7 +1,5 @@
 package com.clone.twitter.userservice.config.redis;
 
-import com.clone.twitter.userservice.listener.UserBannerListener;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,26 +7,22 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.Topic;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.util.Pair;
+
+import java.util.List;
 
 @Configuration
-@RequiredArgsConstructor
-public class RedisConfig{
+public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
     private String host;
     @Value("${spring.data.redis.port}")
     private int port;
-    @Value("${spring.data.channels.user_ban_channel.name}")
-    private String userBannerTopic;
-    @Value("${spring.data.channels.profile_view_channel.name}")
-    private String profileViewTopic;
-    @Value("${spring.data.channels.profile_search_channel.name}")
-    private String userProfileSearchTopic;
-
-
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
@@ -37,40 +31,24 @@ public class RedisConfig{
     }
 
     @Bean
-    public ChannelTopic userBannerTopic(){
-        return new ChannelTopic(userBannerTopic);
-    }
-
-    @Bean
-    public MessageListenerAdapter userBannerListenerAdapter(UserBannerListener userBannerListener){
-        return new MessageListenerAdapter(userBannerListener);
-    }
-
-
-    @Bean
-    public ChannelTopic profileSearchTopic() {
-        return new ChannelTopic(userProfileSearchTopic);
-    }
-
-    @Bean
-    public ChannelTopic profileViewTopic() {
-        return new ChannelTopic(profileViewTopic);
-    }
-
-//    @Bean
-//    public RedisMessageListenerContainer getContainer(MessageListenerAdapter userBannerListenerAdapter){
-//        RedisMessageListenerContainer redisMessageListenerContainer=new RedisMessageListenerContainer();
-//        redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory());
-//        redisMessageListenerContainer.addMessageListener(userBannerListenerAdapter, userBannerTopic());
-//        return redisMessageListenerContainer;
-//    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){
-        RedisTemplate<String, Object> redisTemplate=new RedisTemplate<>();
+    public RedisTemplate<String, Object> redisTemplate(JedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return redisTemplate;
+    }
+
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer(
+            RedisConnectionFactory connectionFactory,
+            List<Pair<Topic, MessageListenerAdapter>> channelAdapterPairList
+    ) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+
+        channelAdapterPairList.forEach(pair -> container.addMessageListener(pair.getSecond(), pair.getFirst()));
+
+        return container;
     }
 }

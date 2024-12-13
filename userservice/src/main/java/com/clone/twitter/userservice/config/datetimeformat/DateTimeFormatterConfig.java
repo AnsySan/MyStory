@@ -1,4 +1,4 @@
-package com.clone.twitter.userservice.config;
+package com.clone.twitter.userservice.config.datetimeformat;
 
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
