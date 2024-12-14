@@ -32,6 +32,7 @@ public class UserDto {
 
     @NotBlank(message = "Password can't be empty")
     private String password;
+
     private boolean active;
 
     @NotNull(message = "Country ID can't be empty")
