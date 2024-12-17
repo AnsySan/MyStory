@@ -1,11 +1,13 @@
-package com.clone.twitter.userservice.repository;
+package com.clone.twitter.userservice.repository.user;
 
 import com.clone.twitter.userservice.model.user.User;
+import feign.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Repository
@@ -25,4 +27,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
             WHERE up.end_date > NOW()
             """)
     Stream<User> findPremiumUsers();
+
+    @Query("SELECT u FROM User u WHERE u.id = :id")
+    Optional<User> findById(@Param("id") long id);
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) = 0 FROM users WHERE email = :valueToCheck")
+    boolean isEmailUnique(@Param("valueToCheck") String valueToCheck);
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) = 0 FROM users WHERE phone = :valueToCheck")
+    boolean isPhoneUnique(@Param("valueToCheck") String valueToCheck);
+
+    @Query(nativeQuery = true, value = "SELECT COUNT(*) = 0 FROM users WHERE username = :valueToCheck")
+    boolean isUsernameUnique(@Param("valueToCheck") String valueToCheck);
 }

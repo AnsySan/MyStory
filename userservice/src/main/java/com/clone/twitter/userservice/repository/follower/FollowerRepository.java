@@ -1,4 +1,4 @@
-package com.clone.twitter.userservice.repository;
+package com.clone.twitter.userservice.repository.follower;
 
 import com.clone.twitter.userservice.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
