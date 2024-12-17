@@ -1,6 +1,7 @@
 package com.clone.twitter.userservice.handler;
 
 import com.clone.twitter.userservice.exception.DataValidationException;
+import com.clone.twitter.userservice.exception.DeserializeException;
 import com.clone.twitter.userservice.exception.ErrorResponse;
 import com.clone.twitter.userservice.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -58,6 +59,13 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleRuntimeException(RuntimeException e, HttpServletRequest request) {
         log.error("Runtime exception: {}", e.getMessage(), e);
         return buildErrorResponse(e, request);
+    }
+
+    @ExceptionHandler(DeserializeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleDeserializeException(DeserializeException ex, HttpServletRequest request) {
+        log.warn("DeserializeException: ", ex);
+        return buildErrorResponse(ex, request);
     }
 
     private ErrorResponse buildErrorResponse(Exception e, HttpServletRequest request) {

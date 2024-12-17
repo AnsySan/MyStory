@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KafkaTopicConfig {
 
-    @Value("${spring.data.channels.profile_view_channel.name}")
+    @Value("${spring.data.channel.profile_view.name}")
     private String profileViewChannel;
 
     @Bean

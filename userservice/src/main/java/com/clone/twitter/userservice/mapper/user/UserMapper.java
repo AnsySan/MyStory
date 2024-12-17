@@ -1,40 +1,18 @@
 package com.clone.twitter.userservice.mapper.user;
 
-
 import com.clone.twitter.userservice.dto.user.UserDto;
-import com.clone.twitter.userservice.model.country.Country;
 import com.clone.twitter.userservice.model.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
-import java.util.Collections;
-import java.util.List;
-
-@Mapper(componentModel = "spring", unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
-    @Mapping(source = "country.id", target = "countryId")
+
     @Mapping(target = "preferredContact", source = "contactPreference.preference")
+    @Mapping(source = "country.id", target = "countryId")
     UserDto toDto(User user);
 
-    List<UserDto> toDto(List<User> users);
-
-    @Mapping(source = "countryId", target = "country")
-    @Mapping(target = "contactPreference", source = "preferredContact")
+    @Mapping(target = "contactPreference.preference", source = "preferredContact")
     User toEntity(UserDto userDto);
-
-    @Named("mapToIds")
-    default List<Long> mapToIds(List<User> users) {
-        if (users == null) {
-            return Collections.emptyList();
-        }
-        return users.stream().map(User::getId).toList();
-    }
-
-    default Country map(Long countryId) {
-        Country country = new Country();
-        country.setId(countryId);
-        return country;
-    }
-
 }

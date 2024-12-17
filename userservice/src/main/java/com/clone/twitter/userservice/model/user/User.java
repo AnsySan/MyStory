@@ -1,8 +1,17 @@
 package com.clone.twitter.userservice.model.user;
 
-import com.clone.twitter.userservice.model.country.Country;
+import com.clone.twitter.userservice.model.MentorshipRequest;
+import com.clone.twitter.userservice.model.skill.Skill;
 import com.clone.twitter.userservice.model.contact.Contact;
 import com.clone.twitter.userservice.model.contact.ContactPreference;
+import com.clone.twitter.userservice.model.country.Country;
+import com.clone.twitter.userservice.model.event.Event;
+import com.clone.twitter.userservice.model.event.Rating;
+import com.clone.twitter.userservice.model.goal.Goal;
+import com.clone.twitter.userservice.model.goal.GoalInvitation;
+import com.clone.twitter.userservice.model.jira.JiraAccount;
+import com.clone.twitter.userservice.model.premium.Premium;
+import com.clone.twitter.userservice.model.recomendation.Recommendation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +53,9 @@ public class User {
     @Column(name = "about_me", length = 4096)
     private String aboutMe;
 
+    @OneToOne(mappedBy = "user")
+    private JiraAccount jiraAccount;
+
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
@@ -53,6 +65,9 @@ public class User {
 
     @Column(name = "experience")
     private Integer experience;
+
+    @Column(name = "is_banned")
+    private Boolean isBanned;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -72,23 +87,69 @@ public class User {
     @ManyToMany(mappedBy = "followers")
     private List<User> followees;
 
+    @OneToMany(mappedBy = "owner")
+    private List<Event> ownedEvents;
+
+    @ManyToMany(mappedBy = "mentors")
+    private List<User> mentees;
+
+    @ManyToMany
+    @JoinTable(name = "mentorship",
+            joinColumns = @JoinColumn(name = "mentee_id"),
+            inverseJoinColumns = @JoinColumn(name = "mentor_id"))
+    private List<User> mentors;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<MentorshipRequest> receivedMentorshipRequests;
+
+    @OneToMany(mappedBy = "requester")
+    private List<MentorshipRequest> sentMentorshipRequests;
+
+    @OneToMany(mappedBy = "inviter")
+    private List<GoalInvitation> sentGoalInvitations;
+
+    @OneToMany(mappedBy = "invited")
+    private List<GoalInvitation> receivedGoalInvitations;
+
+    @OneToMany(mappedBy = "mentor")
+    private List<Goal> setGoals;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Goal> goals;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Skill> skills;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_event",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
+    private List<Event> participatedEvents;
+
+    @OneToMany(mappedBy = "author")
+    private List<Recommendation> recommendationsGiven;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Recommendation> recommendationsReceived;
+
     @OneToMany(mappedBy = "user")
     private List<Contact> contacts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Rating> ratings;
 
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "fileId", column = @Column(name = "profile_pic_file_id")),
             @AttributeOverride(name = "smallFileId", column = @Column(name = "profile_pic_small_file_id"))
     })
-    private UserProfilePicture userProfilePic;
+    private UserProfilePicture userProfilePicture;
 
     @OneToOne(mappedBy = "user")
     private ContactPreference contactPreference;
 
-    @Column(name = "banned", nullable = false)
-    private boolean banned;
-
-    public long getId() {
-        return id;
-    }
+    @OneToOne(mappedBy = "user")
+    private Premium premium;
 }
