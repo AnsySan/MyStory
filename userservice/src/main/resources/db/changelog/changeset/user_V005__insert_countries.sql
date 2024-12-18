@@ -1,6 +1,6 @@
 INSERT INTO country (title)
 VALUES
-    ('Belarus'),
-    ('Russia'),
+    ('United States'),
+    ('United Kingdom'),
     ('Australia'),
     ('France');
