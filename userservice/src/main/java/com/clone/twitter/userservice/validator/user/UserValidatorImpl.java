@@ -1,8 +1,8 @@
-package com.clone.twitter.userservice.validator;
+package com.clone.twitter.userservice.validator.user;
 
 import com.clone.twitter.userservice.exception.DataValidationException;
 import com.clone.twitter.userservice.model.user.User;
-import com.clone.twitter.userservice.repository.UserRepository;
+import com.clone.twitter.userservice.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

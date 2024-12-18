@@ -1,4 +1,4 @@
-package com.clone.twitter.userservice.validator;
+package com.clone.twitter.userservice.validator.user;
 
 import com.clone.twitter.userservice.model.user.User;
 
