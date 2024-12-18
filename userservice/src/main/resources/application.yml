@@ -26,14 +26,17 @@ spring:
       port: 9092
       host: localhost
 
-    channels:
-      user_ban_channel:
-        name: user_ban
-      profile_search_channel:
-        name: profile_search_channel
-      profile_view_channel:
+    channel:
+      mentorship:
+        name: mentorship_channel
+      goal_complete:
+        name: goal_complete_channel
+      profile_view:
         name: profile_view_channel
-
+      premium_bought:
+        name: premium_bought_channel
+      user_ban_channel:
+        name: user_ban_channel
 
   profiles:
     active: test
@@ -52,25 +55,54 @@ logging:
   level:
     root: info
 
-aws:
-  endpoint: http://localhost:9000
-  accessKey: user
-  secretKey: password
-  bucketName: user-bucket
-  isMocked: true
-  maxSizeBytes: 5242880
-  smallSize: 170
-  largeSize: 1080
+premium:
+  scheduler:
+    expired-premium-remover:
+      cron: 0 0 * * * *
 
+project-service:
+  host: localhost
+  port: 8082
+
+payment-service:
+  host: localhost
+  port: 8096
+
+aws:
+  accessKey: access_key
+  secretKey: secret_key
+  region: bucket_region
+
+services:
+  s3:
+    endpoint: http://localhost:9000
+    accessKey: user
+    secretKey: password
+    bucketName: user-bucket
+    isMocked: true
+    maxSizeBytes: 5242880
+    smallSize: 170
+    largeSize: 1080
+
+
+goals:
+  limit:
+    max-per-user: 3
+  invitations:
+    max-per-user: 3
+
+mentorship:
+  request:
+    time-period-for-single-request: 3
 
 spring.servlet.multipart.max-file-size: 10KB
 
-dicebear:
-  pic-base-url-small: https://api.dicebear.com/7.x/bottts/svg?size=64&seed=
-  pic-base-url: https://api.dicebear.com/7.x/bottts/svg?size=256&seed=
+scheduler:
+  clearEvents:
+    cronExpression: "0 0 0 * * ?" # Каждый день в полночь
+
+batchSize:
+  eventDeletion: 1000
 
 randomAvatar:
   url: https://api.dicebear.com/8.x/pixel-art/jpg?seed=
-
-executorConfig:
-  thread-pool-size: 10
