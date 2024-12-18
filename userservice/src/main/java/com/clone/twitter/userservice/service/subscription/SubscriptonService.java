@@ -1,21 +1,22 @@
 package com.clone.twitter.userservice.service.subscription;
 
-import com.clone.twitter.userservice.dto.subscription.SubscriptionUserDto;
-import com.clone.twitter.userservice.dto.subscription.SubscriptionUserFilterDto;
+import com.clone.twitter.userservice.dto.subscription.SubscriptionRequestDto;
+import com.clone.twitter.userservice.dto.user.UserDto;
+import com.clone.twitter.userservice.dto.user.UserFilterDto;
 
 import java.util.List;
 
 public interface SubscriptonService {
 
-    public void followUser(long followerId, long followeeId);
+    void followUser(SubscriptionRequestDto subscriptionRequestDto);
 
-    public void unfollowUser(long followerId, long followeeId);
+    void unfollowUser(SubscriptionRequestDto subscriptionRequestDto);
 
-    public List<SubscriptionUserDto> getFollowers(long followeeId, SubscriptionUserFilterDto filter);
+    List<UserDto> getFollowers(long followeeId, UserFilterDto filter);
 
-    public int getFollowersCount(long followeeId);
+    List<UserDto> getFollowings(long followerId, UserFilterDto filter);
 
-    public List<SubscriptionUserDto> getFollowing(long followeeId, SubscriptionUserFilterDto filter);
+    int getFollowersCount(long followeeId);
 
-    public int getFollowingCount(long followerId);
+    int getFollowingsCount(long followerId);
 }

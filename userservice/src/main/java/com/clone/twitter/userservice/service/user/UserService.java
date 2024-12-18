@@ -1,21 +1,24 @@
 package com.clone.twitter.userservice.service.user;
 
 import com.clone.twitter.userservice.dto.user.UserDto;
+import com.clone.twitter.userservice.dto.user.UserFilterDto;
 import com.clone.twitter.userservice.model.user.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    public UserDto getUser(Long userId);
+    UserDto createUser(UserDto userDto);
 
-    public User getUserEntityById(long userId);
+    User findUserById(long id);
 
-    public List<User> getUsersEntityByIds(List<Long> userIds);
+    List<UserDto> findPremiumUsers(UserFilterDto filterDto);
 
-    public UserDto create(UserDto userDto);
+    void deactivateUserById(Long id);
 
-    public List<UserDto> getUsersByIds(List<Long> ids);
+    List<UserDto> getUsersByIds(List<Long> ids);
 
-    public void deactivate(long userId);
+    UserDto getUserById(long userId);
+
+    void banUserByIds(List<Long> userIds);
 }

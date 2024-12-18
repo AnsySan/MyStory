@@ -8,13 +8,15 @@ import com.clone.twitter.userservice.model.user.User;
 import com.clone.twitter.userservice.model.user.UserProfilePicture;
 import com.clone.twitter.userservice.exception.DataValidationException;
 import com.clone.twitter.userservice.mapper.avatar.PictureMapper;
-import com.clone.twitter.userservice.repository.UserRepository;
+import com.clone.twitter.userservice.repository.user.UserRepository;
 import com.clone.twitter.userservice.service.cloud.S3Service;
+import com.clone.twitter.userservice.service.user.UserService;
 import com.clone.twitter.userservice.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
@@ -33,19 +35,20 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+@PropertySource(value = "classpath:s3.properties")
 public class ProfilePictureServiceImpl implements ProfilePictureService {
     @Value("${randomAvatar.url}")
     private String url;
-    @Value("${aws.smallSize}")
+    @Value("${smallSize}")
     private int smallSize;
-    @Value("${aws.largeSize}")
+    @Value("${largeSize}")
     private int largeSize;
-    @Value("${aws.bucketName}")
+    @Value("${bucketName}")
     private String bucketName;
     private final S3Service s3Service;
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
     private final PictureMapper pictureMapper;
 
     private InputStream compressPic(InputStream inputStream, int size) {
@@ -83,7 +86,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
     @Override
     @Transactional
     public UserProfilePictureDto saveProfilePic(long userId, MultipartFile file){
-        User user = userServiceImpl.getUserEntityById(userId);
+        User user = userService.findUserById(userId);
         String nameForSmallPic = "small" + file.getName() + LocalDateTime.now();
         String nameForLargePic = "large" + file.getName() + LocalDateTime.now();
         try {
@@ -93,7 +96,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
             throw new RuntimeException(e);
         }
         UserProfilePicture userProfilePic = new UserProfilePicture(nameForLargePic, nameForSmallPic);
-        user.setUserProfilePic(userProfilePic);
+        user.setUserProfilePicture(userProfilePic);
         userRepository.save(user);
 
         return pictureMapper.toDto(userProfilePic);
@@ -102,8 +105,8 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
     @Override
     @Transactional
     public InputStreamResource getProfilePic(long userId) {
-        User user = userServiceImpl.getUserEntityById(userId);
-        S3Object s3Object = s3Service.getFile(bucketName, user.getUserProfilePic().getFileId());
+        User user = userService.findUserById(userId);
+        S3Object s3Object = s3Service.getFile(bucketName, user.getUserProfilePicture().getFileId());
 
         return new InputStreamResource(s3Object.getObjectContent());
     }
@@ -111,12 +114,12 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
     @Override
     @Transactional
     public UserProfilePictureDto deleteProfilePic(long userId) {
-        User user = userServiceImpl.getUserEntityById(userId);
-        s3Service.deleteFile(bucketName, user.getUserProfilePic().getFileId());
-        s3Service.deleteFile(bucketName, user.getUserProfilePic().getSmallFileId());
-        UserProfilePictureDto deletedProfilePicDto = pictureMapper.toDto(user.getUserProfilePic());
-        user.getUserProfilePic().setSmallFileId(null);
-        user.getUserProfilePic().setFileId(null);
+        User user = userService.findUserById(userId);
+        s3Service.deleteFile(bucketName, user.getUserProfilePicture().getFileId());
+        s3Service.deleteFile(bucketName, user.getUserProfilePicture().getSmallFileId());
+        UserProfilePictureDto deletedProfilePicDto = pictureMapper.toDto(user.getUserProfilePicture());
+        user.getUserProfilePicture().setSmallFileId(null);
+        user.getUserProfilePicture().setFileId(null);
         userRepository.save(user);
 
         return deletedProfilePicDto;

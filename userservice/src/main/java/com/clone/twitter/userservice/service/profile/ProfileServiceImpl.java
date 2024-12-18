@@ -1,11 +1,11 @@
 package com.clone.twitter.userservice.service.profile;
 
 import com.clone.twitter.userservice.context.UserContext;
-import com.clone.twitter.userservice.dto.profile.ProfileViewEventDto;
+import com.clone.twitter.userservice.dto.profile.ProfileViewEvent;
 import com.clone.twitter.userservice.model.user.User;
 import com.clone.twitter.userservice.mapper.user.UserMapper;
-import com.clone.twitter.userservice.publisher.ProfileViewEventPublisher;
-import com.clone.twitter.userservice.service.user.UserServiceImpl;
+import com.clone.twitter.userservice.publisher.profile.ProfileViewEventPublisher;
+import com.clone.twitter.userservice.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,15 +20,15 @@ public class ProfileServiceImpl implements ProfileService {
     private final UserMapper userMapper;
     private final UserContext userContext;
     private final ProfileViewEventPublisher profileViewEventPublisher;
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Override
     @Transactional
     public void addView(long userId) {
-        User user = userServiceImpl.getUserEntityById(userId);
+        User user = userService.findUserById(userId);
         long viewerId = userContext.getUserId();
-        ProfileViewEventDto event = new ProfileViewEventDto(userId, viewerId, LocalDateTime.now());
-        if(event.getObserverId() != event.getObserverId()){
+        ProfileViewEvent event = new ProfileViewEvent(userId, viewerId, LocalDateTime.now());
+        if(event.getViewerId() != event.getUserId()){
             profileViewEventPublisher.publish(event);
         }
         userMapper.toDto(user);
