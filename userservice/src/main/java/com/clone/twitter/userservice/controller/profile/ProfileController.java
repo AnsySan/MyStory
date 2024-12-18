@@ -1,7 +1,8 @@
-package com.clone.twitter.userservice.controller;
+package com.clone.twitter.userservice.controller.profile;
 
-import com.clone.twitter.userservice.service.profile.ProfileServiceImpl;
+import com.clone.twitter.userservice.service.profile.ProfileService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -13,14 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("profile")
 @RequiredArgsConstructor
+@Tag(name = "Profiles")
 @Slf4j
 @Validated
 public class ProfileController {
-    private final ProfileServiceImpl profileServiceImpl;
+    private final ProfileService profileService;
 
     @GetMapping("/view/{userId}")
     @Operation(summary = "Add profile view")
     public void addView(@PathVariable("userId") long userId) {
-        profileServiceImpl.addView(userId);
+        profileService.addView(userId);
     }
 }
