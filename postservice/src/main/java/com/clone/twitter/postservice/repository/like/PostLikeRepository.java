@@ -11,7 +11,4 @@ import java.util.Optional;
 public interface PostLikeRepository extends CrudRepository<PostLike, Long> {
     void deleteByPostIdAndUserId(long postId, long userId);
 
-    List<PostLike> findByPostId(long postId);
-
-    Optional<PostLike> findByPostIdAndUserId(long postId, long userId);
 }

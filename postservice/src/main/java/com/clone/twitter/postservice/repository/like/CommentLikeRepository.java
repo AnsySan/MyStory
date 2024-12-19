@@ -12,7 +12,4 @@ public interface CommentLikeRepository extends CrudRepository<CommentLike, Integ
 
     void deleteByCommentIdAndUserId(long commentId, long userId);
 
-    List<CommentLike> findByCommentId(long commentId);
-
-    Optional<CommentLike> findByCommentIdAndUserId(long commentId, long userId);
 }

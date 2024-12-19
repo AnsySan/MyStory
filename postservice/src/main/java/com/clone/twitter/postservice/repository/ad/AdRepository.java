@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.repository.ad;
 
-import com.clone.twitter.postservice.entity.Ad;
+import com.clone.twitter.postservice.entity.ad.Ad;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
