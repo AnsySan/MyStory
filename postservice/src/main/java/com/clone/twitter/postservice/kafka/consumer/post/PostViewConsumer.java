@@ -2,7 +2,7 @@ package com.clone.twitter.postservice.kafka.consumer.post;
 
 import com.clone.twitter.postservice.kafka.consumer.KafkaConsumer;
 import com.clone.twitter.postservice.kafka.event.post.PostViewKafkaEvent;
-import com.clone.twitter.postservice.redis.cache.service.post.PostRedisCacheService;
+import com.clone.twitter.postservice.redis.cache.service.post.PostRedisCacheServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class PostViewConsumer implements KafkaConsumer<PostViewKafkaEvent> {
 
-    private final PostRedisCacheService postRedisCacheService;
+    private final PostRedisCacheServiceImpl postRedisCacheService;
 
     @Override
     @KafkaListener(topics = "${spring.data.kafka.topics.topic-settings.post-views.name}", groupId = "${spring.data.kafka.group-id}")

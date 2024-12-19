@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class CommentConsumer implements KafkaConsumer<CommentKafkaEvent> {
 
     private final CommentMapper commentMapper;
-    private final CommentRedisCacheService commentRedisCacheService;
+    private final CommentRedisCacheService commentCacheService;
 
     @Override
     @KafkaListener(topics = "${spring.data.kafka.topics.topic-settings.comments.name}", groupId = "${spring.data.kafka.group-id}")
@@ -26,8 +26,8 @@ public class CommentConsumer implements KafkaConsumer<CommentKafkaEvent> {
         log.info("Received new comment event {}", event);
 
         switch (event.getState()) {
-            case ADD, UPDATE -> commentRedisCacheService.save(commentMapper.toRedisCache(event));
-            case DELETE -> commentRedisCacheService.deleteById(event.getId());
+            case ADD, UPDATE -> commentCacheService.save(commentMapper.toRedisCache(event));
+            case DELETE -> commentCacheService.deleteById(event.getId());
         }
 
         ack.acknowledge();

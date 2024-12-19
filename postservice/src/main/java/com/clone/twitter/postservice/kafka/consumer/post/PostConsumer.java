@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class PostConsumer implements KafkaConsumer<PostKafkaEvent> {
 
     private final PostMapper postMapper;
-    private final PostRedisCacheService postRedisCacheService;
+    private final PostRedisCacheService postCacheService;
 
     @Override
     @KafkaListener(topics = "${spring.data.kafka.topics.topic-settings.posts.name}", groupId = "${spring.data.kafka.group-id}")
@@ -26,8 +26,8 @@ public class PostConsumer implements KafkaConsumer<PostKafkaEvent> {
         log.info("Received new post event {}", event);
 
         switch (event.getState()) {
-            case ADD, UPDATE -> postRedisCacheService.save(postMapper.toRedisCache(event), event.getSubscriberIds());
-            case DELETE -> postRedisCacheService.deleteById(event.getPostId(), event.getSubscriberIds());
+            case ADD, UPDATE -> postCacheService.save(postMapper.toRedisCache(event));
+            case DELETE -> postCacheService.deleteById(event.getPostId());
         }
 
         ack.acknowledge();
