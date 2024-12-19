@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
@@ -9,7 +11,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -19,34 +21,37 @@ spring:
 
   data:
     redis:
-      host: localhost
       port: 6379
+      host: localhost
       channels:
-        user_ban_channel:
-          name: user_ban
-        notification_like_channel:
-          name: notification_like_channel
-        comment_channel:
-          name: comment_channel
+        calculations_channel:
+          name: calculations_channel
         like_post_channel:
           name: like_channel
+        user_ban_channel:
+          name: user_ban_channel
       cache:
         default-ttl: 3600
-        users:
-          name: users
-        authors:
-          name: authors
-        posts:
-          name: posts
-        comments:
-          name: comments
-        feed:
-          name: feed
+        cache-settings:
+          hashtag:
+            name: hashtags
+          users:
+            name: users
+          authors:
+            name: authors
+          posts:
+            name: posts
+          comments:
+            name: comments
+          feed:
+            name: feed
         settings:
           max-hashtags-size: 1000
-          max-feed-size: 5
-          max-post-comments-size: 5
-
+          max-feed-size: 500
+          max-post-comments-size: 3
+      lock-registry:
+        post-lock-key: POST_LOCK_KEY
+        release-time-duration-millis: 10000
 
     kafka:
       port: 9092
@@ -54,55 +59,47 @@ spring:
       group-id: account_service
 
       topics:
+        default-partition: 1
+        default-replication: 1
         topic-settings:
-          comments:
-            name: comment
-          comment-likes:
-            name: comment-like
           post-likes:
-            name: post-like
+            name: post-likes
+          comment-likes:
+            name: comment-likes
           posts:
-            name: post
+            name: posts
+          comments:
+            name: comments
           post-views:
-            name: post-view
+            name: post-views
+          feed-heater:
+            name: feed-heater
+
   servlet:
     multipart:
       max-file-size: 5MB
 
+  profiles:
+    active: test
+
 server:
-  port: 8091
+  port: 8081
 
-user-service:
-  host: localhost
-  port: 8090
-payment-service:
-  host: localhost
-  port: 8096
-
-async:
-  kafka:
-    corePoolSize: 5
-    maxPoolSize: 10
-    queueCapacity: 100
-  redis:
-    corePoolSize: 5
-    maxPoolSize: 10
-    queueCapacity: 100
-  corePoolSize: 5
-  maxPoolSize: 10
-  queueCapacity: 100
-
+logging:
+  level:
+    root: error
+    org.apache.kafka: OFF
 
 services:
   s3:
-    bucket-name: user-service-bucket
-    endpoint: http://127.0.0.1:9000
+    endpoint: http://127.0.0.1:9000/
     accessKey: user
     secretKey: password
-    isMocked: false
+    bucketName: corpbucket
     targetWidth: 1080
     targetHeight: 566
     maxFilesAmount: 10
+
 
 post:
   publisher:
@@ -126,6 +123,48 @@ post:
     scheduler:
       cron: "0 0 0 * * *"
 
+user-service:
+  host: localhost
+  port: 8080
+project-service:
+  host: localhost
+  port: 8082
+payment-service:
+  host: localhost
+  port: 9080
+
+async.settings:
+  kafka:
+    corePoolSize: 5
+    maxPoolSize: 10
+    queueCapacity: 100
+  feed:
+    corePoolSize: 5
+    maxPoolSize: 10
+    queueCapacity: 100
+  hashtags:
+    corePoolSize: 5
+    maxPoolSize: 10
+    queueCapacity: 100
+
+  redis:
+    settings:
+      posts:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
+      feed:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
+      comments:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
+      authors:
+        corePoolSize: 5
+        maxPoolSize: 10
+        queueCapacity: 100
 
 spelling:
   url: https://speller.yandex.net/services/spellservice.json/checkText?text=
@@ -138,6 +177,9 @@ moderation:
   threads-count: 30
   batch-size: 100
 
-logging:
-  level:
-    root: info
+api:
+  path: /api/v1
+
+batches:
+  feed-heater:
+    size: 100
