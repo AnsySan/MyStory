@@ -16,17 +16,18 @@ import java.util.TreeSet;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Async("feedCacheTaskExecutor")
-public class FeedRedisService {
+public class FeedCacheServiceImpl implements FeedCacheService {
 
     @Value("${spring.data.redis.cache.settings.max-feed-size}")
     private long maxFeedSize;
-    private final FeedRedisRepository feedRedisRepository;
+    private final FeedRedisRepository feedCacheRepository;
     private final RedisOperations redisOperations;
 
+    @Override
+    @Async("feedCacheTaskExecutor")
     public void addPostToFeed(PostRedisCache post, long subscriberId) {
 
-        FeedRedisCache foundNewsFeed = redisOperations.findById(feedRedisRepository, subscriberId).orElse(null);
+        FeedRedisCache foundNewsFeed = redisOperations.findById(feedCacheRepository, subscriberId).orElse(null);
 
         if (foundNewsFeed == null) {
 
@@ -37,6 +38,8 @@ public class FeedRedisService {
                     .id(subscriberId)
                     .posts(posts)
                     .build();
+
+            log.info("Creating new feed for user with id: {}", subscriberId);
         } else {
 
             NavigableSet<PostRedisCache> currentFeed = foundNewsFeed.getPosts();
@@ -46,18 +49,29 @@ public class FeedRedisService {
             }
         }
 
-        redisOperations.updateOrSave(feedRedisRepository, foundNewsFeed, subscriberId);
+        log.info("Adding post to feed for user with id: {}", subscriberId);
+
+        redisOperations.updateOrSave(feedCacheRepository, foundNewsFeed, subscriberId);
     }
 
+    @Override
+    @Async("feedCacheTaskExecutor")
     public void deletePostFromFeed(PostRedisCache post, long subscriberId) {
 
-        FeedRedisCache foundNewsFeed = redisOperations.findById(feedRedisRepository, subscriberId).orElse(null);
+        FeedRedisCache foundNewsFeed = redisOperations.findById(feedCacheRepository, subscriberId).orElse(null);
 
         if (foundNewsFeed != null) {
 
             NavigableSet<PostRedisCache> currentFeed = foundNewsFeed.getPosts();
             currentFeed.remove(post);
-            redisOperations.updateOrSave(feedRedisRepository, foundNewsFeed, subscriberId);
+            redisOperations.updateOrSave(feedCacheRepository, foundNewsFeed, subscriberId);
+
+            log.info("Deleting post from feed for user with id: {}", subscriberId);
         }
+    }
+
+    @Override
+    public FeedRedisCache findByUserId(long userId) {
+        return redisOperations.findById(feedCacheRepository, userId).orElse(null);
     }
 }

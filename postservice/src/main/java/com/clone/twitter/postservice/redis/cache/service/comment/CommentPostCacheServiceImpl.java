@@ -17,10 +17,10 @@ import java.util.function.Consumer;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CommentPostRedisServiceImpl implements CommentPostRedisService {
+public class CommentPostCacheServiceImpl implements CommentPostCacheService {
 
     @Value("${spring.data.redis.cache.settings.max-post-comments-size}")
-    private long maxPostCommentsSize;
+    private int maxPostCommentsSize;
     private final PostRedisRepository postRedisRepository;
     private final RedisOperations redisOperations;
 
@@ -29,7 +29,7 @@ public class CommentPostRedisServiceImpl implements CommentPostRedisService {
 
         getPostAndPerform(comment, (post) -> {
 
-            NavigableSet<CommentRedisCache> comments = post.getCommentRedisCaches();
+            NavigableSet<CommentRedisCache> comments = post.getComments();
 
             if (comments != null) {
                 comments.remove(comment);
@@ -46,12 +46,12 @@ public class CommentPostRedisServiceImpl implements CommentPostRedisService {
 
         getPostAndPerform(comment, (post) -> {
 
-            NavigableSet<CommentRedisCache> comments = post.getCommentRedisCaches();
+            NavigableSet<CommentRedisCache> comments = post.getComments();
 
             if (comments == null) {
                 comments = new TreeSet<>(Comparator.comparing(CommentRedisCache::getCreatedAt));
                 comments.add(comment);
-                post.setCommentRedisCaches(comments);
+                post.setComments(comments);
             } else {
                 comments.add(comment);
                 while (comments.size() > maxPostCommentsSize) {

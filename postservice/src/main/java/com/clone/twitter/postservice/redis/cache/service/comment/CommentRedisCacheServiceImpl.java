@@ -19,27 +19,25 @@ public class CommentRedisCacheServiceImpl implements CommentRedisCacheService {
 
     private final CommentRedisRepository commentRedisRepository;
     private final RedisOperations redisOperations;
-    private  final CommentPostRedisServiceImpl commentPostRedisServiceImpl;
+    private  final CommentPostCacheService commentPostRedisService;
     private final AuthorRedisCacheServiceImpl authorRedisCacheServiceImpl;
 
     @Override
-    public CompletableFuture<CommentRedisCache> save(CommentRedisCache entity) {
+    public void save(CommentRedisCache entity) {
 
         entity = redisOperations.updateOrSave(commentRedisRepository, entity, entity.getId());
 
         log.info("Saved comment with id {} to cache: {}", entity.getId(), entity);
 
         authorRedisCacheServiceImpl.save(entity.getAuthor());
-        commentPostRedisServiceImpl.tryAddCommentToPost(entity);
-
-        return CompletableFuture.completedFuture(entity);
+        commentPostRedisService.tryAddCommentToPost(entity);
     }
 
     @Override
     public void deleteById(long commentId) {
 
         CommentRedisCache comment = redisOperations.findById(commentRedisRepository, commentId).orElse(null);
-        commentPostRedisServiceImpl.tryDeleteCommentFromPost(comment);
+        commentPostRedisService.tryDeleteCommentFromPost(comment);
         redisOperations.deleteById(commentRedisRepository, commentId);
         log.info("Deleted comment with id={} from cache", commentId);
     }
@@ -49,7 +47,7 @@ public class CommentRedisCacheServiceImpl implements CommentRedisCacheService {
 
         commentRedisRepository.findById(commentId).ifPresent(comment -> {
             comment.setLikesCount(comment.getLikesCount() + 1);
-            commentPostRedisServiceImpl.tryAddCommentToPost(comment);
+            commentPostRedisService.tryAddCommentToPost(comment);
             redisOperations.updateOrSave(commentRedisRepository, comment, commentId);
         });
     }
@@ -59,7 +57,7 @@ public class CommentRedisCacheServiceImpl implements CommentRedisCacheService {
 
         redisOperations.findById(commentRedisRepository, commentId).ifPresent(comment -> {
             comment.setLikesCount(comment.getLikesCount() - 1);
-            commentPostRedisServiceImpl.tryAddCommentToPost(comment);
+            commentPostRedisService.tryAddCommentToPost(comment);
             redisOperations.updateOrSave(commentRedisRepository, comment, commentId);
         });
     }

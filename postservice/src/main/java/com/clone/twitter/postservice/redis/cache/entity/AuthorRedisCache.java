@@ -22,7 +22,6 @@ public class AuthorRedisCache implements Serializable {
 
     @Id
     private long id;
-
     private String username;
     private String smallFileId;
 

@@ -29,13 +29,12 @@ public class PostRedisCache implements Serializable, Comparable<PostRedisCache> 
 
     @Reference
     @ToString.Exclude
-    private NavigableSet<CommentRedisCache> commentRedisCaches;
+    private NavigableSet<CommentRedisCache> comments;
     @Reference
     @ToString.Exclude
     private AuthorRedisCache author;
 
     private String content;
-    private List<String> resourceIds;
     private LocalDateTime publishedAt;
     private LocalDateTime createdAt;
     private long likesCount;
