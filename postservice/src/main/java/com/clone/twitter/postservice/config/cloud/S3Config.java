@@ -6,53 +6,32 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.clone.twitter.postservice.property.AmazonS3Properties;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @RequiredArgsConstructor
 @Data
 public class S3Config {
-
-    @Value("${services.s3.accessKey}")
-    private String accessKey;
-    @Value("${services.s3.secretKey}")
-    private String secretKey;
-    @Value("${services.s3.endpoint}")
-    private String endpoint;
-    @Value("${services.s3.bucket-name}")
-    private String bucketName;
-    @Value("${services.s3.targetWidth}")
-    private int wigth;
-    @Value("${services.s3.targetHeight}")
-    private int heigth;
-    @Value("${services.s3.maxFilesAmount}")
-    private int maxFiles;
-
+    private final AmazonS3Properties amazonS3Properties;
 
     @Bean
-    public AmazonS3 amazonS3() {
+    public AmazonS3 s3Client() {
 
-        AWSCredentials credentials = new BasicAWSCredentials(
-                accessKey,
-                secretKey
+        AWSCredentials awsCredentials = new BasicAWSCredentials(amazonS3Properties.getAccessKey(), amazonS3Properties.getSecretKey());
 
-        );
-
-        return AmazonS3ClientBuilder
-                .standard()
-                .withEndpointConfiguration( new AwsClientBuilder.EndpointConfiguration( endpoint, null ) )
-                .withCredentials( new AWSStaticCredentialsProvider( credentials ) )
+        AmazonS3 clientAmazonS3 = AmazonS3ClientBuilder.standard()
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(amazonS3Properties.getEndpoint(), null))
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
 
-    }
+        if (!clientAmazonS3.doesBucketExistV2(amazonS3Properties.getBucketName())) {
+            clientAmazonS3.createBucket(amazonS3Properties.getBucketName());
+        }
 
-    @Bean
-    public String bucketName() {
-        return bucketName;
+        return clientAmazonS3;
     }
 }

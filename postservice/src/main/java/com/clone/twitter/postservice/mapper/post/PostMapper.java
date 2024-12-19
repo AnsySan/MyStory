@@ -1,10 +1,10 @@
 package com.clone.twitter.postservice.mapper.post;
 
+import com.clone.twitter.postservice.dto.post.PostCreateDto;
 import com.clone.twitter.postservice.dto.post.PostDto;
 import com.clone.twitter.postservice.dto.post.PostHashtagDto;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.entity.PostLike;
-import com.clone.twitter.postservice.entity.Resource;
 import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.event.post.PostKafkaEvent;
 import com.clone.twitter.postservice.kafka.event.post.PostViewKafkaEvent;
@@ -19,9 +19,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostMapper {
 
-    @Mapping(target = "likes", expression = "java(new ArrayList<>())")
-    @Mapping(target = "deleted", expression = "java(false)")
-    Post toEntity(PostDto postDto);
+    Post toEntity(PostCreateDto postCreateDto);
 
     @Mapping(source = "likes", target = "likeIds", qualifiedByName = "getIdFromLike")
     PostHashtagDto toHashtagDto(Post post);
@@ -35,9 +33,16 @@ public interface PostMapper {
     @Mapping(source = "likes", target = "likesCount", qualifiedByName = "getCountFromLikeList")
     PostDto toDto(Post post);
 
-    @Mapping(source = "post.resources", target = "resourceIds", qualifiedByName = "getIdFromResource")
+    @Mapping(source = "author.id", target = "authorId")
+    PostDto toDto(PostRedisCache post);
+
+    @Mapping(source = "state", target = "state")
     @Mapping(source = "post.id", target = "postId")
-    PostKafkaEvent toKafkaEvent(Post post, List<Long> subscriberIds, State state);
+    @Mapping(source = "post.authorId", target = "authorId")
+    @Mapping(source = "post.createdAt", target = "createdAt")
+    @Mapping(source = "post.publishedAt", target = "publishedAt")
+    @Mapping(source = "post.content", target = "content")
+    PostKafkaEvent toKafkaEvent(Post post, State state);
 
     @Mapping(source = "post.id", target = "postId")
     PostViewKafkaEvent toViewKafkaEvent(Post post);
@@ -46,24 +51,23 @@ public interface PostMapper {
     @Mapping(source = "authorId", target = "author.id")
     PostRedisCache toRedisCache(PostKafkaEvent post);
 
+    @Mapping(source = "authorId", target = "author.id")
+    @Mapping(source = "likes", target = "likesCount", qualifiedByName = "getCountFromLikeList")
+    PostRedisCache toRedisCache(Post post);
+
     @Named("getCountFromLikeList")
-    default int getCountFromLikeList(List<PostLike> likes) {
+    default long getCountFromLikeList(List<PostLike> likes) {
         return likes != null ? likes.size() : 0;
     }
 
     @Named("getCountFromList")
-    default int getCountFromList(List<Long> ids) {
+    default long getCountFromList(List<Long> ids) {
         return ids != null ? ids.size() : 0;
     }
 
     @Named("getIdFromLike")
     default long getIdFromLike(PostLike like) {
         return like != null ? like.getId() : 0;
-    }
-
-    @Named("getIdFromResource")
-    default long getIdFromResource(Resource resource) {
-        return resource != null ? resource.getId() : 0;
     }
 
     @Named("getLikeFromId")

@@ -1,27 +1,25 @@
 package com.clone.twitter.postservice.dto.post;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.clone.twitter.postservice.dto.comment.CommentDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PostDto {
-
-    private Long id;
+    private long id;
     private String content;
     private Long authorId;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createdAt;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime publishedAt;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime updatedAt;
+    private Long projectId;
     private boolean published;
+    private LocalDateTime publishedAt;
     private boolean deleted;
-    private long likesCount;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private int likesCount;
     private long viewsCount;
+    private List<CommentDto> comments;
 }

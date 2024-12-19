@@ -1,12 +1,13 @@
 package com.clone.twitter.postservice.config.redis;
 
+import com.clone.twitter.postservice.property.RedisCacheProperty;
+import com.clone.twitter.postservice.property.RedisLockRegistryProperty;
 import com.clone.twitter.postservice.redis.cache.entity.AuthorRedisCache;
 import com.clone.twitter.postservice.redis.cache.entity.CommentRedisCache;
 import com.clone.twitter.postservice.redis.cache.entity.FeedRedisCache;
 import com.clone.twitter.postservice.redis.cache.entity.PostRedisCache;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -15,6 +16,8 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.convert.KeyspaceConfiguration;
+import org.springframework.integration.redis.util.RedisLockRegistry;
+import org.springframework.integration.support.locks.ExpirableLockRegistry;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -24,29 +27,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RedisCacheConfig {
 
-    @Value("${spring.data.redis.cache.default-ttl}")
-    private Long TTl;
+    private final RedisCacheProperty redisCacheProperty;
+    private final RedisLockRegistryProperty redisLockRegistryProperty;
 
-    @Value("${spring.data.redis.cache.authors.name}")
-    private String authorsName;
+    @Bean
+    public ExpirableLockRegistry expirableLockRegistry(RedisConnectionFactory redisConnectionFactory) {
 
-    @Value("${spring.data.redis.cache.comments.name}")
-    private String commentsName;
-
-    @Value("${spring.data.redis.cache.feed.name}")
-    private String feedName;
-
-    @Value("${spring.data.redis.cache.posts.name}")
-    private String postsName;
-
-    @Value("${spring.data.redis.cache.users.name}")
-    private String usersName;
+        return new RedisLockRegistry(redisConnectionFactory, redisLockRegistryProperty.getPostLockKey(),
+                redisLockRegistryProperty.getReleaseTimeDurationMillis());
+    }
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.of(TTl, ChronoUnit.SECONDS));
+                .entryTtl(Duration.of(redisCacheProperty.getDefaultTtl(), ChronoUnit.SECONDS));
         return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
@@ -72,7 +67,7 @@ public class RedisCacheConfig {
             String cacheName = type.getAnnotation(RedisHash.class).value();
 
             KeyspaceSettings keyspaceSettings = new KeyspaceSettings(type, cacheName);
-            keyspaceSettings.setTimeToLive(TTl);
+            keyspaceSettings.setTimeToLive(redisCacheProperty.getCacheSettings().get(cacheName).getTtl());
 
             return keyspaceSettings;
         }

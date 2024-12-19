@@ -1,50 +1,39 @@
 package com.clone.twitter.postservice.config.kafka;
 
+import com.clone.twitter.postservice.property.KafkaChannelProperty;
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Configuration
+@RequiredArgsConstructor
 public class KafkaTopicConfig {
 
-    @Value("${spring.data.kafka.topics.topic-settings.post-likes.name}")
-    private String postLikesName;
-
-    @Value("${spring.data.kafka.topics.topic-settings.comment-likes.name}")
-    private String commentLikesName;
-
-    @Value("${spring.data.kafka.topics.topic-settings.posts.name}")
-    private String posts;
-
-    @Value("${spring.data.kafka.topics.topic-settings.comments.name}")
-    private String comment;
-
-    @Value("${spring.data.kafka.topics.topic-settings.post-views.name}")
-    private String postViems;
+    private final KafkaChannelProperty kafkaChannelProperty;
 
     @Bean
-    public NewTopic postLikesTopic() {
-        return new NewTopic(postLikesName, 1, (short) 1);
-    }
+    public Map<String, NewTopic> topicMap() {
 
-    @Bean
-    public NewTopic commentLikesTopic() {
-        return new NewTopic(commentLikesName, 1, (short) 1);
-    }
+        return kafkaChannelProperty.getTopicSettings().entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> {
+                            KafkaChannelProperty.Channel channel = entry.getValue();
 
-    @Bean
-    public NewTopic postsTopic() {
-        return new NewTopic(posts, 1, (short) 1);
-    }
+                            if (channel.getPartition() == null) {
+                                channel.setPartition(kafkaChannelProperty.getDefaultPartition());
+                            }
 
-    @Bean
-    public NewTopic commentsTopic() {
-        return new NewTopic(comment, 1, (short) 1);
-    }
+                            if (channel.getReplication() == null) {
+                                channel.setReplication(kafkaChannelProperty.getDefaultReplication());
+                            }
 
-    @Bean
-    public NewTopic postViemTopic() {
-        return new NewTopic(postViems, 1, (short) 1);
+                            return new NewTopic(channel.getName(), channel.getPartition(), channel.getReplication());
+                        })
+                );
     }
 }

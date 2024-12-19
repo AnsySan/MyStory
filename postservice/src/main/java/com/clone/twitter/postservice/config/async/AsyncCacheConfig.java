@@ -1,5 +1,6 @@
-package com.clone.twitter.postservice.config.cloud.async;
+package com.clone.twitter.postservice.config.async;
 
+import com.clone.twitter.postservice.property.RedisAsyncProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,21 +13,14 @@ import java.util.concurrent.Executor;
 @RequiredArgsConstructor
 public class AsyncCacheConfig {
 
-    @Value("${async.redis.corePoolSize}")
-    private int corePoolSize;
-
-    @Value("${async.redis.maxPoolSize}")
-    private int maxPoolSize;
-
-    @Value("${async.redis.queueCapacity}")
-    private int queueCapacity;
+    private final RedisAsyncProperty redisAsyncProperty;
 
     @Bean
     public Executor postsCacheTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(corePoolSize);
-        executor.setMaxPoolSize(maxPoolSize);
-        executor.setQueueCapacity(queueCapacity);
+        executor.setCorePoolSize(redisAsyncProperty.getSettings().get("posts").getCorePoolSize());
+        executor.setMaxPoolSize(redisAsyncProperty.getSettings().get("posts").getMaxPoolSize());
+        executor.setQueueCapacity(redisAsyncProperty.getSettings().get("posts").getQueueCapacity());
         executor.setThreadNamePrefix("PostCacheAsyncThread-");
         executor.initialize();
         return executor;
@@ -35,9 +29,9 @@ public class AsyncCacheConfig {
     @Bean
     public Executor commentsCacheTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(corePoolSize);
-        executor.setMaxPoolSize(maxPoolSize);
-        executor.setQueueCapacity(queueCapacity);
+        executor.setCorePoolSize(redisAsyncProperty.getSettings().get("comments").getCorePoolSize());
+        executor.setMaxPoolSize(redisAsyncProperty.getSettings().get("comments").getMaxPoolSize());
+        executor.setQueueCapacity(redisAsyncProperty.getSettings().get("comments").getQueueCapacity());
         executor.setThreadNamePrefix("CommentsCacheAsyncThread-");
         executor.initialize();
         return executor;
@@ -46,9 +40,9 @@ public class AsyncCacheConfig {
     @Bean
     public Executor authorsCacheTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(corePoolSize);
-        executor.setMaxPoolSize(maxPoolSize);
-        executor.setQueueCapacity(queueCapacity);
+        executor.setCorePoolSize(redisAsyncProperty.getSettings().get("authors").getCorePoolSize());
+        executor.setMaxPoolSize(redisAsyncProperty.getSettings().get("authors").getMaxPoolSize());
+        executor.setQueueCapacity(redisAsyncProperty.getSettings().get("authors").getQueueCapacity());
         executor.setThreadNamePrefix("AuthorsCacheAsyncThread-");
         executor.initialize();
         return executor;
@@ -57,9 +51,9 @@ public class AsyncCacheConfig {
     @Bean
     public Executor feedCacheTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(corePoolSize);
-        executor.setMaxPoolSize(maxPoolSize);
-        executor.setQueueCapacity(queueCapacity);
+        executor.setCorePoolSize(redisAsyncProperty.getSettings().get("feed").getCorePoolSize());
+        executor.setMaxPoolSize(redisAsyncProperty.getSettings().get("feed").getMaxPoolSize());
+        executor.setQueueCapacity(redisAsyncProperty.getSettings().get("feed").getQueueCapacity());
         executor.setThreadNamePrefix("FeedCacheAsyncThread-");
         executor.initialize();
         return executor;

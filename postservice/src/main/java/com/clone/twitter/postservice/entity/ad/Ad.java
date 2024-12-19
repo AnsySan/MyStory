@@ -1,5 +1,6 @@
-package com.clone.twitter.postservice.entity;
+package com.clone.twitter.postservice.entity.ad;
 
+import com.clone.twitter.postservice.entity.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

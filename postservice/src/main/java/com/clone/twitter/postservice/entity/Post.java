@@ -1,6 +1,6 @@
 package com.clone.twitter.postservice.entity;
 
-
+import com.clone.twitter.postservice.entity.ad.Ad;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -20,7 +20,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(name = "content", nullable = false, length = 4096)
     private String content;
@@ -28,12 +28,24 @@ public class Post {
     @Column(name = "author_id")
     private Long authorId;
 
+    @Column(name = "project_id")
+    private Long projectId;
+
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     @ToString.Exclude
     private List<PostLike> likes;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<Hashtag> hashtags;
+
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments;
+
+    @ManyToMany(mappedBy = "posts")
+    private List<Album> albums;
+
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL)
+    private Ad ad;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Resource> resources;
