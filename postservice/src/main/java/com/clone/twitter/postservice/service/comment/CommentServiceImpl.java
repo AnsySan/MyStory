@@ -1,6 +1,8 @@
 package com.clone.twitter.postservice.service.comment;
 
 import com.clone.twitter.postservice.dto.comment.CommentDto;
+import com.clone.twitter.postservice.dto.comment.CommentToCreateDto;
+import com.clone.twitter.postservice.dto.comment.CommentToUpdateDto;
 import com.clone.twitter.postservice.entity.Comment;
 import com.clone.twitter.postservice.entity.Post;
 import com.clone.twitter.postservice.kafka.event.State;
@@ -9,35 +11,37 @@ import com.clone.twitter.postservice.mapper.comment.CommentMapper;
 import com.clone.twitter.postservice.repository.comment.CommentRepository;
 import com.clone.twitter.postservice.repository.post.PostRepository;
 import com.clone.twitter.postservice.service.commonMethods.CommonServiceMethods;
-import com.clone.twitter.postservice.validator.comment.CommentValidatorImpl;
+import com.clone.twitter.postservice.validator.comment.CommentValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentValidatorImpl commentValidatorImpl;
+    private final CommentValidator commentValidator;
     private final CommentMapper commentMapper;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    private final CommentProducer commentProducer;
     private final CommonServiceMethods commonServiceMethods;
+    private final CommentProducer commentProducer;
 
     @Override
-    public CommentDto createComment(CommentDto commentDto, long userId, long postId) {
+    public CommentDto createComment(long postId, long userId, CommentToCreateDto commentDto) {
+
         Post post = commonServiceMethods.findEntityById(postRepository, postId, "Post");
         Comment comment = commentMapper.toEntity(commentDto);
         comment.setAuthorId(userId);
         comment.setPost(post);
 
-        commentValidatorImpl.validateCreateComment(userId);
+        commentValidator.validateCreateComment(userId);
 
         comment = commentRepository.save(comment);
 
@@ -49,10 +53,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto updateComment(CommentDto commentDto, long userId, long commentId) {
+    @Transactional(readOnly = true)
+    public List<CommentDto> getAllPostComments(long postId) {
+
+        return commentRepository.findAllByPostId(postId).stream()
+                .sorted(Comparator.comparing(Comment::getCreatedAt))
+                .map(commentMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CommentDto updateComment(long commentId, long userId, CommentToUpdateDto updatedCommentDto) {
+
         Comment commentToUpdate = commonServiceMethods.findEntityById(commentRepository, commentId, "Comment");
 
-        commentMapper.update(commentDto, commentToUpdate);
+        commentValidator.validateUpdateAlbum(commentToUpdate, userId);
+
+        commentMapper.update(updatedCommentDto, commentToUpdate);
         commentToUpdate = commentRepository.save(commentToUpdate);
 
         commentProducer.produce(commentMapper.toKafkaEvent(commentToUpdate, State.UPDATE));
@@ -63,17 +80,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getPostComments(long postId) {
-        return commentRepository.findAllByPostId(postId).stream()
-                .sorted(Comparator.comparing(Comment::getCreatedAt))
-                .map(commentMapper::toDto)
-                .collect(Collectors.toList());
-    }
+    public CommentDto deleteComment(long postId, long commentId, long userId) {
 
-    @Override
-    public CommentDto  deleteComment(long commentId, long userId, long postId) {
         Comment comment = commonServiceMethods.findEntityById(commentRepository, commentId, "Comment");
         CommentDto commentToDelete = commentMapper.toDto(comment);
+
+        commentValidator.validateDeleteAlbum(postId, userId, comment);
 
         commentRepository.deleteById(commentId);
 

@@ -1,6 +1,8 @@
 package com.clone.twitter.postservice.service.post;
 
+import com.clone.twitter.postservice.dto.post.PostCreateDto;
 import com.clone.twitter.postservice.dto.post.PostDto;
+import com.clone.twitter.postservice.dto.post.PostUpdateDto;
 import com.clone.twitter.postservice.entity.Post;
 import org.springframework.data.domain.Pageable;
 
@@ -8,23 +10,25 @@ import java.util.List;
 
 public interface PostService {
 
-    public PostDto findById(long id);
+    PostDto findById(Long id);
 
-    public PostDto createPost(PostDto postDto);
+    PostDto create(PostCreateDto postCreateDto);
 
-    public PostDto publishPost(long postId);
+    PostDto publish(Long id);
 
-    public PostDto updatePost(long postId, PostDto postDto);
+    PostDto update(Long id, PostUpdateDto postUpdateDto);
 
-    public PostDto deletePost(long postId);
+    void deleteById(Long id);
 
     List<PostDto> findAllByHashtag(String hashtag, Pageable pageable);
 
-    public List<PostDto> findPostDraftsByUserAuthorId(long id);
+    List<PostDto> findPostDraftsByUserAuthorId(Long id);
 
-    public List<PostDto> findPostPublicationsByUserAuthorId(long id);
+    List<PostDto> findPostDraftsByProjectAuthorId(Long id);
 
-    public PostDto getPostById(long postId);
+    List<PostDto> findPostPublicationsByUserAuthorId(Long id);
+
+    List<PostDto> findPostPublicationsByProjectAuthorId(Long id);
 
     void verifyPost(List<Post> posts);
 

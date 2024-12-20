@@ -1,11 +1,12 @@
 package com.clone.twitter.postservice.service.user;
 
 import com.clone.twitter.postservice.dto.user.UserDto;
-import com.clone.twitter.postservice.redis.cache.entity.AuthorRedisCache;
+
+import java.util.List;
 
 public interface UserService {
 
-    UserDto getUserById(Long userId);
+    UserDto getUserById(long userId);
 
-    AuthorRedisCache getUserAuthorCacheById(Long userId);
+    List<UserDto> getAllUsers();
 }

@@ -7,7 +7,7 @@ import com.clone.twitter.postservice.kafka.event.State;
 import com.clone.twitter.postservice.kafka.producer.like.CommentLikeProducer;
 import com.clone.twitter.postservice.mapper.like.CommentLikeMapper;
 import com.clone.twitter.postservice.repository.like.CommentLikeRepository;
-import com.clone.twitter.postservice.validator.like.LikeValidator;
+import com.clone.twitter.postservice.validator.like.LikeValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,20 +15,20 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class CommentLikeServiceImpl implements LikeService<CommentLikeDto> {
+public class CommentLikeServiceImpl implements CommentLikeService<CommentLikeDto> {
 
     private final CommentLikeRepository commentLikeRepository;
     private final CommentLikeMapper commentLikeMapper;
-    private final LikeValidator likeValidator;
+    private final LikeValidatorImpl likeValidator;
     private final CommentLikeProducer commentLikeProducer;
 
     @Override
-    public CommentLikeDto addLike(long userId, long id) {
+    public CommentLikeDto addLikeToComment(long userId, long id) {
 
         CommentLikeDto likeDto = createLikeDto(userId, id);
 
         likeValidator.validateUserExistence(userId);
-        Comment comment = likeValidator.validateCommentToLike(userId, id);
+        Comment comment = likeValidator.validateAndGetCommentToLike(userId, id);
 
         CommentLike like = commentLikeMapper.toEntity(likeDto);
         like.setComment(comment);
@@ -42,7 +42,7 @@ public class CommentLikeServiceImpl implements LikeService<CommentLikeDto> {
     }
 
     @Override
-    public void removeLike(long userId, long id) {
+    public void removeLikeToComment(long userId, long id) {
 
         CommentLikeDto likeDto = createLikeDto(userId, id);
         CommentLike like = commentLikeMapper.toEntity(likeDto);

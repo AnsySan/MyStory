@@ -11,6 +11,7 @@ import com.clone.twitter.postservice.redis.publisher.LikeEventPublisher;
 import com.clone.twitter.postservice.redis.publisher.event.LikeRedisEvent;
 import com.clone.twitter.postservice.repository.like.PostLikeRepository;
 import com.clone.twitter.postservice.validator.like.LikeValidator;
+import com.clone.twitter.postservice.validator.like.LikeValidatorImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PostLikeServiceImpl implements LikeService<PostLikeDto> {
+public class PostLikeServiceImpl implements PostLikeService<PostLikeDto> {
 
     private final PostLikeRepository postLikeRepository;
     private final PostLikeMapper postLikeMapper;
@@ -31,7 +32,7 @@ public class PostLikeServiceImpl implements LikeService<PostLikeDto> {
 
     @Override
     @Transactional
-    public PostLikeDto addLike(long userId, long id) {
+    public PostLikeDto addLikeToPost(long userId, long id) {
 
         PostLikeDto likeDto = createLikeDto(userId, id);
 
@@ -53,7 +54,7 @@ public class PostLikeServiceImpl implements LikeService<PostLikeDto> {
 
     @Override
     @Transactional
-    public void removeLike(long userId, long id) {
+    public void removeLikeToPost(long userId, long id) {
 
         PostLikeDto likeDto = createLikeDto(userId, id);
         PostLike like = postLikeMapper.toEntity(likeDto);
