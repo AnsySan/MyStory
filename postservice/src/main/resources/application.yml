@@ -83,7 +83,7 @@ spring:
     active: test
 
 server:
-  port: 8081
+  port: 8091
 
 logging:
   level:
@@ -125,13 +125,13 @@ post:
 
 user-service:
   host: localhost
-  port: 8080
+  port: 8090
 project-service:
   host: localhost
-  port: 8082
+  port: 8092
 payment-service:
   host: localhost
-  port: 9080
+  port: 8093
 
 async.settings:
   kafka:
