@@ -79,7 +79,7 @@ class LikeValidatorImplTest {
 
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
-        DataValidationException e = assertThrows(DataValidationException.class, () -> validator.validateCommentToLike(userId, commentId));
+        DataValidationException e = assertThrows(DataValidationException.class, () -> validator.validateAndGetCommentToLike(userId, commentId));
         assertEquals(
                 "user with userId:" + userId + " can't like comment with commentId:" + commentId + " two times",
                 e.getMessage()
@@ -92,7 +92,7 @@ class LikeValidatorImplTest {
 
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(comment));
 
-        assertDoesNotThrow(() -> validator.validateCommentToLike(userId, commentId));
+        assertDoesNotThrow(() -> validator.validateAndGetCommentToLike(userId, commentId));
     }
 
     @Test

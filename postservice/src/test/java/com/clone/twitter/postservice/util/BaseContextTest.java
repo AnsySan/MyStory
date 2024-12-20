@@ -37,7 +37,7 @@ public class BaseContextTest {
 
     @Container
     public static PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
-            new PostgreSQLContainer<>("postgres:latest");
+            new PostgreSQLContainer<>("postgres:13.6");
     @Container
     private static final RedisContainer REDIS_CONTAINER =
             new RedisContainer(DockerImageName.parse("redis/redis-stack:latest"));
