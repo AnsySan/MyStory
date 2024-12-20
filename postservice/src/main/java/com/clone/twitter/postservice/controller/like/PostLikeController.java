@@ -1,8 +1,8 @@
-package com.clone.twitter.postservice.controller;
+package com.clone.twitter.postservice.controller.like;
 
 import com.clone.twitter.postservice.config.context.UserContext;
-import com.clone.twitter.postservice.dto.like.CommentLikeDto;
-import com.clone.twitter.postservice.service.like.CommentLikeServiceImpl;
+import com.clone.twitter.postservice.dto.like.PostLikeDto;
+import com.clone.twitter.postservice.service.like.PostLikeServiceImpl;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.validation.constraints.Positive;
@@ -16,25 +16,25 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/likes/comment")
+@RequestMapping("/likes/post")
 @RequiredArgsConstructor
-public class CommentLikeController {
+public class PostLikeController {
 
-    private final CommentLikeServiceImpl likeService;
+    private final PostLikeServiceImpl likeService;
     private final UserContext userContext;
 
-    @PostMapping("/{commentId}")
+    @PostMapping("/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    @Parameter(in = ParameterIn.HEADER, name = "x-user-id", required = true)
-    public CommentLikeDto likeComment(@Positive @PathVariable long commentId) {
+    @Parameter(in = ParameterIn.HEADER, name = "twitter-user-id", required = true)
+    public PostLikeDto likePost(@Positive @PathVariable long postId) {
         long userId = userContext.getUserId();
-        return likeService.addLike(userId, commentId);
+        return likeService.addLikeToPost(userId, postId);
     }
 
-    @DeleteMapping("/{commentId}")
-    @Parameter(in = ParameterIn.HEADER, name = "x-user-id", required = true)
-    public void deleteLikeFromComment(@Positive @PathVariable long commentId) {
+    @DeleteMapping("/{postId}")
+    @Parameter(in = ParameterIn.HEADER, name = "twitter-user-id", required = true)
+    public void deleteLikeFromPost(@Positive @PathVariable long postId) {
         long userId = userContext.getUserId();
-        likeService.removeLike(userId, commentId);
+        likeService.removeLikeToPost(userId, postId);
     }
 }

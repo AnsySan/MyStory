@@ -1,7 +1,9 @@
-package com.clone.twitter.postservice.controller;
+package com.clone.twitter.postservice.controller.comment;
 
 import com.clone.twitter.postservice.config.context.UserContext;
 import com.clone.twitter.postservice.dto.comment.CommentDto;
+import com.clone.twitter.postservice.dto.comment.CommentToCreateDto;
+import com.clone.twitter.postservice.dto.comment.CommentToUpdateDto;
 import com.clone.twitter.postservice.service.comment.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,9 +15,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/comments")
@@ -35,9 +46,9 @@ public class CommentController {
     @ResponseStatus(HttpStatus.CREATED)
     @Parameter(in = ParameterIn.HEADER, name = "twitter-user-id", required = true)
     public CommentDto createComment(@PathVariable("postId") long postId,
-                                    @RequestBody @Valid CommentDto commentDto) {
+                                    @RequestBody @Valid CommentToCreateDto commentDto) {
         long userId = userContext.getUserId();
-        return commentService.createComment(commentDto, userId, postId);
+        return commentService.createComment(postId, userId, commentDto);
     }
 
     @Operation(summary = "Get all comments for a post")
@@ -48,8 +59,8 @@ public class CommentController {
     })
     @GetMapping("/post/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getPostComments(@PathVariable("postId") long postId) {
-        return commentService.getPostComments(postId);
+    public List<CommentDto> getAllPostComments(@PathVariable("postId") long postId) {
+        return commentService.getAllPostComments(postId);
     }
 
     @Operation(summary = "Update a comment")
@@ -61,9 +72,9 @@ public class CommentController {
     @PutMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
     public CommentDto updateComment(@PathVariable("commentId") long commentId,
-                                    @RequestBody @Valid CommentDto commentDto) {
+                                    @RequestBody @Valid CommentToUpdateDto commentDto) {
         long userId = userContext.getUserId();
-        return commentService.updateComment(commentDto, userId, commentId);
+        return commentService.updateComment(commentId, userId, commentDto);
     }
 
     @Operation(summary = "Delete a comment")
@@ -77,6 +88,6 @@ public class CommentController {
     public CommentDto deleteComment(@PathVariable("commentId") long commentId,
                                     @PathVariable("postId") long postId) {
         long userId = userContext.getUserId();
-        return commentService.deleteComment(commentId, postId, userId);
+        return commentService.deleteComment(postId, commentId, userId);
     }
 }

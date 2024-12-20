@@ -1,8 +1,8 @@
-package com.clone.twitter.postservice.controller;
+package com.clone.twitter.postservice.controller.resource;
 
 import com.clone.twitter.postservice.config.context.UserContext;
 import com.clone.twitter.postservice.dto.resource.ResourceDto;
-import com.clone.twitter.postservice.service.resource.ResourceServiceImpl;
+import com.clone.twitter.postservice.service.resource.ResourceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +13,18 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("resources")
 @RequiredArgsConstructor
 @Tag(name = "Resource")
 public class ResourceController {
 
-    private final ResourceServiceImpl resourceService;
+    private final ResourceService resourceService;
     private final UserContext userContext;
 
     @Operation(summary = "Save resource")
     @PostMapping("upload/{postId}")
     public List<ResourceDto> uploadFiles(
-            @PathVariable long postId,
+            @PathVariable Long postId,
             @RequestPart List<MultipartFile> files
     ) {
         return resourceService.create(postId, userContext.getUserId(), files);
