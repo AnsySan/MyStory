@@ -7,7 +7,7 @@ public interface LikeValidator {
 
     Post validateAndGetPostToLike(long userId, long postId);
 
-    Comment validateCommentToLike(long userId, long commentId);
+    Comment validateAndGetCommentToLike(long userId, long commentId);
 
     void validateUserExistence(long userId);
 }

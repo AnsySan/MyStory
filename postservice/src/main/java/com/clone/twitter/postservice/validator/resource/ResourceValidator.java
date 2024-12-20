@@ -6,5 +6,6 @@ public interface ResourceValidator {
 
     void validateExistenceByKey(String key);
 
-    void validatePostAuthorAndResourceAuthor(Long postAuthorId, Long resourceUserId);
+    void validatePostAuthorAndResourceAuthor(Long postAuthorId, Long postProjectId, Long resourceUserId);
+
 }

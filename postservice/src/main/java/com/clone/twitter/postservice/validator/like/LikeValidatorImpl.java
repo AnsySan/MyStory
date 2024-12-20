@@ -42,7 +42,7 @@ public class LikeValidatorImpl implements LikeValidator{
 
     @Override
     @Transactional(readOnly = true)
-    public Comment validateCommentToLike(long userId, long commentId) {
+    public Comment validateAndGetCommentToLike(long userId, long commentId)  {
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("comment with commentId:" + commentId + " not found"));
@@ -58,7 +58,6 @@ public class LikeValidatorImpl implements LikeValidator{
         return comment;
     }
 
-    @Override
     public void validateUserExistence(long userId) {
         try {
             userServiceClient.getUser(userId);

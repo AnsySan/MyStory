@@ -1,7 +1,10 @@
 package com.clone.twitter.postservice.validator.comment;
 
+import com.clone.twitter.postservice.entity.Comment;
+
 public interface CommentValidator {
 
-    public void validateCreateComment(long userId);
-
+    void validateCreateComment(long userId);
+    void validateUpdateAlbum(Comment commentToUpdate, long userId) ;
+    void validateDeleteAlbum(long postId, long userId, Comment comment) ;
 }
