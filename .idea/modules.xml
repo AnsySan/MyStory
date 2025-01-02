@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/account_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/account_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/achievement_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/achievement_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/analytics_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/analytics_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/notificationservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/notificationservice.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/payment_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/payment_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/postservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/postservice.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/project_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/project_service.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/urlshortenerservice.main.iml" filepath="$PROJECT_DIR$/.idea/modules/urlshortenerservice.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/user_service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/user_service.main.iml" />
+    </modules>
+  </component>
+</project>
